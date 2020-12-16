@@ -959,6 +959,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
                             if (jsonObject.getBoolean("result")) {
                                 //Utility.Log("UpdateCommandCompleted_Api_Response : " + jsonObject.toString());
                                 //api
+
                             } else {
                                 if (jsonObject.has("message"))
                                     //Utility.showAlertDialog(act, jsonObject.getString("message"), act.getString(R.string.ok));
@@ -991,6 +992,4 @@ public class SqliteHelper extends SQLiteOpenHelper {
         allentownBlowerApplication.getInstance().cancelPendingRequests(PendingID.nUpdateCommandCompleted);
         allentownBlowerApplication.getInstance().addToRequestQueue(request, PendingID.nUpdateCommandCompleted);
     }
-
-
 }

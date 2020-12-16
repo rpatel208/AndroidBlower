@@ -14,12 +14,6 @@ import com.allentownblower.common.PrefManager;
 import com.allentownblower.common.ResponseHandler;
 import com.allentownblower.common.Utility;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 /**
@@ -400,7 +394,18 @@ public class SerialPortConversion {
 //                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointDataS);
             } else if (isStart == 201){
                 responseHandler.UpdateCommandCompleted_Api();
-                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
+                int count = prefManager.getCount();
+                int multiCommandCount = prefManager.getMultiCommandCount();
+                String setCommand = prefManager.getSetKeyFromApi();
+                if (count != multiCommandCount){
+                    count++;
+//                    prefManager.setSendCommandS(SetCommand);
+//                    prefManager.setCount(count);
+//                    AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointCommandOnly_Api);
+                    responseHandler.commandCallingFromApi(setCommand, count);
+                }else {
+                    AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
+                }
             }
 //            else if (command.startsWith("W")) {
 //                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nWiFiDataUpdate);
