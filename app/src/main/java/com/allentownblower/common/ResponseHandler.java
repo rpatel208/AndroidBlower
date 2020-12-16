@@ -219,64 +219,7 @@ public class ResponseHandler {
     }
 
     public void UpdateCommandCompleted_Api() {
-        getUpdateCommandCompleted_Api(act, prefManager, allentownBlowerApplication, rackDetailsModels);
-    }
-
-    public void getUpdateCommandCompleted_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication, RackDetailsModel model) {
-        Utility.ShowMessageReport(act, "Please wait...");
-        //Log.e("TAG","getUpdateCommandCompleted_Api method");
-        // if (NetworkUtil.getConnectivityStatus(act)) {
-        JSONObject objParam = new JSONObject();
-        try {
-            objParam.put(ApiHandler.strUpdateRackBlowerDetailsId, model.getmId());
-            objParam.put(ApiHandler.strUpdateRackBlowerCustomerID, model.getmRackBlowerCustomerID());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                prefManager.getHostName() + ApiHandler.strUrlUpdateCommandCompleted, objParam,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject jsonObject) {
-                        //Utility.dismissProgress();
-                        Utility.dismissAlertDialog();
-                        Utility.Log("getUpdateCommandCompleted_Api_Response : " + jsonObject);
-                        try {
-                            if (jsonObject.getBoolean("result")) {
-                                //Utility.Log("UpdateCommandCompleted_Api_Response : " + jsonObject.toString());
-                                //api
-                            } else {
-                                if (jsonObject.has("message"))
-                                    //Utility.showAlertDialog(act, jsonObject.getString("message"), act.getString(R.string.ok));
-                                    Utility.Log("UpdateCommandCompleted_Api_Response Fail : " + jsonObject.getString("message"));
-                                else
-                                    Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
-                            }
-                        } catch (JSONException e) {
-                            Utility.Log("getUpdateCommandCompletedresponse_Api Error : " + e.toString());
-                            e.printStackTrace();
-                            Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //Utility.dismissProgress();
-                        Utility.dismissAlertDialog();
-                        Utility.Log("UpdateCommandCompleted_Api Error : " + error.toString());
-                    }
-                }
-        ) {
-            @Override
-            public Map<String, String> getHeaders() {
-                return allentownBlowerApplication.getInstance().getHeader();
-            }
-        };
-
-        allentownBlowerApplication.getInstance().cancelPendingRequests(PendingID.nUpdateCommandCompleted);
-        allentownBlowerApplication.getInstance().addToRequestQueue(request, PendingID.nUpdateCommandCompleted);
+        sqliteHelper.getUpdateCommandCompleted_Api(act, prefManager, allentownBlowerApplication, rackDetailsModels);
     }
 
     public void resetFAndSDataForBlower_Api() throws JSONException {
