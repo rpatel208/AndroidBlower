@@ -402,6 +402,7 @@ public class SerialPortConversion {
                 }else {
                     AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
                 }
+
             } else if (isStart == 202) {
                 responseHandler.UpdateCommandCompleted_Api();
                 int count = prefManager.getCount();
@@ -410,6 +411,7 @@ public class SerialPortConversion {
                 if (count <= multiCommandCount - 1){
                     responseHandler.commandCallingFromApi(count);
                 }else {
+                    //testing
                     AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetWifiDataOnly);
                 }
 //                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nWiFiDataUpdate);
