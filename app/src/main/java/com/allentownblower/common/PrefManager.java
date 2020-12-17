@@ -100,6 +100,23 @@ public class PrefManager {
         editor.commit();
     }
 
+    public boolean saveArray(String[] array) {
+        editor.putInt(setKeyFromApi +"_size", array.length);
+        for(int i=0;i<array.length;i++){
+            editor.putString(setKeyFromApi + "_" + i, array[i]);
+        }
+
+        return editor.commit();
+    }
+
+    public String[] loadArray() {
+        int size = pref.getInt(setKeyFromApi + "_size", 0);
+        String array[] = new String[size];
+        for(int i=0;i<size;i++)
+            array[i] = pref.getString(setKeyFromApi + "_" + i, null);
+        return array;
+    }
+
     public String getSetKeyFromApi(){
         return pref.getString(setKeyFromApi,"");
     }
