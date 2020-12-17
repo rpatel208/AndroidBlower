@@ -936,6 +936,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
     }
 
     public void getUpdateCommandCompleted_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication, RackDetailsModel model) {
+        String command = prefManager.getSendCommandS().trim();
         Utility.ShowMessageReport(act, "Please wait...");
         //Log.e("TAG","getUpdateCommandCompleted_Api method");
         // if (NetworkUtil.getConnectivityStatus(act)) {
@@ -943,6 +944,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
         try {
             objParam.put(ApiHandler.strUpdateRackBlowerDetailsId, model.getmId());
             objParam.put(ApiHandler.strUpdateRackBlowerCustomerID, model.getmRackBlowerCustomerID());
+            objParam.put(ApiHandler.strUpdatecompletedCMD, command);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -959,7 +961,6 @@ public class SqliteHelper extends SQLiteOpenHelper {
                             if (jsonObject.getBoolean("result")) {
                                 //Utility.Log("UpdateCommandCompleted_Api_Response : " + jsonObject.toString());
                                 //api
-
                             } else {
                                 if (jsonObject.has("message"))
                                     //Utility.showAlertDialog(act, jsonObject.getString("message"), act.getString(R.string.ok));

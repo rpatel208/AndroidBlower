@@ -397,20 +397,23 @@ public class SerialPortConversion {
                 int count = prefManager.getCount();
                 int multiCommandCount = prefManager.getMultiCommandCount();
                 String setCommand = prefManager.getSetKeyFromApi();
-                if (count != multiCommandCount){
-                    count++;
-//                    prefManager.setSendCommandS(SetCommand);
-//                    prefManager.setCount(count);
-//                    AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointCommandOnly_Api);
+                if (count <= multiCommandCount - 1){
                     responseHandler.commandCallingFromApi(setCommand, count);
                 }else {
                     AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
                 }
-            }
-//            else if (command.startsWith("W")) {
+            } else if (isStart == 202) {
+                responseHandler.UpdateCommandCompleted_Api();
+                int count = prefManager.getCount();
+                int multiCommandCount = prefManager.getMultiCommandCount();
+                String setCommand = prefManager.getSetKeyFromApi();
+                if (count <= multiCommandCount - 1){
+                    responseHandler.commandCallingFromApi(setCommand, count);
+                }else {
+                    AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetWifiDataOnly);
+                }
 //                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nWiFiDataUpdate);
-//            }
-            else if (command.startsWith("W")) {
+            } else if (command.startsWith("W")) {
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetWifiDataOnly);
             } else if (command.equals("D31")) {
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.mD31CommandResponse);
