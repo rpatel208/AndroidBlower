@@ -360,6 +360,8 @@ public class ResponseHandler {
                                         String[] multiCommand = SetCommand.split(",");
                                         prefManager.saveArray(multiCommand);
                                         commandCallingFromApi(count);
+
+                                        //testing
                                     }
                                     else
                                     {
