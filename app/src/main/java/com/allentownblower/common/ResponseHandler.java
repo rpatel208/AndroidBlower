@@ -377,16 +377,16 @@ public class ResponseHandler {
                                 if (jsonObject.has("message")) {
                                     //Utility.showAlertDialog(act, jsonObject.getString("message"), act.getString(R.string.ok));
                                     Utility.Log("getFCommandCallingresponse_Api_Response Fail : " + jsonObject.getString("message"));
-                                    AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
                                 } else {
                                     Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
                                 }
-
+                                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
                             }
                         } catch (JSONException e) {
                             Utility.Log("getFCommandCallingresponse_Api Error : " + e.toString());
                             e.printStackTrace();
                             Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
+                            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
                         }
                     }
                 },
@@ -413,19 +413,15 @@ public class ResponseHandler {
     public void commandCallingFromApi(int count){
         String[] SetCommand = prefManager.loadArray();
         String cmd = SetCommand[count];
-        Log.e("TAG","Set Multi cmds : " + cmd);
         count++;
-        set_Command_Value_From_Api(cmd,count);
+        prefManager.setSendCommandS(cmd);
+        prefManager.setCount(count);
+        Log.e("TAG","Set Multi cmds : " + cmd);
+        AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointCommandOnly_Api);
     }
 
     public void set_S_Command_Value_From_Api(String SetCommand) {
         prefManager.setSendCommandS(SetCommand);
-        AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointCommandOnly_Api);
-    }
-
-    public void set_Command_Value_From_Api(String SetCommand, int count) {
-        prefManager.setSendCommandS(SetCommand);
-        prefManager.setCount(count);
         AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointCommandOnly_Api);
     }
 

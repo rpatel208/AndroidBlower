@@ -396,8 +396,8 @@ public class SerialPortConversion {
                 responseHandler.UpdateCommandCompleted_Api();
                 int count = prefManager.getCount();
                 String[] setCommand = prefManager.loadArray();
-                int multiCommandCount = setCommand.length;
-                if (count <= multiCommandCount - 1){
+                int multiCommandCount = setCommand.length - 1;
+                if (count <= multiCommandCount){
                     responseHandler.commandCallingFromApi(count);
                 }else {
                     AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
@@ -407,14 +407,12 @@ public class SerialPortConversion {
                 responseHandler.UpdateCommandCompleted_Api();
                 int count = prefManager.getCount();
                 String[] setCommand = prefManager.loadArray();
-                int multiCommandCount = setCommand.length;
-                if (count <= multiCommandCount - 1){
+                int multiCommandCount = setCommand.length - 1;
+                if (count <= multiCommandCount){
                     responseHandler.commandCallingFromApi(count);
                 }else {
-                    //testing
                     AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetWifiDataOnly);
                 }
-//                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nWiFiDataUpdate);
             } else if (command.startsWith("W")) {
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetWifiDataOnly);
             } else if (command.equals("D31")) {

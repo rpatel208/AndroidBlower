@@ -947,8 +947,9 @@ public class SqliteHelper extends SQLiteOpenHelper {
             objParam.put(ApiHandler.strUpdatecompletedCMD, command);
         } catch (JSONException e) {
             e.printStackTrace();
-        }
 
+        }
+        Log.e("ObjParams",objParam.toString());
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
                 prefManager.getHostName() + ApiHandler.strUrlUpdateCommandCompleted, objParam,
                 new Response.Listener<JSONObject>() {
