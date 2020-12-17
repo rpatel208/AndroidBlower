@@ -35,7 +35,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Mayur Yadav on 01 Sep 2019.
@@ -47,6 +46,8 @@ public class ResponseHandler {
     private static MyDbSource myDb;
 
     private PrefManager prefManager;
+
+    int count = 0;
 
     private String blowerName, blowerAddress, modelNo, fromDate, toDate, blowerAlarm, hepaFilterAlarm, preFilterAlarm, hoseAlarm, supTempAlarm, supHMDAlarm, extTempAlarm, extHMDAlarm;
     private int maxACH = 0, minACH = 0, maxSupplyTemp = 0, minSupplyTemp = 0, maxSupplyHumidity = 0, minSupplyHumidity = 0, maxExhaustTemp = 0, minExhaustTemp = 0, maxExhaustHumidity = 0, minExhaustHumidity = 0;
@@ -349,23 +350,354 @@ public class ResponseHandler {
                                 //String message = jsonObject.getString("message");
                                 Boolean isUpdatedByWebApp = jsonObject.getBoolean("isUpdatedByWebApp");
                                 String SetCommand = jsonObject.getString("SetCommand");
-
+                                prefManager.setKeyFromApi(SetCommand);
                                 if (isUpdatedByWebApp) {
                                     sqliteHelper.getUpdateRackBlowerDetails_Api(act, prefManager, allentownBlowerApplication, rackDetailsModels);
                                 }
                                 if (!SetCommand.equals("") || SetCommand.length() != 0) {
                                     Log.e("TAG","Set Multi Commands : " + SetCommand);
-                                    int count = 0;
                                     if (SetCommand.contains(",")) {
-                                        String[] multiCommand = SetCommand.split(",");
-                                        prefManager.saveArray(multiCommand);
-                                        commandCallingFromApi(count);
+                                        commandCallingFromApi(SetCommand, count);
+//                                        String[] multicommands = SetCommand.split(",");
+//                                        for (int i=0; i<multicommands.length; i++)
+//                                        {
+//                                            String cmd = multicommands[i];
+//                                            Log.e("TAG","Set Multi cmds : " + cmd);
+//                                            String[] separated = cmd.split("=");
+//                                            String mSCommandName = separated[0];
+//                                            String mSCommandValue = separated[1];
+//
+//                                            switch (mSCommandName) {
+//                                                case "S01":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S02":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S03":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S04":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S05":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S06":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S07":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S08":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S09":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S10":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S11":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S12":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S13":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S14":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S15":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S16":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S17":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S18":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S19":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S20":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S21":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S22":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S23":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S24":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S25":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S26":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "S27":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "W01":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "W02":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "W03":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "W04":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "W05":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "W06":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "W07":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "W08":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "W09":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "W10":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "W11":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//
+//                                                case "W12":
+//                                                    set_S_Command_Value_From_Api(cmd);
+//                                                    break;
+//                                            }
+//
+//                                            try {
+//                                                Thread.sleep(1000);
+//                                            }
+//                                            catch (Exception e)
+//                                            {
+//                                                Log.e(TAG,"Error : " + e.getLocalizedMessage());
+//                                            }
+//
+//                                        }
                                     }
                                     else
                                     {
-                                        String[] multiCommand = new String[] {SetCommand};
-                                        prefManager.saveArray(multiCommand);
-                                        commandCallingFromApi(count);
+                                        String[] separated = SetCommand.split("=");
+                                        String mSCommandName = separated[0];
+                                        String mSCommandValue = separated[1];
+
+                                        switch (mSCommandName) {
+                                            case "S01":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S02":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S03":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S04":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S05":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S06":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S07":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S08":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S09":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S10":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S11":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S12":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S13":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S14":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S15":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S16":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S17":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S18":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S19":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S20":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S21":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S22":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S23":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S24":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S25":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S26":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "S27":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "W01":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "W02":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "W03":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "W04":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "W05":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "W06":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "W07":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "W08":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "W09":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "W10":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "W11":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+
+                                            case "W12":
+                                                set_S_Command_Value_From_Api(SetCommand);
+                                                break;
+                                        }
                                     }
 
                                 } else {
@@ -408,12 +740,13 @@ public class ResponseHandler {
 
     }
 
-    public void commandCallingFromApi(int count){
-        String[] SetCommand = prefManager.loadArray();
-        String cmd = SetCommand[count];
+    public void commandCallingFromApi(String SetCommand, int count){
+        String[] multiCommand = SetCommand.split(",");
+        prefManager.setMultiCommandCount(multiCommand.length);
+        String cmd = multiCommand[count];
         Log.e("TAG","Set Multi cmds : " + cmd);
-        count++;
         set_Command_Value_From_Api(cmd,count);
+        count++;
     }
 
     public void set_S_Command_Value_From_Api(String SetCommand) {
