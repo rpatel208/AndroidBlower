@@ -1,5 +1,6 @@
 package com.allentownblower.common;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -360,7 +361,6 @@ public class ResponseHandler {
                                         String[] multiCommand = SetCommand.split(",");
                                         prefManager.saveArray(multiCommand);
                                         commandCallingFromApi(count);
-
                                         //testing
                                     }
                                     else
@@ -1718,6 +1718,7 @@ public class ResponseHandler {
         return objHasMap;
     }
 
+    @SuppressLint("LongLogTag")
     public StringBuilder getBLFeedbackDataMaxMinAvgExport(String startDate, String endDate, ArrayList<SetPointCommand> arrSetpointData, ArrayList<RackModel> arrRackSetUpData, ResponseHandler responseHandler, boolean isFromChangeUnit, ArrayList<String> columnNameListSingle) {
         StringBuilder data = new StringBuilder();
         try {
@@ -1872,7 +1873,7 @@ public class ResponseHandler {
             cursor.close();
             Log.e("FB MaxMin finished", "-");
         } catch (Exception e) {
-            Log.e("Error", e.getMessage());
+            Log.e("Error Max Min Export :- ", e.getMessage());
         }
         return data;
     }
@@ -2035,7 +2036,7 @@ public class ResponseHandler {
             cursor.close();
             Log.e("FB MaxMin finished", "-");
         } catch (Exception e) {
-            Log.e("Error", e.getMessage());
+            Log.e("Error MaxMin Email :- ", e.getMessage());
         }
         return jsArr;
     }

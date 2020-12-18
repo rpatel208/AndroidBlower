@@ -39,7 +39,7 @@ public class CodeReUse {
     public static int DefaultBluetoothMaster = 11111; // Default Bluetooth Master Password
     public static int DefaultReportPassword = 1968; // Default Report Password
 
-    public static boolean isDebugMode = false; // isDebugMode
+    public static boolean isDebugMode = true; // isDebugMode
     public static boolean isBolwerAdmin = false; // isBolwerAdmin
     public static boolean isBolwerConnected = false; // isBolwerConnected
     public static boolean isTestingMode = true; // isBolwerConnected
