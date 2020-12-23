@@ -2240,7 +2240,7 @@ public class ResponseHandler {
                     {
                         jsObj.put("Exhaust Humidity Alarm","X");
                     } else {
-                        jsObj.put("Exhaust Humidity Alarm","X");
+                        jsObj.put("Exhaust Humidity Alarm","");
                     }
                     i++;
                     jsArr.put(jsObj);
