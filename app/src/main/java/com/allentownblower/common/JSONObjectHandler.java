@@ -60,33 +60,4 @@ public class JSONObjectHandler {
             return false;
         }
     }
-
-    public void saveNewIDForRackBlowerInDataBase(JSONObject jsonObject) {
-        if (jsonObject.length() > 0){
-            myDb.db.beginTransaction();
-            try{
-//                for (int i = 0; i < arrList.length(); i++) {
-//                    JSONObject jObj = arrList.getJSONObject(i);
-
-                ContentValues cv = new ContentValues();
-                cv.put(DatabaseTable.COL_RACKBLOWERDETAILS_ID, getInt(jsonObject, ApiHandler.strRackSerialNumberId));
-                cv.put(DatabaseTable.COL_RACKBLOWERDETAILS_RACKBLOWERCUSTOMER_ID, getInt(jsonObject, ApiHandler.strRackBlowerCustomerID));
-                cv.put(DatabaseTable.COL_RACKBLOWERDETAILS_ABLOWER_SERIAL, getInt(jsonObject, ApiHandler.strRackBlowerABlowerSerial));
-
-                if (myDb.getQueryResultCount("select * from " + DatabaseTable.TBL_RACKBLOWERDETAILS) <= 0){
-                    myDb.insert(DatabaseTable.TBL_RACKBLOWERDETAILS, null, cv);
-                    cv.clear();
-                } else {
-                    myDb.update(DatabaseTable.TBL_RACKBLOWERDETAILS, cv, DatabaseTable.COL_RACKBLOWERDETAILS_ID + " = " + getInt(jsonObject, ApiHandler.strRackSerialNumberId));
-                    cv.clear();
-                }
-//                }
-                myDb.db.setTransactionSuccessful();
-            }catch (Exception e){
-                Log.e("jsonError", ""+ e.getMessage());
-            } finally {
-                myDb.db.endTransaction();
-            }
-        }
-    }
 }
