@@ -250,7 +250,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
     }
 
     public RackDetailsModel getDataFromRackBlowerDetails() {
-        RackDetailsModel rackDetailsModel = new RackDetailsModel();
+        RackDetailsModel rackDetailsModel = null;
         String strQuery = "Select * FROM " + DatabaseTable.TBL_RACKBLOWERDETAILS;
         Log.e("strQuery", strQuery);
         Cursor cursor = getQueryResult(strQuery);
@@ -259,6 +259,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
         try {
             if (cursor.getCount() > 0) {
                 while (cursor.moveToNext()) {
+                    rackDetailsModel = new RackDetailsModel();
                     rackDetailsModel.setmId(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_RACKBLOWERDETAILS_ID)));
                     rackDetailsModel.setmRackBlowerCustomerID(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_RACKBLOWERDETAILS_RACKBLOWERCUSTOMER_ID)));
                     rackDetailsModel.setmABlowerSerial(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_RACKBLOWERDETAILS_ABLOWER_SERIAL)));
@@ -992,5 +993,35 @@ public class SqliteHelper extends SQLiteOpenHelper {
         allentownBlowerApplication.getInstance().addToRequestQueue(request, PendingID.nUpdateCommandCompleted);
     }
 
+    public boolean insert(String tabName, ContentValues cv) {
+        db = this.getWritableDatabase();
+        long result = db.insert(tabName,null ,cv);
+        if(result == -1)
+            return false;
+        else
+            return true;
+    }
 
+    public boolean update(String tabName, ContentValues cv) {
+        db = this.getWritableDatabase();
+        long result = db.update(tabName,cv,null,null);
+        if(result == -1)
+            return false;
+        else
+            return true;
+    }
+
+    public void delete(String tabName) {
+        try {
+            db = this.getWritableDatabase();
+            db.delete(tabName, null, null);
+        } catch (Exception e) {
+            Utility.Log(TAG,"delete SQLiteException : " + e.toString());
+        }
+    }
+
+//    public void executeSQL(String strQuery) {
+//        db = this.getWritableDatabase();
+//        db.execSQL(strQuery);
+//    }
 }
