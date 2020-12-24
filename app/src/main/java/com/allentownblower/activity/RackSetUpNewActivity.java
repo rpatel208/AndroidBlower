@@ -157,8 +157,8 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
 
         initMethod();
 
-        portConversion = new SerialPortConversion(act);
         responseHandler = new ResponseHandler(act);
+        portConversion = new SerialPortConversion(act, responseHandler);
         prefManager = new PrefManager(act);
 
         if (CodeReUse.isTestingMode) {

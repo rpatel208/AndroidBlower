@@ -328,7 +328,7 @@ public class HomeActivity extends BaseActivity implements Observer {
         prefManager = new PrefManager(act);
         sqliteHelper = new SqliteHelper(act);
         rackDetailsModel = sqliteHelper.getDataFromRackBlowerDetails();
-        if(rackDetailsModel.getmId() != null){
+        if(rackDetailsModel != null){
             responseHandler = new ResponseHandler(act, rackDetailsModel, allentownBlowerApplication, sqliteHelper);
         }else {
             responseHandler = new ResponseHandler(act);
@@ -8719,7 +8719,7 @@ public class HomeActivity extends BaseActivity implements Observer {
             rackDetailsModel = sqliteHelper.getDataFromRackBlowerDetails();
             responseHandler.rackDetailsModels = rackDetailsModel;
             responseHandler.allentownBlowerApplication = allentownBlowerApplication;
-            responseHandler.sqliteHelper = sqliteHelper;
+            responseHandler.myDb = sqliteHelper;
         }
     }
 

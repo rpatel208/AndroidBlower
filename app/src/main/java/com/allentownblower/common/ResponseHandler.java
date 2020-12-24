@@ -45,7 +45,7 @@ public class ResponseHandler {
 
     private static final String TAG = ResponseHandler.class.getSimpleName();
 
-    private static MyDbSource myDb;
+//    private static MyDbSource myDb;
 
     private PrefManager prefManager;
 
@@ -55,22 +55,23 @@ public class ResponseHandler {
     public RackDetailsModel rackDetailsModels;
     private Activity act;
     public AllentownBlowerApplication allentownBlowerApplication;
-    public SqliteHelper sqliteHelper;
+    public SqliteHelper myDb;
 
     public ResponseHandler(Activity activity) {
         if (myDb == null) {
-            myDb = new MyDbSource(activity);
+            myDb = new SqliteHelper(activity);
         }
 
         prefManager = new PrefManager(activity);
     }
 
     public ResponseHandler(Activity activity, RackDetailsModel rackDetailsModel, AllentownBlowerApplication alnBlowerApplication, SqliteHelper sql) {
-        if (myDb == null)
-            myDb = new MyDbSource(activity);
-
+        if (sql == null) {
+            myDb = new SqliteHelper(activity);
+        }else {
+            myDb = sql;
+        }
         prefManager = new PrefManager(activity);
-        sqliteHelper = sql;
         rackDetailsModels = rackDetailsModel;
         act = activity;
         allentownBlowerApplication = alnBlowerApplication;
@@ -219,7 +220,7 @@ public class ResponseHandler {
     }
 
     public void UpdateCommandCompleted_Api() {
-        sqliteHelper.getUpdateCommandCompleted_Api(act, prefManager, allentownBlowerApplication, rackDetailsModels);
+        myDb.getUpdateCommandCompleted_Api(act, prefManager, allentownBlowerApplication, rackDetailsModels);
     }
 
     public void resetFAndSDataForBlower_Api() throws JSONException {
@@ -352,7 +353,7 @@ public class ResponseHandler {
                                 String SetCommand = jsonObject.getString("SetCommand");
 
                                 if (isUpdatedByWebApp) {
-                                    sqliteHelper.getUpdateRackBlowerDetails_Api(act, prefManager, allentownBlowerApplication, rackDetailsModels);
+                                    myDb.getUpdateRackBlowerDetails_Api(act, prefManager, allentownBlowerApplication, rackDetailsModels);
                                 }
                                 if (!SetCommand.equals("") || SetCommand.length() != 0) {
                                     Log.e("TAG","Set Multi Commands : " + SetCommand);
@@ -937,7 +938,7 @@ public class ResponseHandler {
     }
 
     public void updateDBfile() {
-        myDb.executeSQL("Vacuum");
+        myDb.db.execSQL("Vacuum");
     }
 
     // TODO : DELETE ALL TABLE
