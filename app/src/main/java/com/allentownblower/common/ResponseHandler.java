@@ -65,6 +65,16 @@ public class ResponseHandler {
         prefManager = new PrefManager(activity);
     }
 
+    public ResponseHandler(Activity activity, SqliteHelper sqliteHelper) {
+        if (sqliteHelper == null) {
+            myDb = new SqliteHelper(activity);
+        }else {
+            myDb = sqliteHelper;
+        }
+
+        prefManager = new PrefManager(activity);
+    }
+
     public ResponseHandler(Activity activity, RackDetailsModel rackDetailsModel, AllentownBlowerApplication alnBlowerApplication, SqliteHelper sql) {
         if (sql == null) {
             myDb = new SqliteHelper(activity);

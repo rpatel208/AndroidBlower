@@ -331,7 +331,7 @@ public class HomeActivity extends BaseActivity implements Observer {
         if(rackDetailsModel != null){
             responseHandler = new ResponseHandler(act, rackDetailsModel, allentownBlowerApplication, sqliteHelper);
         }else {
-            responseHandler = new ResponseHandler(act);
+            responseHandler = new ResponseHandler(act, sqliteHelper);
         }
         portConversion = new SerialPortConversion(act, responseHandler);
 

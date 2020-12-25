@@ -112,7 +112,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
 
     private void loadScreen() {
         rackDetailsModel = dpHelper.getDataFromRackBlowerDetails();
-        if (rackDetailsModel.getmRackBlowerCustomerID() != null) {
+        if (rackDetailsModel != null) {
             getUpdateRackBlowerDetails_Api(rackDetailsModel.getmId(), rackDetailsModel.getmRackBlowerCustomerID());
         } else {
             mRelativeLayoutSerialCustomerMain.setVisibility(View.VISIBLE);
