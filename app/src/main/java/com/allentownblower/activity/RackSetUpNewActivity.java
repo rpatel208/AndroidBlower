@@ -426,20 +426,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
         mStrBuildingName = txt_building_name.getText().toString().trim();
         mStrRoomName = txt_Room_Name.getText().toString().trim();
         modelNo = mTextViewModelNumber.getText().toString().trim().toUpperCase();
-        if (isEditTextSupply) {
-            userEnterSupplyValue = mTextViewSupplyValue.getText().toString().trim();
-            if (TextUtils.isEmpty(userEnterSupplyValue)) {
-                Toast.makeText(act, "Please enter Supply(CFM) value", Toast.LENGTH_SHORT).show();
-                return;
-            } else {
-                mRelativeProgressBarLayoutRackScreen.setVisibility(View.VISIBLE);
-                supplyValue = userEnterSupplyValue;
-            }
-            Log.e("Values", "SupplyValue : " + supplyValue);
-        } else if (isSpinnerSupplyShow) {
-            supplyValue = supplySelectedSpinnerValue;
-            Log.e("Values", "SupplyValue : " + supplyValue);
-        } else if (TextUtils.isEmpty(mStrCompanyName)) {
+        if (TextUtils.isEmpty(mStrCompanyName)) {
             Toast.makeText(act, "Please enter company name", Toast.LENGTH_SHORT).show();
             return;
         } else if (TextUtils.isEmpty(mStrBlowerName)) {
@@ -457,10 +444,32 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             Log.e("Values", "SupplyValue : " + supplyValue);
         }
 
+        if (isEditTextSupply) {
+            userEnterSupplyValue = mTextViewSupplyValue.getText().toString().trim();
+            boolean isNumber = isValidNumber(userEnterSupplyValue);
+            if (TextUtils.isEmpty(userEnterSupplyValue) || !isNumber) {
+                Toast.makeText(act, "Please enter Supply(CFM) value", Toast.LENGTH_SHORT).show();
+                mRelativeProgressBarLayoutRackScreen.setVisibility(View.GONE);
+                return;
+            } else {
+                mRelativeProgressBarLayoutRackScreen.setVisibility(View.VISIBLE);
+                supplyValue = userEnterSupplyValue;
+            }
+            Log.e("Values", "SupplyValue : " + supplyValue);
+        } else if (isSpinnerSupplyShow) {
+            supplyValue = supplySelectedSpinnerValue;
+            Log.e("Values", "SupplyValue : " + supplyValue);
+        } else{
+            supplyValue = mTextViewSupplyValue.getText().toString().trim();
+            Log.e("Values", "SupplyValue : " + supplyValue);
+        }
+
         if (isEditTextExhaust) {
             userEnterExhaustValue = mTextViewExhaustValue.getText().toString().trim();
-            if (TextUtils.isEmpty(userEnterExhaustValue)) {
+            boolean isNumber = isValidNumber(userEnterExhaustValue);
+            if (TextUtils.isEmpty(userEnterExhaustValue) || !isNumber) {
                 Toast.makeText(act, "Please enter Exhaust(WC) value", Toast.LENGTH_SHORT).show();
+                mRelativeProgressBarLayoutRackScreen.setVisibility(View.GONE);
                 return;
             } else {
                 exhaustValue = userEnterExhaustValue;
@@ -510,6 +519,10 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
 //                        ACHValue, polarityValue, supplyValue, exhaustValue, mLockValue);
 //                Toast.makeText(act, "Updated Succesfully", Toast.LENGTH_SHORT).show();
         AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_ACH_Value_Write_Only);
+    }
+
+    private boolean isValidNumber(String number) {
+        return android.util.Patterns.PHONE.matcher(number).matches();
     }
 
     private boolean validationFunction() {
