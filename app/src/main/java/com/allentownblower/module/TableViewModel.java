@@ -782,6 +782,11 @@ public class TableViewModel {
 
     public void getSendReportEmail_Api(String tag, String email, RackDetailsModel rackDetailsModel, AllentownBlowerApplication allentownBlowerApplication, PrefManager prefManager, Activity act, boolean isFromChangeUnit) {
         // if (NetworkUtil.getConnectivityStatus(act)) {
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
+            Log.e("HostName :- ", "Host Name is Not Available");
+            return;
+        }
+
         ResponseHandler responseHandler = new ResponseHandler(act);
         setpointArrayList = responseHandler.getBLSetPointData(startDate, endDate);
         rackModelArrayList = responseHandler.getBLRackSetUpData(startDate, endDate);

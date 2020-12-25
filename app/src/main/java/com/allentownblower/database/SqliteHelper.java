@@ -823,6 +823,10 @@ public class SqliteHelper extends SQLiteOpenHelper {
     }
 
     public void getUpdateRackBlowerDetails_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication, RackDetailsModel model) {
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
+            Log.e("HostName :- ", "Host Name is Not Available");
+            return;
+        }
         Utility.ShowMessageReport(act, "Please wait...");
         //Log.e("TAG","getUpdateRackBlowerDetails_Api method");
         // if (NetworkUtil.getConnectivityStatus(act)) {
@@ -880,6 +884,10 @@ public class SqliteHelper extends SQLiteOpenHelper {
     }
 
     public void getUpdatedByWebAppCompleted_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication, RackDetailsModel model) {
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
+            Log.e("HostName :- ", "Host Name is Not Available");
+            return;
+        }
         Utility.ShowMessageReport(act, "Please wait...");
         //Log.e("TAG","getUpdatedByWebAppCompleted_Api method");
         // if (NetworkUtil.getConnectivityStatus(act)) {
@@ -937,6 +945,10 @@ public class SqliteHelper extends SQLiteOpenHelper {
     }
 
     public void getUpdateCommandCompleted_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication, RackDetailsModel model) {
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
+            Log.e("HostName :- ", "Host Name is Not Available");
+            return;
+        }
         String command = prefManager.getSendCommandS().trim();
         Utility.ShowMessageReport(act, "Please wait...");
         //Log.e("TAG","getUpdateCommandCompleted_Api method");

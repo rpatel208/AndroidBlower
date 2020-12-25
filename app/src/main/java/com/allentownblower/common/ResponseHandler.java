@@ -68,7 +68,7 @@ public class ResponseHandler {
     public ResponseHandler(Activity activity, SqliteHelper sqliteHelper) {
         if (sqliteHelper == null) {
             myDb = new SqliteHelper(activity);
-        }else {
+        } else {
             myDb = sqliteHelper;
         }
 
@@ -78,7 +78,7 @@ public class ResponseHandler {
     public ResponseHandler(Activity activity, RackDetailsModel rackDetailsModel, AllentownBlowerApplication alnBlowerApplication, SqliteHelper sql) {
         if (sql == null) {
             myDb = new SqliteHelper(activity);
-        }else {
+        } else {
             myDb = sql;
         }
         prefManager = new PrefManager(activity);
@@ -140,7 +140,7 @@ public class ResponseHandler {
         Date currentDate = Utility.getDateFromString(strCurrentDate);
         Date lastSavedDateForFCommand = Utility.getDateFromString(strLastSavedDateForFCommand);
         int intervalForFCommand = prefManager.getMinute();
-        long minutes =0;
+        long minutes = 0;
         if (!strLastSavedDateForFCommand.isEmpty()) {
             long diff = currentDate.getTime() - lastSavedDateForFCommand.getTime();
             long seconds = diff / 1000;
@@ -192,7 +192,7 @@ public class ResponseHandler {
                         } else {
                             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
                         }
-                    } else{
+                    } else {
                         AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
                     }
 
@@ -217,7 +217,7 @@ public class ResponseHandler {
                         } else {
                             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
                         }
-                    } else{
+                    } else {
                         AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
                     }
                 } else if (needToCall_S_command == 0) {
@@ -235,51 +235,55 @@ public class ResponseHandler {
 
     public void resetFAndSDataForBlower_Api() throws JSONException {
 
-            JSONObject objParam = new JSONObject();
-            try {
-                objParam.put(ApiHandler.strUpdateRackBlowerDetailsId, rackDetailsModels.getmId());
-                objParam.put(ApiHandler.strUpdateRackBlowerCustomerID, rackDetailsModels.getmRackBlowerCustomerID());
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Log.e("ErrorFParameter", "" + e.getMessage());
-            }
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")) {
+            return;
+        }
+
+        JSONObject objParam = new JSONObject();
+        try {
+            objParam.put(ApiHandler.strUpdateRackBlowerDetailsId, rackDetailsModels.getmId());
+            objParam.put(ApiHandler.strUpdateRackBlowerCustomerID, rackDetailsModels.getmRackBlowerCustomerID());
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e("ErrorFParameter", "" + e.getMessage());
+        }
 
 
-            Log.e("TAG","resetFAndSDataForBlower_Api Parameters : " + objParam.toString());
+        Log.e("TAG", "resetFAndSDataForBlower_Api Parameters : " + objParam.toString());
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                    prefManager.getHostName() + ApiHandler.strURLResetFAndSData, objParam,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject jsonObject) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                prefManager.getHostName() + ApiHandler.strURLResetFAndSData, objParam,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) {
 
-                            Utility.Log("resetFAndSDataForBlower_Api Response : " + jsonObject);
-                            try {
-                                if (jsonObject.getBoolean("result")) {
-                                    Log.e("TAG","Records have been deleted from Server : true");
-                                } else {
-                                    Log.e("TAG","Error while deleting records from Server : false");
+                        Utility.Log("resetFAndSDataForBlower_Api Response : " + jsonObject);
+                        try {
+                            if (jsonObject.getBoolean("result")) {
+                                Log.e("TAG", "Records have been deleted from Server : true");
+                            } else {
+                                Log.e("TAG", "Error while deleting records from Server : false");
 
 
-                                }
-                            } catch (JSONException e) {
-                                Utility.Log("resetFAndSDataForBlower_Api Error : " + e.toString());
-                                e.printStackTrace();
                             }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Utility.Log("resetFAndSDataForBlower_Api Error : " + error.toString());
+                        } catch (JSONException e) {
+                            Utility.Log("resetFAndSDataForBlower_Api Error : " + e.toString());
+                            e.printStackTrace();
                         }
                     }
-            ) {
-                @Override
-                public Map<String, String> getHeaders() {
-                    return allentownBlowerApplication.getInstance().getHeader();
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Utility.Log("resetFAndSDataForBlower_Api Error : " + error.toString());
+                    }
                 }
-            };
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                return allentownBlowerApplication.getInstance().getHeader();
+            }
+        };
 
         allentownBlowerApplication.getInstance().cancelPendingRequests(PendingID.nResetRackBlowerFAndSData);
         allentownBlowerApplication.getInstance().addToRequestQueue(request, PendingID.nResetRackBlowerFAndSData);
@@ -287,6 +291,9 @@ public class ResponseHandler {
     }
 
     private void getFCommandCalling_Api(HashMap<String, String> stringHashMap) throws JSONException {
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")) {
+            return;
+        }
         // if (NetworkUtil.getConnectivityStatus(act)) {
         String strF01 = (String) stringHashMap.get("F01");
         String strF02 = (String) stringHashMap.get("F02");
@@ -330,12 +337,10 @@ public class ResponseHandler {
             objParam.put(ApiHandler.strParamF17, strF17);
 
 
-
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e("ErrorFParameter", "" + e.getMessage());
         }
-
 
 
         JSONArray jsonArr = new JSONArray();
@@ -343,12 +348,11 @@ public class ResponseHandler {
         JSONObject jsonObj = new JSONObject();
         try {
             jsonObj.put("FeedbackData", jsonArr);
-        }
-        catch (JSONException e){
-            Log.e(TAG,"Json exception : "  + e.getMessage());
+        } catch (JSONException e) {
+            Log.e(TAG, "Json exception : " + e.getMessage());
         }
 
-        Log.e("FCommand_Api_ObjParam",""+ jsonObj);
+        Log.e("FCommand_Api_ObjParam", "" + jsonObj);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
                 prefManager.getHostName() + ApiHandler.strUrlInsertRackBlowerFeedbackData, jsonObj,
                 new Response.Listener<JSONObject>() {
@@ -366,17 +370,15 @@ public class ResponseHandler {
                                     myDb.getUpdateRackBlowerDetails_Api(act, prefManager, allentownBlowerApplication, rackDetailsModels);
                                 }
                                 if (!SetCommand.equals("") || SetCommand.length() != 0) {
-                                    Log.e("TAG","Set Multi Commands : " + SetCommand);
+                                    Log.e("TAG", "Set Multi Commands : " + SetCommand);
                                     int count = 0;
                                     if (SetCommand.contains(",")) {
                                         String[] multiCommand = SetCommand.split(",");
                                         prefManager.saveArray(multiCommand);
                                         commandCallingFromApi(count);
                                         //testing
-                                    }
-                                    else
-                                    {
-                                        String[] multiCommand = new String[] {SetCommand};
+                                    } else {
+                                        String[] multiCommand = new String[]{SetCommand};
                                         prefManager.saveArray(multiCommand);
                                         commandCallingFromApi(count);
                                     }
@@ -421,13 +423,13 @@ public class ResponseHandler {
 
     }
 
-    public void commandCallingFromApi(int count){
+    public void commandCallingFromApi(int count) {
         String[] SetCommand = prefManager.loadArray();
         String cmd = SetCommand[count];
         count++;
         prefManager.setSendCommandS(cmd);
         prefManager.setCount(count);
-        Log.e("TAG","Set Multi cmds : " + cmd);
+        Log.e("TAG", "Set Multi cmds : " + cmd);
         AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointCommandOnly_Api);
     }
 
@@ -518,6 +520,9 @@ public class ResponseHandler {
     }
 
     private void getSCommandCalling_Api(HashMap<String, String> stringHashMap) {
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")) {
+            return;
+        }
         // if (NetworkUtil.getConnectivityStatus(act)) {
 
         String strS01 = (String) stringHashMap.get("S01");
@@ -591,11 +596,10 @@ public class ResponseHandler {
         JSONObject jsonObj = new JSONObject();
         try {
             jsonObj.put("SetPointData", jsonArr);
+        } catch (JSONException e) {
+            Log.e(TAG, "Json exception : " + e.toString());
         }
-        catch (JSONException e){
-            Log.e(TAG,"Json exception : "  + e.toString());
-        }
-        Log.e("ObjParam_S_Command_Api",""+ jsonObj);
+        Log.e("ObjParam_S_Command_Api", "" + jsonObj);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
                 prefManager.getHostName() + ApiHandler.strUrlInsertRackBlowerSetPointData, jsonObj,
                 new Response.Listener<JSONObject>() {
@@ -608,7 +612,7 @@ public class ResponseHandler {
                             } else {
                                 if (jsonObject.has("message"))
                                     //Utility.showAlertDialog(act, jsonObject.getString("message"), act.getString(R.string.ok));
-                                Utility.Log("S_Command_Api_Response Fail : " + jsonObject.getString("message"));
+                                    Utility.Log("S_Command_Api_Response Fail : " + jsonObject.getString("message"));
                                 else
                                     Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
 
@@ -750,7 +754,6 @@ public class ResponseHandler {
             if (!setPointCommand.getS27().equals(stringHashMap.get("S27"))) {
                 return true;
             }
-
 
 
         }
@@ -1213,43 +1216,31 @@ public class ResponseHandler {
                         cellList.add(cellHoseAlarm);
                     }
 
-                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(0) == '1')
-                    {
+                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(0) == '1') {
                         Cell cellSupTmpAlarm = new Cell((j + 17) + "-" + i, "X");
                         cellList.add(cellSupTmpAlarm);
-                    }
-                    else
-                    {
+                    } else {
                         Cell cellSupTmpAlarm = new Cell((j + 17) + "-" + i, "");
                         cellList.add(cellSupTmpAlarm);
                     }
-                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(1) == '1')
-                    {
+                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(1) == '1') {
                         Cell cellSupHMDAlarm = new Cell((j + 18) + "-" + i, "X");
                         cellList.add(cellSupHMDAlarm);
-                    }
-                    else
-                    {
+                    } else {
                         Cell cellSupHMDAlarm = new Cell((j + 18) + "-" + i, "");
                         cellList.add(cellSupHMDAlarm);
                     }
-                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(2) == '1')
-                    {
+                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(2) == '1') {
                         Cell cellExhaustTmpAlarm = new Cell((j + 19) + "-" + i, "X");
                         cellList.add(cellExhaustTmpAlarm);
-                    }
-                    else
-                    {
+                    } else {
                         Cell cellExhaustTmpAlarm = new Cell((j + 19) + "-" + i, "");
                         cellList.add(cellExhaustTmpAlarm);
                     }
-                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(3) == '1')
-                    {
+                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(3) == '1') {
                         Cell cellExhaustHMDAlarm = new Cell((j + 20) + "-" + i, "X");
                         cellList.add(cellExhaustHMDAlarm);
-                    }
-                    else
-                    {
+                    } else {
                         Cell cellExhaustHMDAlarm = new Cell((j + 20) + "-" + i, "");
                         cellList.add(cellExhaustHMDAlarm);
                     }
@@ -1426,26 +1417,22 @@ public class ResponseHandler {
                         data.append("" + ",");
                     }
 
-                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(0) == '1')
-                    {
+                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(0) == '1') {
                         data.append("X" + ",");
                     } else {
                         data.append("" + ",");
                     }
-                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(1) == '1')
-                    {
+                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(1) == '1') {
                         data.append("X" + ",");
                     } else {
                         data.append("" + ",");
                     }
-                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(2) == '1')
-                    {
+                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(2) == '1') {
                         data.append("X" + ",");
                     } else {
                         data.append("" + ",");
                     }
-                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(3) == '1')
-                    {
+                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(3) == '1') {
                         data.append("X" + ",");
                     } else {
                         data.append("" + ",");
@@ -1561,54 +1548,37 @@ public class ResponseHandler {
                         }
                     }
 
-                    if (supTempAlarm != "X")
-                    {
-                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(0) == '1')
-                        {
+                    if (supTempAlarm != "X") {
+                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(0) == '1') {
                             supTempAlarm = "X";
-                        }
-                        else
-                        {
+                        } else {
                             supTempAlarm = "";
                         }
                     }
 
-                    if (supHMDAlarm != "X")
-                    {
-                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(1) == '1')
-                        {
+                    if (supHMDAlarm != "X") {
+                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(1) == '1') {
                             supHMDAlarm = "X";
-                        }
-                        else
-                        {
+                        } else {
                             supHMDAlarm = "";
                         }
                     }
 
-                    if (extTempAlarm != "X")
-                    {
-                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(2) == '1')
-                        {
+                    if (extTempAlarm != "X") {
+                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(2) == '1') {
                             extTempAlarm = "X";
-                        }
-                        else
-                        {
+                        } else {
                             extTempAlarm = "";
                         }
                     }
 
-                    if (extHMDAlarm != "X")
-                    {
-                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(3) == '1')
-                        {
+                    if (extHMDAlarm != "X") {
+                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(3) == '1') {
                             extHMDAlarm = "X";
-                        }
-                        else
-                        {
+                        } else {
                             extHMDAlarm = "";
                         }
                     }
-
 
 
                 }
@@ -1786,50 +1756,34 @@ public class ResponseHandler {
                         }
                     }
 
-                    if (supTempAlarm != "X")
-                    {
-                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(0) == '1')
-                        {
+                    if (supTempAlarm != "X") {
+                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(0) == '1') {
                             supTempAlarm = "X";
-                        }
-                        else
-                        {
+                        } else {
                             supTempAlarm = "";
                         }
                     }
 
-                    if (supHMDAlarm != "X")
-                    {
-                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(1) == '1')
-                        {
+                    if (supHMDAlarm != "X") {
+                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(1) == '1') {
                             supHMDAlarm = "X";
-                        }
-                        else
-                        {
+                        } else {
                             supHMDAlarm = "";
                         }
                     }
 
-                    if (extTempAlarm != "X")
-                    {
-                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(2) == '1')
-                        {
+                    if (extTempAlarm != "X") {
+                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(2) == '1') {
                             extTempAlarm = "X";
-                        }
-                        else
-                        {
+                        } else {
                             extTempAlarm = "";
                         }
                     }
 
-                    if (extHMDAlarm != "X")
-                    {
-                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(3) == '1')
-                        {
+                    if (extHMDAlarm != "X") {
+                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(3) == '1') {
                             extHMDAlarm = "X";
-                        }
-                        else
-                        {
+                        } else {
                             extHMDAlarm = "";
                         }
                     }
@@ -1944,50 +1898,34 @@ public class ResponseHandler {
                         }
                     }
 
-                    if (supTempAlarm != "X")
-                    {
-                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(0) == '1')
-                        {
+                    if (supTempAlarm != "X") {
+                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(0) == '1') {
                             supTempAlarm = "X";
-                        }
-                        else
-                        {
+                        } else {
                             supTempAlarm = "";
                         }
                     }
 
-                    if (supHMDAlarm != "X")
-                    {
-                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(1) == '1')
-                        {
+                    if (supHMDAlarm != "X") {
+                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(1) == '1') {
                             supHMDAlarm = "X";
-                        }
-                        else
-                        {
+                        } else {
                             supHMDAlarm = "";
                         }
                     }
 
-                    if (extTempAlarm != "X")
-                    {
-                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(2) == '1')
-                        {
+                    if (extTempAlarm != "X") {
+                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(2) == '1') {
                             extTempAlarm = "X";
-                        }
-                        else
-                        {
+                        } else {
                             extTempAlarm = "";
                         }
                     }
 
-                    if (extHMDAlarm != "X")
-                    {
-                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(3) == '1')
-                        {
+                    if (extHMDAlarm != "X") {
+                        if ((cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15))).charAt(3) == '1') {
                             extHMDAlarm = "X";
-                        }
-                        else
-                        {
+                        } else {
                             extHMDAlarm = "";
                         }
                     }
@@ -2000,42 +1938,42 @@ public class ResponseHandler {
                 blowerAddress = arrRackSetUpData.get(0).getBlowerAddress();
                 modelNo = arrRackSetUpData.get(0).getModelNo();
 
-                jsObj.put(ApiHandler.strGetSendEmailFromDate,fromDate);
+                jsObj.put(ApiHandler.strGetSendEmailFromDate, fromDate);
                 jsObj.put(ApiHandler.strGetSendEmailToDate, toDate);
                 jsObj.put(ApiHandler.strGetSendEmail_EmailIDs, email);
                 jsObj.put(ApiHandler.strUpdateRackBlowerDetailsId, rackDetailsModel.getmId());
                 jsObj.put(ApiHandler.strUpdateRackBlowerCustomerID, rackDetailsModel.getmRackBlowerCustomerID());
 
-                jsObj.put("Blower Name",blowerName);
-                jsObj.put("Blower Address",blowerAddress);
-                jsObj.put("Rack Model",modelNo);
-                jsObj.put("From Date",fromDate);
-                jsObj.put("To Date",toDate);
-                jsObj.put("Max ACH",String.valueOf(maxACH));
-                jsObj.put("Min ACH",String.valueOf(minACH));
-                jsObj.put("Avg ACH",String.valueOf(df.format(avgACH / totalCount)));
+                jsObj.put("Blower Name", blowerName);
+                jsObj.put("Blower Address", blowerAddress);
+                jsObj.put("Rack Model", modelNo);
+                jsObj.put("From Date", fromDate);
+                jsObj.put("To Date", toDate);
+                jsObj.put("Max ACH", String.valueOf(maxACH));
+                jsObj.put("Min ACH", String.valueOf(minACH));
+                jsObj.put("Avg ACH", String.valueOf(df.format(avgACH / totalCount)));
                 if (responseHandler.hexToBinary(arrSetpointData.get(0).getS01()).charAt(11) == '1') {
                     tempUnit = " C";
                 } else {
                     tempUnit = " F";
                 }
 
-                jsObj.put("Max Supply Temp",maxSupplyTemp + tempUnit);
-                jsObj.put("Min Supply Temp",minSupplyTemp + tempUnit);
-                jsObj.put("Avg Supply Temp",df.format(avgSupplyTemp / totalCount) + tempUnit);
-                jsObj.put("Max Supply Humidity",maxSupplyHumidity + " %");
-                jsObj.put("Min Supply Humidity",minSupplyHumidity + " %");
-                jsObj.put("Avg Supply Humidity",df.format(avgSupplyHumidity / totalCount) + " %");
-                jsObj.put("Max Exhaust Temp",maxExhaustTemp + tempUnit);
-                jsObj.put("Min Exhaust Temp",minExhaustTemp + tempUnit);
-                jsObj.put("Avg Exhaust Temp",df.format(avgExhaustTemp / totalCount) + tempUnit);
-                jsObj.put("Max Exhaust Humidity",maxExhaustHumidity + " %");
-                jsObj.put("Min Exhaust Humidity",minExhaustHumidity + " %");
-                jsObj.put("Avg Exhaust Humidity",df.format(avgExhaustHumidity / totalCount) + " %");
-                jsObj.put("Blower Alarm",blowerAlarm);
-                jsObj.put("Hepa Filter Alarm",hepaFilterAlarm);
-                jsObj.put("PreFilter Alarm",preFilterAlarm);
-                jsObj.put("Hose Alarm",hoseAlarm);
+                jsObj.put("Max Supply Temp", maxSupplyTemp + tempUnit);
+                jsObj.put("Min Supply Temp", minSupplyTemp + tempUnit);
+                jsObj.put("Avg Supply Temp", df.format(avgSupplyTemp / totalCount) + tempUnit);
+                jsObj.put("Max Supply Humidity", maxSupplyHumidity + " %");
+                jsObj.put("Min Supply Humidity", minSupplyHumidity + " %");
+                jsObj.put("Avg Supply Humidity", df.format(avgSupplyHumidity / totalCount) + " %");
+                jsObj.put("Max Exhaust Temp", maxExhaustTemp + tempUnit);
+                jsObj.put("Min Exhaust Temp", minExhaustTemp + tempUnit);
+                jsObj.put("Avg Exhaust Temp", df.format(avgExhaustTemp / totalCount) + tempUnit);
+                jsObj.put("Max Exhaust Humidity", maxExhaustHumidity + " %");
+                jsObj.put("Min Exhaust Humidity", minExhaustHumidity + " %");
+                jsObj.put("Avg Exhaust Humidity", df.format(avgExhaustHumidity / totalCount) + " %");
+                jsObj.put("Blower Alarm", blowerAlarm);
+                jsObj.put("Hepa Filter Alarm", hepaFilterAlarm);
+                jsObj.put("PreFilter Alarm", preFilterAlarm);
+                jsObj.put("Hose Alarm", hoseAlarm);
                 jsObj.put("Supply Temp Alarm", supTempAlarm);
                 jsObj.put("Supply Humidity Alarm", supHMDAlarm);
                 jsObj.put("Exhaust Temp Alarm", extTempAlarm);
@@ -2100,7 +2038,7 @@ public class ResponseHandler {
                     if (i == 0) {
                         jsObj = new JSONObject();
 
-                        jsObj.put(ApiHandler.strGetSendEmailFromDate,startDate);
+                        jsObj.put(ApiHandler.strGetSendEmailFromDate, startDate);
                         jsObj.put(ApiHandler.strGetSendEmailToDate, endDate);
                         jsObj.put(ApiHandler.strGetSendEmail_EmailIDs, email);
                         jsObj.put(ApiHandler.strUpdateRackBlowerDetailsId, rackDetailsModel.getmId());
@@ -2108,20 +2046,20 @@ public class ResponseHandler {
 
                         if (responseHandler.hexToBinary(arrSetpointData.get(0).getS01()).charAt(12) == '1') {
 
-                            jsObj.put("Mode","Pos");
+                            jsObj.put("Mode", "Pos");
                         } else {
-                            jsObj.put("Mode","Neg");
+                            jsObj.put("Mode", "Neg");
                         }
 
                         int S07_YY = Integer.parseInt(responseHandler.hexToString(arrSetpointData.get(0).getS07(), false));
                         int S08_XXXX = Integer.parseInt(responseHandler.hexToString(arrSetpointData.get(0).getS08()));
                         int sumS07_S08 = S07_YY + S08_XXXX;
                         String mStrACH = String.valueOf(sumS07_S08);
-                        jsObj.put("ACH",mStrACH);
+                        jsObj.put("ACH", mStrACH);
 
                         String F07_YY = responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F07)), false);
                         String strCMF = F07_YY + " CFM";
-                        jsObj.put("CFM",strCMF);
+                        jsObj.put("CFM", strCMF);
 
 //                        String F09 = feedbackArrayList.get(0).getF09();
                         //String F09 = responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F09)));
@@ -2138,42 +2076,42 @@ public class ResponseHandler {
                         else
                             F09_XXXX = "+" + F09_XXXX;
                         String strPressure = F09_XXXX;
-                        jsObj.put("Pressure",strPressure);
+                        jsObj.put("Pressure", strPressure);
                         jsArr.put(jsObj);
                     }
 
                     jsObj = new JSONObject();
 
-                    jsObj.put("Blower Name",arrRackSetUpData.get(0).getBlowerName());
-                    jsObj.put("Blower Address",arrRackSetUpData.get(0).getBlowerAddress());
-                    jsObj.put("Rack Model",arrRackSetUpData.get(0).getModelNo());
-                    jsObj.put("Date",cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_CREATEDON)));
-                    jsObj.put("ACH",responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F08))));
+                    jsObj.put("Blower Name", arrRackSetUpData.get(0).getBlowerName());
+                    jsObj.put("Blower Address", arrRackSetUpData.get(0).getBlowerAddress());
+                    jsObj.put("Rack Model", arrRackSetUpData.get(0).getModelNo());
+                    jsObj.put("Date", cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_CREATEDON)));
+                    jsObj.put("ACH", responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F08))));
 
                     if (responseHandler.hexToBinary(arrSetpointData.get(0).getS01()).charAt(11) == '1') {
-                        jsObj.put("Supply Temp",responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F01)), true) + " C");
+                        jsObj.put("Supply Temp", responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F01)), true) + " C");
                     } else {
-                        jsObj.put("Supply Temp",responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F01)), true) + " F");
+                        jsObj.put("Supply Temp", responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F01)), true) + " F");
                     }
 
-                    jsObj.put("Supply Humidity",responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F02)), true) + " %");
+                    jsObj.put("Supply Humidity", responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F02)), true) + " %");
 
                     if (responseHandler.hexToBinary(arrSetpointData.get(0).getS01()).charAt(11) == '1') {
-                        jsObj.put("Exhaust Temp",responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F01)), false) + " C");
+                        jsObj.put("Exhaust Temp", responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F01)), false) + " C");
                     } else {
-                        jsObj.put("Exhaust Temp",responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F01)), false) + " F");
+                        jsObj.put("Exhaust Temp", responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F01)), false) + " F");
                     }
 
-                    jsObj.put("Exhaust Humidity",responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F02)), false) + " %");
+                    jsObj.put("Exhaust Humidity", responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F02)), false) + " %");
 
-                    jsObj.put("RPM -S",responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F05))));
+                    jsObj.put("RPM -S", responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F05))));
 
-                    jsObj.put("RPM -E",responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F06))));
+                    jsObj.put("RPM -E", responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F06))));
 
                     if (responseHandler.hexToBinary(arrSetpointData.get(0).getS01()).charAt(9) == '1') {
-                        jsObj.put("AirFlow",responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F07)), true) + " CMH");
+                        jsObj.put("AirFlow", responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F07)), true) + " CMH");
                     } else {
-                        jsObj.put("AirFlow",responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F07)), true) + " CFM");
+                        jsObj.put("AirFlow", responseHandler.hexToString(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F07)), true) + " CFM");
                     }
 
                     String F04 = responseHandler.hexToBinary(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F04)));
@@ -2181,47 +2119,47 @@ public class ResponseHandler {
                     if (F04.charAt(0) == '0') {
                         // +
                         float decimal = Float.parseFloat(String.valueOf(responseHandler.binaryToDecimal(Integer.parseInt(F04.substring(2, 16))))) / 1000;
-                        jsObj.put("Pressure","+" + CodeReUse.formatter3Digit.format(decimal) + " WC");
+                        jsObj.put("Pressure", "+" + CodeReUse.formatter3Digit.format(decimal) + " WC");
                     } else {
                         // -
                         float decimal = Float.parseFloat(String.valueOf(responseHandler.binaryToDecimal(Integer.parseInt(F04.substring(2, 16))))) / 1000;
-                        jsObj.put("Pressure","-" + CodeReUse.formatter3Digit.format(decimal) + " WC");
+                        jsObj.put("Pressure", "-" + CodeReUse.formatter3Digit.format(decimal) + " WC");
                     }
 
-                    if (responseHandler.hexToBinary(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F12))).charAt(15) == '1'){
-                        jsObj.put("Supply Blower Alarm","X");
+                    if (responseHandler.hexToBinary(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F12))).charAt(15) == '1') {
+                        jsObj.put("Supply Blower Alarm", "X");
                     } else {
-                        jsObj.put("Supply Blower Alarm","");
+                        jsObj.put("Supply Blower Alarm", "");
                     }
 
                     if (responseHandler.hexToBinary(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F12))).charAt(7) == '1') {
-                        jsObj.put("Exhuast Blower Alarm","X");
+                        jsObj.put("Exhuast Blower Alarm", "X");
                     } else {
-                        jsObj.put("Exhuast Blower Alarm","");
+                        jsObj.put("Exhuast Blower Alarm", "");
                     }
 
                     if ((responseHandler.hexToBinary(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F12))).charAt(14) == '1')) {
-                        jsObj.put("Supply Hepa Filter Alarm","X");
+                        jsObj.put("Supply Hepa Filter Alarm", "X");
                     } else {
-                        jsObj.put("Supply Hepa Filter Alarm","");
+                        jsObj.put("Supply Hepa Filter Alarm", "");
                     }
 
                     if (responseHandler.hexToBinary(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F12))).charAt(6) == '1') {
-                        jsObj.put("Exhaust Hepa Filter Alarm","X");
-                    }else{
-                        jsObj.put("Exhaust Hepa Filter Alarm","");
+                        jsObj.put("Exhaust Hepa Filter Alarm", "X");
+                    } else {
+                        jsObj.put("Exhaust Hepa Filter Alarm", "");
                     }
 
                     if ((responseHandler.hexToBinary(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F12))).charAt(5) == '1')) {
-                        jsObj.put("Exhaust Hose Alarm","X");
+                        jsObj.put("Exhaust Hose Alarm", "X");
                     } else {
-                        jsObj.put("Exhaust Hose Alarm","");
+                        jsObj.put("Exhaust Hose Alarm", "");
                     }
 
                     if (responseHandler.hexToBinary(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F12))).charAt(8) == '1') {
-                        jsObj.put("PreFilter Alarm","X");
+                        jsObj.put("PreFilter Alarm", "X");
                     } else {
-                        jsObj.put("PreFilter Alarm","");
+                        jsObj.put("PreFilter Alarm", "");
                     }
 
 //                    if ((responseHandler.hexToBinary(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F12))).charAt(13) == '8') || (responseHandler.hexToBinary(cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F12))).charAt(5) == '1')) {
@@ -2229,29 +2167,25 @@ public class ResponseHandler {
 //                    } else {
 //                        jsObj.put("Hose Alarm","");
 //                    }
-                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(0) == '1')
-                    {
-                        jsObj.put("Supply Temp Alarm","X");
+                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(0) == '1') {
+                        jsObj.put("Supply Temp Alarm", "X");
                     } else {
-                        jsObj.put("Supply Temp Alarm","");
+                        jsObj.put("Supply Temp Alarm", "");
                     }
-                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(1) == '1')
-                    {
-                        jsObj.put("Supply Humidity Alarm","X");
+                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(1) == '1') {
+                        jsObj.put("Supply Humidity Alarm", "X");
                     } else {
-                        jsObj.put("Supply Humidity Alarm","");
+                        jsObj.put("Supply Humidity Alarm", "");
                     }
-                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(2) == '1')
-                    {
-                        jsObj.put("Exhaust Temp Alarm","X");
+                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(2) == '1') {
+                        jsObj.put("Exhaust Temp Alarm", "X");
                     } else {
-                        jsObj.put("Exhaust Temp Alarm","");
+                        jsObj.put("Exhaust Temp Alarm", "");
                     }
-                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(3) == '1')
-                    {
-                        jsObj.put("Exhaust Humidity Alarm","X");
+                    if (cursor.getString(cursor.getColumnIndex(DatabaseTable.COL_BLFEED_F15)).charAt(3) == '1') {
+                        jsObj.put("Exhaust Humidity Alarm", "X");
                     } else {
-                        jsObj.put("Exhaust Humidity Alarm","");
+                        jsObj.put("Exhaust Humidity Alarm", "");
                     }
                     i++;
                     jsArr.put(jsObj);
