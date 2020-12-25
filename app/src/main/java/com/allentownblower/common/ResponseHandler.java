@@ -236,6 +236,7 @@ public class ResponseHandler {
     public void resetFAndSDataForBlower_Api() throws JSONException {
 
         if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")) {
+            Log.e("HostName :- ", "Host Name is Not Available");
             return;
         }
 
@@ -292,6 +293,7 @@ public class ResponseHandler {
 
     private void getFCommandCalling_Api(HashMap<String, String> stringHashMap) throws JSONException {
         if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")) {
+            Log.e("HostName :- ", "Host Name is Not Available");
             return;
         }
         // if (NetworkUtil.getConnectivityStatus(act)) {
@@ -521,6 +523,7 @@ public class ResponseHandler {
 
     private void getSCommandCalling_Api(HashMap<String, String> stringHashMap) {
         if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")) {
+            Log.e("HostName :- ", "Host Name is Not Available");
             return;
         }
         // if (NetworkUtil.getConnectivityStatus(act)) {
