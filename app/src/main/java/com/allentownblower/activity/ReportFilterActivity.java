@@ -106,8 +106,8 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
         // Common
         allentownBlowerApplication = (AllentownBlowerApplication) act.getApplication();
         allentownBlowerApplication.getObserver().addObserver(this);
-        responseHandler = new ResponseHandler(act);
         sqliteHelper = new SqliteHelper(act);
+        responseHandler = new ResponseHandler(act);
         prefManager = new PrefManager(act);
         rackDetailsModel = sqliteHelper.getDataFromRackBlowerDetails();
 
@@ -193,7 +193,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                     alertDialogBox();
                     mStartDate = mTxtStartDate.getText().toString();
                     mEndDate = mTxtEndDate.getText().toString();
-                    tableViewModel = new TableViewModel(act, mStartDate, mEndDate);
+                    tableViewModel = new TableViewModel(act, mStartDate, mEndDate,sqliteHelper);
                     // Create TableView Adapter
                     tableViewAdapter = new TableViewAdapter(tableViewModel);
                     mTableView.setAdapter(tableViewAdapter);
@@ -265,7 +265,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                             alertDialogBoxEmail();
                             mStartDate = mTxtStartDate.getText().toString();
                             mEndDate = mTxtEndDate.getText().toString();
-                            tableViewModel = new TableViewModel(act, mStartDate, mEndDate);
+                            tableViewModel = new TableViewModel(act, mStartDate, mEndDate,sqliteHelper);
                             final Runnable r = new Runnable() {
                                 public void run() {
                                     if (rackDetailsModel.getmId() != null) {

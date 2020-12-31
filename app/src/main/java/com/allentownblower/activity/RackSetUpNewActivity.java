@@ -71,7 +71,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
     private SpinnerSupplyAdapter mSpinnerSupplyAdapter;
     private String subModelNo;
     private String ACHValue = "", polarityValue = "", supplyValue = "", exhaustValue = "", exhaustSelectedSpinnerValue = "", supplySelectedSpinnerValue = "";
-    private RelativeLayout mRelativeProgressBarLayoutRackScreen;
+    public RelativeLayout mRelativeProgressBarLayoutRackScreen;
     private String userEnterSupplyValue, userEnterExhaustValue, mStrCompanyName;
     private String modelNo, mStrBlowerName, mStrBuildingName, mStrRoomName;
     private boolean isEditTextExhaust = false;
@@ -184,7 +184,6 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             txt_Room_Name.setText(rackModel.getRoomName());
             mTextViewModelNumber.setText("ME" + rackModel.getModelNo());
             mVisibilityShowHideFunction();
-
             mSpinnerACH.setSelection(getIndex(mSpinnerACH, String.valueOf(rackModel.getACH())));
         }
 
@@ -440,8 +439,8 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             return;
         } else {
             mRelativeProgressBarLayoutRackScreen.setVisibility(View.VISIBLE);
-            supplyValue = mTextViewSupplyValue.getText().toString().trim();
-            Log.e("Values", "SupplyValue : " + supplyValue);
+//            supplyValue = mTextViewSupplyValue.getText().toString().trim();
+//            Log.e("Values", "SupplyValue : " + supplyValue);
         }
 
         if (isEditTextSupply) {
@@ -484,22 +483,10 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
         }
 
         if (mLinearLayoutLock.getVisibility() == View.VISIBLE) {
-
-//            if (isFromSettingScreen) {
-//                mLockValue = String.valueOf(rackModel.getWithLock());
-//                String withLock = String.valueOf(radioButtonWith.getTag());
-//                Log.e("Values", "Lock Value From DataBase:- " + withLock);
-//                if (mLockValue.equals(withLock)) {
-//                    radioButtonWith.setChecked(true);
-//                } else {
-//                    radioButtonWithOut.setChecked(true);
-//                }
-//            } else {
                 int selectedId = mRadioGroupLock.getCheckedRadioButtonId();
                 radioLockButton = (RadioButton) findViewById(selectedId);
                 mLockValue = String.valueOf(radioLockButton.getTag());
                 Log.e("Values", "Lock Value :- " + mLockValue);
-//            }
         }
         Log.e("Values", "PolarityValue : " + polarityValue);
 //                if (!userEnterSupplyValue.isEmpty() || !userEnterSupplyValue.equalsIgnoreCase("")){
@@ -521,8 +508,8 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
         AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_ACH_Value_Write_Only);
     }
 
-    private boolean isValidNumber(String number) {
-        return android.util.Patterns.PHONE.matcher(number).matches();
+    private boolean isValidNumber(String editText) {
+        return editText.matches("-?\\d+(.\\d+)?");
     }
 
     private boolean validationFunction() {
@@ -917,8 +904,8 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
         arrayListSupply.clear();
         arrayListExhaust.clear();
 
-        mTextViewSupplyValue.setText("");
-        mTextViewExhaustValue.setText("");
+//        mTextViewSupplyValue.setText("");
+//        mTextViewExhaustValue.setText("");
         txt_exhaust.setVisibility(View.GONE);
         txt_supply.setVisibility(View.GONE);
         txt_polarity.setVisibility(View.GONE);
@@ -945,6 +932,14 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
 
         mLinearLayoutButtons.setVisibility(View.GONE);
         mLinearLayoutLock.setVisibility(View.GONE);
+
+        ACHValue = "";
+        polarityValue = "";
+        //supplyValue = "";
+        exhaustValue = "";
+        exhaustSelectedSpinnerValue = "";
+        supplySelectedSpinnerValue = "";
+        mLockValue = "";
     }
 
     private void polarityResetFunction() {
@@ -1419,6 +1414,9 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
                     AlertDialogBoxSuccessfully(o);
                 }
             });
+        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nCloseProgressBar) {
+//            Toast.makeText(act, "Something is wrong with the blower response", Toast.LENGTH_SHORT).show();
+            mRelativeProgressBarLayoutRackScreen.setVisibility(View.GONE);
         }
 
     }

@@ -373,6 +373,11 @@ public class SerialPortConversion {
                 Log.e(TAG,"Error : " + e.getLocalizedMessage());
             }
         }
+
+//        if (command.equalsIgnoreCase("S07=0F3C")){
+//            ResultData = "��";
+//        }
+
        // Utility.Log(TAG, "Command =  " + ResultData);
         Utility.Log(TAG, "Comport Received Data Length = " + ResultData.length());
         Utility.Log(TAG, "Command Finished");
@@ -428,6 +433,8 @@ public class SerialPortConversion {
             }
         } else if (command.equals("D12")) {
             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStartService);
+        } else {
+            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nCloseProgressBar);
         }
 
         /* if (ResultData.length() > 137) {*/
