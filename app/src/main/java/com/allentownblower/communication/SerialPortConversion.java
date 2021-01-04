@@ -14,12 +14,6 @@ import com.allentownblower.common.PrefManager;
 import com.allentownblower.common.ResponseHandler;
 import com.allentownblower.common.Utility;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 /**
@@ -379,6 +373,11 @@ public class SerialPortConversion {
                 Log.e(TAG,"Error : " + e.getLocalizedMessage());
             }
         }
+
+//        if (command.equalsIgnoreCase("S07=0F3C")){
+//            ResultData = "��";
+//        }
+
        // Utility.Log(TAG, "Command =  " + ResultData);
         Utility.Log(TAG, "Comport Received Data Length = " + ResultData.length());
         Utility.Log(TAG, "Command Finished");
@@ -400,12 +399,26 @@ public class SerialPortConversion {
 //                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointDataS);
             } else if (isStart == 201){
                 responseHandler.UpdateCommandCompleted_Api();
-                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
-            }
-//            else if (command.startsWith("W")) {
-//                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nWiFiDataUpdate);
-//            }
-            else if (command.startsWith("W")) {
+                int count = prefManager.getCount();
+                String[] setCommand = prefManager.loadArray();
+                int multiCommandCount = setCommand.length - 1;
+                if (count <= multiCommandCount){
+                    responseHandler.commandCallingFromApi(count);
+                }else {
+                    AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
+                }
+
+            } else if (isStart == 202) {
+                responseHandler.UpdateCommandCompleted_Api();
+                int count = prefManager.getCount();
+                String[] setCommand = prefManager.loadArray();
+                int multiCommandCount = setCommand.length - 1;
+                if (count <= multiCommandCount){
+                    responseHandler.commandCallingFromApi(count);
+                }else {
+                    AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetWifiDataOnly);
+                }
+            } else if (command.startsWith("W")) {
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetWifiDataOnly);
             } else if (command.equals("D31")) {
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.mD31CommandResponse);
@@ -420,6 +433,8 @@ public class SerialPortConversion {
             }
         } else if (command.equals("D12")) {
             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStartService);
+        } else {
+            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nCloseProgressBar);
         }
 
         /* if (ResultData.length() > 137) {*/

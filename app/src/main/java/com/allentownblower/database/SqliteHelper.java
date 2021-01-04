@@ -823,6 +823,10 @@ public class SqliteHelper extends SQLiteOpenHelper {
     }
 
     public void getUpdateRackBlowerDetails_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication, RackDetailsModel model) {
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
+            Log.e("HostName :- ", "Host Name is Not Available");
+            return;
+        }
         Utility.ShowMessageReport(act, "Please wait...");
         //Log.e("TAG","getUpdateRackBlowerDetails_Api method");
         // if (NetworkUtil.getConnectivityStatus(act)) {
@@ -880,6 +884,10 @@ public class SqliteHelper extends SQLiteOpenHelper {
     }
 
     public void getUpdatedByWebAppCompleted_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication, RackDetailsModel model) {
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
+            Log.e("HostName :- ", "Host Name is Not Available");
+            return;
+        }
         Utility.ShowMessageReport(act, "Please wait...");
         //Log.e("TAG","getUpdatedByWebAppCompleted_Api method");
         // if (NetworkUtil.getConnectivityStatus(act)) {
@@ -937,6 +945,11 @@ public class SqliteHelper extends SQLiteOpenHelper {
     }
 
     public void getUpdateCommandCompleted_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication, RackDetailsModel model) {
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
+            Log.e("HostName :- ", "Host Name is Not Available");
+            return;
+        }
+        String command = prefManager.getSendCommandS().trim();
         Utility.ShowMessageReport(act, "Please wait...");
         //Log.e("TAG","getUpdateCommandCompleted_Api method");
         // if (NetworkUtil.getConnectivityStatus(act)) {
@@ -944,10 +957,12 @@ public class SqliteHelper extends SQLiteOpenHelper {
         try {
             objParam.put(ApiHandler.strUpdateRackBlowerDetailsId, model.getmId());
             objParam.put(ApiHandler.strUpdateRackBlowerCustomerID, model.getmRackBlowerCustomerID());
+            objParam.put(ApiHandler.strUpdatecompletedCMD, command);
         } catch (JSONException e) {
             e.printStackTrace();
-        }
 
+        }
+        Log.e("ObjParams",objParam.toString());
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
                 prefManager.getHostName() + ApiHandler.strUrlUpdateCommandCompleted, objParam,
                 new Response.Listener<JSONObject>() {
@@ -1018,10 +1033,11 @@ public class SqliteHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             Utility.Log(TAG,"delete SQLiteException : " + e.toString());
         }
+        //closeDB();
     }
 
-//    public void executeSQL(String strQuery) {
-//        db = this.getWritableDatabase();
-//        db.execSQL(strQuery);
-//    }
+    public void executeSQL(String strQuery) {
+        db = this.getWritableDatabase();
+        db.execSQL(strQuery);
+    }
 }

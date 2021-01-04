@@ -15,6 +15,7 @@ import android.text.format.Formatter;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -71,7 +72,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
     private SpinnerSupplyAdapter mSpinnerSupplyAdapter;
     private String subModelNo;
     private String ACHValue = "", polarityValue = "", supplyValue = "", exhaustValue = "", exhaustSelectedSpinnerValue = "", supplySelectedSpinnerValue = "";
-    private RelativeLayout mRelativeProgressBarLayoutRackScreen;
+    public RelativeLayout mRelativeProgressBarLayoutRackScreen;
     private String userEnterSupplyValue, userEnterExhaustValue, mStrCompanyName;
     private String modelNo, mStrBlowerName, mStrBuildingName, mStrRoomName;
     private boolean isEditTextExhaust = false;
@@ -97,7 +98,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
     private int isSetUpCompleted;
     private LinearLayout mLinerLayoutError, mLinearLayoutButtons, linear_main_layout, linear_layout_buttons_back;
     private TextView txt_ach, txt_polarity, txt_supply, txt_exhaust, txt_Room_Name, txt_Blower_Name, txt_building_name;
-    private ImageView img_ach, img_polarity, img_supply, img_exhaust;
+    private ImageView img_ach, img_polarity, img_supply, img_exhaust,img_model_no;
     private Dialog alertview_selection;
     // Dailog CommunicationSettingActivity
     private EditText edit_EnterTxt_alartview_box;
@@ -111,6 +112,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
     private RackModel rackModel = null;
     private RadioButton radioButtonWithOut, radioButtonWith;
     private int currentApiVersion;
+    private String spinnerSelectedACHValue = "";
 
     @SuppressLint("WifiManagerLeak")
     @Override
@@ -156,6 +158,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
         }
 
         initMethod();
+
         responseHandler = new ResponseHandler(act);
         portConversion = new SerialPortConversion(act, responseHandler);
         prefManager = new PrefManager(act);
@@ -183,15 +186,18 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             txt_Room_Name.setText(rackModel.getRoomName());
             mTextViewModelNumber.setText("ME" + rackModel.getModelNo());
             mVisibilityShowHideFunction();
-
             mSpinnerACH.setSelection(getIndex(mSpinnerACH, String.valueOf(rackModel.getACH())));
         }
 
         if (isFromSettingScreen){
             linear_layout_buttons_back.setVisibility(View.VISIBLE);
+            mButtonFind.setVisibility(View.GONE);
+            img_model_no.setVisibility(View.VISIBLE);
             ResetCounter(1);
         }else {
             linear_layout_buttons_back.setVisibility(View.GONE);
+            mButtonFind.setVisibility(View.VISIBLE);
+            img_model_no.setVisibility(View.GONE);
             ResetCounter(0);
         }
 
@@ -237,6 +243,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
         img_polarity = findViewById(R.id.img_polarity);
         img_supply = findViewById(R.id.img_supply);
         img_exhaust = findViewById(R.id.img_exhaust);
+        img_model_no = findViewById(R.id.img_model_no);
 
         mSpinnerSupply = findViewById(R.id.spinner_supply);
         mSpinnerExhaust = findViewById(R.id.spinner_exhaust);
@@ -264,10 +271,13 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
         mButtonFind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetFunction();
-                if (!validationFunction()) {
-                    mVisibilityShowHideFunction();
+                if (!isFromSettingScreen){
+                    resetFunction();
+                    if (!validationFunction()) {
+                        mVisibilityShowHideFunction();
+                    }
                 }
+
 
 //                hideKeyBoardMethod();
             }
@@ -330,8 +340,11 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             public void onClick(View v) {
 
                 if (isFromSettingScreen) {
-                    ShowRackSetUpDetailSaveDialog("Do you want to setup new blower?\n" +
-                            "All existing data will be deleted.", "YES", "NO");
+                    if (!validationOnSaveButton()){
+                        ShowRackSetUpDetailSaveDialog("Do you want to setup new blower?\n" +
+                                "All existing data will be deleted.", "YES", "NO");
+                    }
+
                 } else {
                     saveButtonFunction();
                 }
@@ -420,95 +433,237 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
 
     private void saveButtonFunction() {
 
+//        mStrCompanyName = mTextViewCompanyName.getText().toString().trim();
+//        mStrBlowerName = txt_Blower_Name.getText().toString().trim();
+//        mStrBuildingName = txt_building_name.getText().toString().trim();
+//        mStrRoomName = txt_Room_Name.getText().toString().trim();
+//        modelNo = mTextViewModelNumber.getText().toString().trim().toUpperCase();
+//        if (TextUtils.isEmpty(mStrCompanyName)) {
+//            Toast.makeText(act, "Please enter company name", Toast.LENGTH_SHORT).show();
+//            return;
+//        } else if (TextUtils.isEmpty(mStrBlowerName)) {
+//            Toast.makeText(act, "Please enter blower name", Toast.LENGTH_SHORT).show();
+//            return;
+//        } else if (TextUtils.isEmpty(mStrBuildingName)) {
+//            Toast.makeText(act, "Please enter building name", Toast.LENGTH_SHORT).show();
+//            return;
+//        } else if (TextUtils.isEmpty(mStrRoomName)) {
+//            Toast.makeText(act, "Please enter room number", Toast.LENGTH_SHORT).show();
+//            return;
+//        } else {
+//            mRelativeProgressBarLayoutRackScreen.setVisibility(View.VISIBLE);
+////            supplyValue = mTextViewSupplyValue.getText().toString().trim();
+////            Log.e("Values", "SupplyValue : " + supplyValue);
+//        }
+//
+//        if (isEditTextSupply) {
+//            userEnterSupplyValue = mTextViewSupplyValue.getText().toString().trim();
+//            boolean isNumber = isValidNumber(userEnterSupplyValue);
+//            if (TextUtils.isEmpty(userEnterSupplyValue) || !isNumber) {
+//                Toast.makeText(act, "Please enter Supply(CFM) value", Toast.LENGTH_SHORT).show();
+//                mRelativeProgressBarLayoutRackScreen.setVisibility(View.GONE);
+//                return;
+//            } else {
+//                mRelativeProgressBarLayoutRackScreen.setVisibility(View.VISIBLE);
+//                supplyValue = userEnterSupplyValue;
+//            }
+//            Log.e("Values", "SupplyValue : " + supplyValue);
+//        } else if (isSpinnerSupplyShow) {
+//            supplyValue = supplySelectedSpinnerValue;
+//            Log.e("Values", "SupplyValue : " + supplyValue);
+//        } else{
+//            supplyValue = mTextViewSupplyValue.getText().toString().trim();
+//            Log.e("Values", "SupplyValue : " + supplyValue);
+//        }
+//
+//        if (isEditTextExhaust) {
+//            userEnterExhaustValue = mTextViewExhaustValue.getText().toString().trim();
+//            boolean isNumber = isValidNumber(userEnterExhaustValue);
+//            if (TextUtils.isEmpty(userEnterExhaustValue) || !isNumber) {
+//                Toast.makeText(act, "Please enter Exhaust(WC) value", Toast.LENGTH_SHORT).show();
+//                mRelativeProgressBarLayoutRackScreen.setVisibility(View.GONE);
+//                return;
+//            } else {
+//                exhaustValue = userEnterExhaustValue;
+//            }
+//            Log.e("Values", "ExhaustValue : " + exhaustValue);
+//        } else if (isSpinnerExhaustShow) {
+//            exhaustValue = exhaustSelectedSpinnerValue;
+//            Log.e("Values", "ExhaustValue : " + exhaustValue);
+//        } else {
+//            exhaustValue = mTextViewExhaustValue.getText().toString().trim();
+//            Log.e("Values", "ExhaustValue : " + exhaustValue);
+//        }
+//
+//        if(ACHValue.isEmpty() || ACHValue.equalsIgnoreCase("Choose ACH Value") || ACHValue.equalsIgnoreCase("")){
+//            Toast.makeText(act, "Please Select ACH value", Toast.LENGTH_SHORT).show();
+//            mRelativeProgressBarLayoutRackScreen.setVisibility(View.GONE);
+//            return;
+//        }
+//
+//        if(polarityValue.isEmpty() || polarityValue.equalsIgnoreCase("")){
+//            Toast.makeText(act, "Please Select polarity value", Toast.LENGTH_SHORT).show();
+//            mRelativeProgressBarLayoutRackScreen.setVisibility(View.GONE);
+//            return;
+//        }
+//
+//        if (mLinearLayoutLock.getVisibility() == View.VISIBLE) {
+//                int selectedId = mRadioGroupLock.getCheckedRadioButtonId();
+//                radioLockButton = (RadioButton) findViewById(selectedId);
+//                mLockValue = String.valueOf(radioLockButton.getTag());
+//                Log.e("Values", "Lock Value :- " + mLockValue);
+//        }
+//        Log.e("Values", "PolarityValue : " + polarityValue);
+//                if (!userEnterSupplyValue.isEmpty() || !userEnterSupplyValue.equalsIgnoreCase("")){
+
+        if (!validationOnSaveButton()){
+
+            if (isEditTextSupply) {
+                userEnterSupplyValue = mTextViewSupplyValue.getText().toString().trim();
+                boolean isNumber = isValidNumber(userEnterSupplyValue);
+                if (TextUtils.isEmpty(userEnterSupplyValue) || !isNumber) {
+                    Toast.makeText(act, "Please enter Supply(CFM) value", Toast.LENGTH_SHORT).show();
+                    mRelativeProgressBarLayoutRackScreen.setVisibility(View.GONE);
+                    return;
+                } else {
+                    mRelativeProgressBarLayoutRackScreen.setVisibility(View.VISIBLE);
+                    supplyValue = userEnterSupplyValue;
+                }
+                Log.e("Values", "SupplyValue : " + supplyValue);
+            } else if (isSpinnerSupplyShow) {
+                supplyValue = supplySelectedSpinnerValue;
+                Log.e("Values", "SupplyValue : " + supplyValue);
+            } else{
+                supplyValue = mTextViewSupplyValue.getText().toString().trim();
+                Log.e("Values", "SupplyValue : " + supplyValue);
+            }
+
+            if (isEditTextExhaust) {
+                userEnterExhaustValue = mTextViewExhaustValue.getText().toString().trim();
+                boolean isNumber = isValidNumber(userEnterExhaustValue);
+                if (TextUtils.isEmpty(userEnterExhaustValue) || !isNumber) {
+                    Toast.makeText(act, "Please enter Exhaust(WC) value", Toast.LENGTH_SHORT).show();
+                    mRelativeProgressBarLayoutRackScreen.setVisibility(View.GONE);
+                    return;
+                } else {
+                    exhaustValue = userEnterExhaustValue;
+                }
+                Log.e("Values", "ExhaustValue : " + exhaustValue);
+            } else if (isSpinnerExhaustShow) {
+                exhaustValue = exhaustSelectedSpinnerValue;
+                Log.e("Values", "ExhaustValue : " + exhaustValue);
+            } else {
+                exhaustValue = mTextViewExhaustValue.getText().toString().trim();
+                Log.e("Values", "ExhaustValue : " + exhaustValue);
+            }
+
+            if (isEditTextSupply) {
+                dpHelper.updateValueIntoDatabase(subModelNo, Utility.getCurrentTimeStamp(), "", Utility.getCurrentTimeStamp(), 1,
+                        ACHValue, polarityValue, supplyValue, exhaustValue, mLockValue, 1, 0, mStrCompanyName, mStrBlowerName, mStrBuildingName, mStrRoomName, ipAddress, rackModel != null ? String.valueOf(rackModel.getSupplyCFM()) : "", rackModel != null ? rackModel.getExhaustWC() : "");
+//                }else if (!userEnterExhaustValue.isEmpty() || !userEnterExhaustValue.equalsIgnoreCase("")){
+            } else if (isEditTextExhaust) {
+                dpHelper.updateValueIntoDatabase(subModelNo, Utility.getCurrentTimeStamp(), "", Utility.getCurrentTimeStamp(), 1,
+                        ACHValue, polarityValue, supplyValue, exhaustValue, mLockValue, 0, 1, mStrCompanyName, mStrBlowerName, mStrBuildingName, mStrRoomName, ipAddress, rackModel != null ? String.valueOf(rackModel.getSupplyCFM()) : "", rackModel != null ? rackModel.getExhaustWC() : "");
+            } else {
+                dpHelper.updateValueIntoDatabase(subModelNo, Utility.getCurrentTimeStamp(), "", Utility.getCurrentTimeStamp(), 1,
+                        ACHValue, polarityValue, supplyValue, exhaustValue, mLockValue, 0, 0, mStrCompanyName, mStrBlowerName, mStrBuildingName, mStrRoomName, ipAddress, rackModel != null ? String.valueOf(rackModel.getSupplyCFM()) : "", rackModel != null ? rackModel.getExhaustWC() : "");
+            }
+
+//                dpHelper.updateValueIntoDatabase(subModelNo, Utility.getCurrentTimeStamp(), "", Utility.getCurrentTimeStamp(), 1,
+//                        ACHValue, polarityValue, supplyValue, exhaustValue, mLockValue);
+//                Toast.makeText(act, "Updated Succesfully", Toast.LENGTH_SHORT).show();
+            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_ACH_Value_Write_Only);
+        }
+
+    }
+
+    private boolean validationOnSaveButton(){
         mStrCompanyName = mTextViewCompanyName.getText().toString().trim();
         mStrBlowerName = txt_Blower_Name.getText().toString().trim();
         mStrBuildingName = txt_building_name.getText().toString().trim();
         mStrRoomName = txt_Room_Name.getText().toString().trim();
         modelNo = mTextViewModelNumber.getText().toString().trim().toUpperCase();
-        if (isEditTextSupply) {
-            userEnterSupplyValue = mTextViewSupplyValue.getText().toString().trim();
-            if (TextUtils.isEmpty(userEnterSupplyValue)) {
-                Toast.makeText(act, "Please enter Supply(CFM) value", Toast.LENGTH_SHORT).show();
-                return;
-            } else {
-                mRelativeProgressBarLayoutRackScreen.setVisibility(View.VISIBLE);
-                supplyValue = userEnterSupplyValue;
-            }
-            Log.e("Values", "SupplyValue : " + supplyValue);
-        } else if (isSpinnerSupplyShow) {
-            supplyValue = supplySelectedSpinnerValue;
-            Log.e("Values", "SupplyValue : " + supplyValue);
-        } else if (TextUtils.isEmpty(mStrCompanyName)) {
+        if (TextUtils.isEmpty(mStrCompanyName)) {
             Toast.makeText(act, "Please enter company name", Toast.LENGTH_SHORT).show();
-            return;
+            return true;
         } else if (TextUtils.isEmpty(mStrBlowerName)) {
             Toast.makeText(act, "Please enter blower name", Toast.LENGTH_SHORT).show();
-            return;
+            return true;
         } else if (TextUtils.isEmpty(mStrBuildingName)) {
             Toast.makeText(act, "Please enter building name", Toast.LENGTH_SHORT).show();
-            return;
+            return true;
         } else if (TextUtils.isEmpty(mStrRoomName)) {
             Toast.makeText(act, "Please enter room number", Toast.LENGTH_SHORT).show();
-            return;
+            return true;
         } else {
             mRelativeProgressBarLayoutRackScreen.setVisibility(View.VISIBLE);
-            supplyValue = mTextViewSupplyValue.getText().toString().trim();
-            Log.e("Values", "SupplyValue : " + supplyValue);
+//            supplyValue = mTextViewSupplyValue.getText().toString().trim();
+//            Log.e("Values", "SupplyValue : " + supplyValue);
         }
 
-        if (isEditTextExhaust) {
-            userEnterExhaustValue = mTextViewExhaustValue.getText().toString().trim();
-            if (TextUtils.isEmpty(userEnterExhaustValue)) {
-                Toast.makeText(act, "Please enter Exhaust(WC) value", Toast.LENGTH_SHORT).show();
-                return;
-            } else {
-                exhaustValue = userEnterExhaustValue;
-            }
-            Log.e("Values", "ExhaustValue : " + exhaustValue);
-        } else if (isSpinnerExhaustShow) {
-            exhaustValue = exhaustSelectedSpinnerValue;
-            Log.e("Values", "ExhaustValue : " + exhaustValue);
-        } else {
-            exhaustValue = mTextViewExhaustValue.getText().toString().trim();
-            Log.e("Values", "ExhaustValue : " + exhaustValue);
+        if(ACHValue.isEmpty() || ACHValue.equalsIgnoreCase("Choose ACH Value") || ACHValue.equalsIgnoreCase("")){
+            Toast.makeText(act, "Please Select ACH value", Toast.LENGTH_SHORT).show();
+            mRelativeProgressBarLayoutRackScreen.setVisibility(View.GONE);
+            return true;
+        }else if(polarityValue.isEmpty() || polarityValue.equalsIgnoreCase("Choose Polarity Value") || polarityValue.equalsIgnoreCase("")){
+            Toast.makeText(act, "Please Select polarity value", Toast.LENGTH_SHORT).show();
+            mRelativeProgressBarLayoutRackScreen.setVisibility(View.GONE);
+            return true;
         }
+
+//        if (isEditTextSupply) {
+//            userEnterSupplyValue = mTextViewSupplyValue.getText().toString().trim();
+//            boolean isNumber = isValidNumber(userEnterSupplyValue);
+//            if (TextUtils.isEmpty(userEnterSupplyValue) || !isNumber) {
+//                Toast.makeText(act, "Please enter Supply(CFM) value", Toast.LENGTH_SHORT).show();
+//                mRelativeProgressBarLayoutRackScreen.setVisibility(View.GONE);
+//                return true;
+//            } else {
+//                mRelativeProgressBarLayoutRackScreen.setVisibility(View.VISIBLE);
+//                supplyValue = userEnterSupplyValue;
+//            }
+//            Log.e("Values", "SupplyValue : " + supplyValue);
+//        } else if (isSpinnerSupplyShow) {
+//            supplyValue = supplySelectedSpinnerValue;
+//            Log.e("Values", "SupplyValue : " + supplyValue);
+//        } else{
+//            supplyValue = mTextViewSupplyValue.getText().toString().trim();
+//            Log.e("Values", "SupplyValue : " + supplyValue);
+//        }
+//
+//        if (isEditTextExhaust) {
+//            userEnterExhaustValue = mTextViewExhaustValue.getText().toString().trim();
+//            boolean isNumber = isValidNumber(userEnterExhaustValue);
+//            if (TextUtils.isEmpty(userEnterExhaustValue) || !isNumber) {
+//                Toast.makeText(act, "Please enter Exhaust(WC) value", Toast.LENGTH_SHORT).show();
+//                mRelativeProgressBarLayoutRackScreen.setVisibility(View.GONE);
+//                return true;
+//            } else {
+//                exhaustValue = userEnterExhaustValue;
+//            }
+//            Log.e("Values", "ExhaustValue : " + exhaustValue);
+//        } else if (isSpinnerExhaustShow) {
+//            exhaustValue = exhaustSelectedSpinnerValue;
+//            Log.e("Values", "ExhaustValue : " + exhaustValue);
+//        } else {
+//            exhaustValue = mTextViewExhaustValue.getText().toString().trim();
+//            Log.e("Values", "ExhaustValue : " + exhaustValue);
+//        }
+
+
 
         if (mLinearLayoutLock.getVisibility() == View.VISIBLE) {
-
-//            if (isFromSettingScreen) {
-//                mLockValue = String.valueOf(rackModel.getWithLock());
-//                String withLock = String.valueOf(radioButtonWith.getTag());
-//                Log.e("Values", "Lock Value From DataBase:- " + withLock);
-//                if (mLockValue.equals(withLock)) {
-//                    radioButtonWith.setChecked(true);
-//                } else {
-//                    radioButtonWithOut.setChecked(true);
-//                }
-//            } else {
-                int selectedId = mRadioGroupLock.getCheckedRadioButtonId();
-                radioLockButton = (RadioButton) findViewById(selectedId);
-                mLockValue = String.valueOf(radioLockButton.getTag());
-                Log.e("Values", "Lock Value :- " + mLockValue);
-//            }
+            int selectedId = mRadioGroupLock.getCheckedRadioButtonId();
+            radioLockButton = (RadioButton) findViewById(selectedId);
+            mLockValue = String.valueOf(radioLockButton.getTag());
+            Log.e("Values", "Lock Value :- " + mLockValue);
         }
         Log.e("Values", "PolarityValue : " + polarityValue);
-//                if (!userEnterSupplyValue.isEmpty() || !userEnterSupplyValue.equalsIgnoreCase("")){
-        if (isEditTextSupply) {
-            dpHelper.updateValueIntoDatabase(subModelNo, Utility.getCurrentTimeStamp(), "", Utility.getCurrentTimeStamp(), 1,
-                    ACHValue, polarityValue, supplyValue, exhaustValue, mLockValue, 1, 0, mStrCompanyName, mStrBlowerName, mStrBuildingName, mStrRoomName, ipAddress, rackModel != null ? String.valueOf(rackModel.getSupplyCFM()) : "", rackModel != null ? rackModel.getExhaustWC() : "");
-//                }else if (!userEnterExhaustValue.isEmpty() || !userEnterExhaustValue.equalsIgnoreCase("")){
-        } else if (isEditTextExhaust) {
-            dpHelper.updateValueIntoDatabase(subModelNo, Utility.getCurrentTimeStamp(), "", Utility.getCurrentTimeStamp(), 1,
-                    ACHValue, polarityValue, supplyValue, exhaustValue, mLockValue, 0, 1, mStrCompanyName, mStrBlowerName, mStrBuildingName, mStrRoomName, ipAddress, rackModel != null ? String.valueOf(rackModel.getSupplyCFM()) : "", rackModel != null ? rackModel.getExhaustWC() : "");
-        } else {
-            dpHelper.updateValueIntoDatabase(subModelNo, Utility.getCurrentTimeStamp(), "", Utility.getCurrentTimeStamp(), 1,
-                    ACHValue, polarityValue, supplyValue, exhaustValue, mLockValue, 0, 0, mStrCompanyName, mStrBlowerName, mStrBuildingName, mStrRoomName, ipAddress, rackModel != null ? String.valueOf(rackModel.getSupplyCFM()) : "", rackModel != null ? rackModel.getExhaustWC() : "");
-        }
+        return false;
+    }
 
-//                dpHelper.updateValueIntoDatabase(subModelNo, Utility.getCurrentTimeStamp(), "", Utility.getCurrentTimeStamp(), 1,
-//                        ACHValue, polarityValue, supplyValue, exhaustValue, mLockValue);
-//                Toast.makeText(act, "Updated Succesfully", Toast.LENGTH_SHORT).show();
-        AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_ACH_Value_Write_Only);
+    private boolean isValidNumber(String editText) {
+        return editText.matches("-?\\d+(.\\d+)?");
     }
 
     private boolean validationFunction() {
@@ -599,10 +754,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
                 img_ach.setVisibility(View.INVISIBLE);
                 mLinearLayoutButtons.setVisibility(View.GONE);
                 linear_main_layout.setVisibility(View.GONE);
-
-//                mRelativeLayoutExhaust.setVisibility(View.GONE);
-//                mRelativeLayoutSupply.setVisibility(View.GONE);
-                mLinearLayoutButtons.setVisibility(View.GONE);
+                linear_layout_buttons_back.setVisibility(View.GONE);
             } else {
                 arrayListACH.clear();
                 arrayListExhaust.clear();
@@ -632,11 +784,11 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             achResetFunction();
                             posACH = position;
-                            final String spinnerSelectedACHValue = String.valueOf(arrayListACH.get(position).getName());
-
+                            spinnerSelectedACHValue = String.valueOf(arrayListACH.get(position).getName());
+                            Log.e("spinnerSelectedACHValue", ACHValue);
                             ACHValue = spinnerSelectedACHValue;
-                            Log.e("ACHValue", spinnerSelectedACHValue);
-                            PolaritySetDataFunction(subModelNo, spinnerSelectedACHValue);
+                            Log.e("ACHValue", ACHValue);
+                            PolaritySetDataFunction(subModelNo, ACHValue);
                         }
 
                         @Override
@@ -762,9 +914,9 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
 
     }
 
-    private void ExhaustWCSetDataFunction(final String subModelNo, String spinnerSelectedACHValue, String spinnerSelectedPolarityValue, String spinnerSelectedSupplyValue, String lock) {
+    private void ExhaustWCSetDataFunction(final String subModelNo, String spinnerSelectedACHValue, String spinnerSelectedPolarityValue, String userEnteredSupplyValue, String lock) {
         arrayListExhaust.clear();
-        mCount = dpHelper.rackTableCheckModelNo(DatabaseTable.COL_BLRACKSETUP_SUPPLYCFM, DatabaseTable.COL_BLRACKSETUP_MODEL_NO, subModelNo, DatabaseTable.COL_BLRACKSETUP_ACH, spinnerSelectedACHValue, DatabaseTable.COL_BLRACKSETUP_POLARITY, spinnerSelectedPolarityValue, DatabaseTable.COL_BLRACKSETUP_SUPPLYCFM, spinnerSelectedSupplyValue, DatabaseTable.COL_BLRACKSETUP_WITH_WITHOUT_LOCK, lock);
+        mCount = dpHelper.rackTableCheckModelNo(DatabaseTable.COL_BLRACKSETUP_SUPPLYCFM, DatabaseTable.COL_BLRACKSETUP_MODEL_NO, subModelNo, DatabaseTable.COL_BLRACKSETUP_ACH, spinnerSelectedACHValue, DatabaseTable.COL_BLRACKSETUP_POLARITY, spinnerSelectedPolarityValue, DatabaseTable.COL_BLRACKSETUP_SUPPLYCFM, userEnteredSupplyValue, DatabaseTable.COL_BLRACKSETUP_WITH_WITHOUT_LOCK, lock);
         Log.e("Count", "" + mCount);
         if (mCount > 1) {
             mLinearLayoutLock.setVisibility(View.VISIBLE);
@@ -794,7 +946,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
 //            mLinerLayoutExhaust.setVisibility(View.VISIBLE);
 
             if (arrayListSupply.size() <= 1) {
-                if (spinnerSelectedSupplyValue.isEmpty() || spinnerSelectedSupplyValue.equalsIgnoreCase("") || spinnerSelectedSupplyValue == null || spinnerSelectedSupplyValue.equalsIgnoreCase("0")) {
+                if (userEnteredSupplyValue.isEmpty() || userEnteredSupplyValue.equalsIgnoreCase("") || userEnteredSupplyValue == null || userEnteredSupplyValue.equalsIgnoreCase("0")) {
 //                    mLinerLayoutSupply.setVisibility(View.VISIBLE);
 //                    mLinerLayoutSupplyEditText.setVisibility(View.VISIBLE);
                     img_supply.setVisibility(View.VISIBLE);
@@ -824,7 +976,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
                 }
             }
 
-            arrayListExhaust.addAll(dpHelper.getAllExhaustValueFromDatabase(subModelNo, spinnerSelectedACHValue, spinnerSelectedPolarityValue, spinnerSelectedSupplyValue, lock));
+            arrayListExhaust.addAll(dpHelper.getAllExhaustValueFromDatabase(subModelNo, spinnerSelectedACHValue, spinnerSelectedPolarityValue, userEnteredSupplyValue, lock));
             Log.e("ExhaustValue", arrayListExhaust.get(0).getName());
             if (arrayListExhaust.size() <= 1) {
                 String strExhaustValue = arrayListExhaust.size() == 1 ? arrayListExhaust.get(0).getName() : "";
@@ -931,6 +1083,10 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
 
         mLinearLayoutButtons.setVisibility(View.GONE);
         mLinearLayoutLock.setVisibility(View.GONE);
+
+        mRadioGroupLock.setOnCheckedChangeListener(null);
+        mRadioGroupLock.clearCheck();
+        mLockValue = "";
     }
 
     private void polarityResetFunction() {
@@ -1077,6 +1233,11 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
                             }
                             textView.setText(edit_EnterTxt_alartview_box.getText().toString());
 //                            alertview_selection.dismiss();
+                            mButtonFind.setVisibility(View.GONE);
+                            resetFunction();
+                            if (!validationFunction()) {
+                                mVisibilityShowHideFunction();
+                            }
                         }
                     }
                 } else if (typr.equals("Supply(CFM)")) {
@@ -1230,6 +1391,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
                     if (alertview != null && alertview.isShowing()) {
                         alertview.dismiss();
                     }
+                    ResetCounter(0);
                     finish();
                     allentownBlowerApplication.getObserver().deleteObserver(RackSetUpNewActivity.this);
 //                        alertview.dismiss();
@@ -1239,6 +1401,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
                     }
                     Intent intent = new Intent(act, HomeActivity.class);
                     startActivity(intent);
+                    ResetCounter(0);
 //                    finish();
                     allentownBlowerApplication.getObserver().deleteObserver(RackSetUpNewActivity.this);
 //                        alertview.dismiss();
@@ -1329,7 +1492,8 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             }
 
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_ACH_Value_Write_Only) {
-            Log.e(TAG, ACHValue);
+            Log.e(TAG, spinnerSelectedACHValue);
+            ACHValue = spinnerSelectedACHValue;
             setpointArrayList = responseHandler.getLastSetPointData();
             String S07_YY = responseHandler.stringToHex(ACHValue, true);
             String S07_XX = responseHandler.getHexString(setpointArrayList.get(0).getS07(), true);
@@ -1365,7 +1529,6 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             setpointArrayList = responseHandler.getLastSetPointData();
             String S07_XX = responseHandler.stringToHex(supplyValue, true);
             String S07_YY = responseHandler.getHexString(setpointArrayList.get(0).getS07(), false);
-
             String command = "S07=" + S07_XX.concat(S07_YY).toUpperCase();
             Utility.Log(TAG, "Sending S07_YY ==> " + command);
             CallReadWriteFuncation(command, 103);
@@ -1405,6 +1568,9 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
                     AlertDialogBoxSuccessfully(o);
                 }
             });
+        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nCloseProgressBar) {
+//            Toast.makeText(act, "Something is wrong with the blower response", Toast.LENGTH_SHORT).show();
+            mRelativeProgressBarLayoutRackScreen.setVisibility(View.GONE);
         }
 
     }
@@ -1445,11 +1611,13 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
                 if (CodeReUse.isBolwerConnected) {
                     Utility.Log(TAG, "onFinish");
                     AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nTimerFinishedReportAndRack);
+                    allentownBlowerApplication.getObserver().deleteObserver(RackSetUpNewActivity.this);
                     finish();
                 }
             } else {
                 Utility.Log(TAG, "onFinish");
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nTimerFinishedReportAndRack);
+                allentownBlowerApplication.getObserver().deleteObserver(RackSetUpNewActivity.this);
                 finish();
             }
         }

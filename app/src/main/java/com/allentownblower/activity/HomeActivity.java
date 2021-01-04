@@ -331,7 +331,7 @@ public class HomeActivity extends BaseActivity implements Observer {
         if(rackDetailsModel != null){
             responseHandler = new ResponseHandler(act, rackDetailsModel, allentownBlowerApplication, sqliteHelper);
         }else {
-            responseHandler = new ResponseHandler(act);
+            responseHandler = new ResponseHandler(act, sqliteHelper);
         }
         portConversion = new SerialPortConversion(act, responseHandler);
 
@@ -8137,7 +8137,7 @@ public class HomeActivity extends BaseActivity implements Observer {
         } else if(allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nSetPointCommandOnly_Api){
             String command = prefManager.getSendCommandS().trim();
             if (command.startsWith("W"))
-                CallReadWriteFuncation(command, 0); // W01 = 01442 or W02 = 0524
+                CallReadWriteFuncation(command, 202); // W01 = 01442 or W02 = 0524
             else
                 CallReadWriteFuncation(command, 201);
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nSetWifiDataOnly) {

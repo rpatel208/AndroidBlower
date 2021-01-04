@@ -121,6 +121,8 @@ public class ObserverActionID {
     //RackSetUp Screen Completed
     public static int nRackSetUp_Dialog = 105;
 
+    public static int nCloseProgressBar = 106;
+
     //ReportView Bind Successfully
     public static int nReportViewBindSuccessfully = 201;
 

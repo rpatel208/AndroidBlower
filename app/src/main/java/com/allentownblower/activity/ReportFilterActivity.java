@@ -106,11 +106,10 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
         // Common
         allentownBlowerApplication = (AllentownBlowerApplication) act.getApplication();
         allentownBlowerApplication.getObserver().addObserver(this);
-        responseHandler = new ResponseHandler(act);
         sqliteHelper = new SqliteHelper(act);
+        responseHandler = new ResponseHandler(act);
         prefManager = new PrefManager(act);
         rackDetailsModel = sqliteHelper.getDataFromRackBlowerDetails();
-
         initializeMethod();
 
         mClickEvent();
@@ -193,7 +192,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                     alertDialogBox();
                     mStartDate = mTxtStartDate.getText().toString();
                     mEndDate = mTxtEndDate.getText().toString();
-                    tableViewModel = new TableViewModel(act, mStartDate, mEndDate);
+                    tableViewModel = new TableViewModel(act, mStartDate, mEndDate,sqliteHelper);
                     // Create TableView Adapter
                     tableViewAdapter = new TableViewAdapter(tableViewModel);
                     mTableView.setAdapter(tableViewAdapter);
@@ -213,6 +212,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                 }
             }
         });
+
         mTxtExportReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -230,13 +230,14 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                     tableViewModel = new TableViewModel(act, mStartDate, mEndDate, sqliteHelper);
                     isUSBDetected = Utility.checkUSB(act);
 
-//                    // Create TableView Adapter
+                    // Create TableView Adapter
                     final Runnable r = new Runnable() {
+                        @SuppressLint("LongLogTag")
                         public void run() {
                             try {
                                 tableViewModel.csvFileExportFunction(mRadioButtonValue, false, isUSBDetected);
                             } catch (Exception e) {
-                                Log.e("Error", e.getMessage());
+                                Log.e("Error Click Export Button :- ", e.getMessage());
                             }
                         }
                     };
@@ -245,6 +246,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
 
             }
         });
+
         mTxtSendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,11 +264,13 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                             alertDialogBoxEmail();
                             mStartDate = mTxtStartDate.getText().toString();
                             mEndDate = mTxtEndDate.getText().toString();
-                            tableViewModel = new TableViewModel(act, mStartDate, mEndDate);
+                            tableViewModel = new TableViewModel(act, mStartDate, mEndDate,sqliteHelper);
                             final Runnable r = new Runnable() {
                                 public void run() {
-                                    if (rackDetailsModel.getmId() != null) {
+                                    if (rackDetailsModel != null) {
                                         tableViewModel.getSendReportEmail_Api(mRadioButtonValue,email, rackDetailsModel, allentownBlowerApplication, prefManager, act, false);
+                                    }else {
+                                        Utility.dismissAlertDialog();
                                     }
                                 }
                             };
@@ -296,6 +300,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                 AlertDialogBox("Email", mTxtEmail);
             }
         });
+
         mLinearLayoutBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -316,37 +321,6 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
         });
 
     }
-
-//    public boolean checkUSB() {
-//        boolean Usb = false;
-//        UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
-//        // Get the list of attached devices
-//        HashMap<String, UsbDevice> devices = manager.getDeviceList();
-//        // Iterate over all devices
-//        Iterator<String> it = devices.keySet().iterator();
-//        while (it.hasNext()) {
-//            String deviceName = it.next();
-//            device = devices.get(deviceName);
-//            String VID = Integer.toHexString(device.getVendorId()).toUpperCase();
-//            String PID = Integer.toHexString(device.getProductId()).toUpperCase();
-//            Usb = true;
-////            if (!manager.hasPermission(device)) {
-////                PendingIntent mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
-////                manager.requestPermission(device, mPermissionIntent);
-////                registerReceiver(broadcast_reciever, new IntentFilter(ACTION_USB_PERMISSION));
-////                Usb = true;
-////                return Usb;
-////            } else {
-////                //user permission already granted; prceed to access USB device
-////                Usb = true;
-////                registerReceiver(broadcast_reciever, new IntentFilter(ACTION_USB_PERMISSION));
-////                return Usb;
-////            }
-//        }
-//        return Usb;
-//    }
-
-
 
     private void resetFunction() {
         isEmailButtonClicked = false;
@@ -451,7 +425,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
     }
 
     // EditTextAlertDailogBox AlertDailogBox
-    public void AlertDialogBox(final String typr, final TextView textView) {
+    public void AlertDialogBox(final String type, final TextView textView) {
 
         alertview_selection = new Dialog(act);
         alertview_selection.setCancelable(false);
@@ -467,7 +441,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
         btn_Ok_alartview_box = alertview_selection.findViewById(R.id.btn_Save_alartview_box_report);
         btn_Cancel_alartview_box = alertview_selection.findViewById(R.id.btn_Cancel_alartview_box_report);
 
-        txt_Title_alartview_box.setText(typr);
+        txt_Title_alartview_box.setText(type);
 
         btn_Cancel_alartview_box.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -481,7 +455,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
         btn_Ok_alartview_box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (typr.equals("Email")) {
+                if (type.equals("Email")) {
                     if (edit_EnterTxt_alartview_box.getText().toString().equals(" ") || TextUtils.isEmpty(edit_EnterTxt_alartview_box.getText().toString())) {
                         Toast.makeText(act, "Please enter email name", Toast.LENGTH_SHORT).show();
                     } else {

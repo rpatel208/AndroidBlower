@@ -243,21 +243,38 @@
                             android:layout_width="@dimen/_5sdp"
                             android:layout_height="match_parent" />
 
-
-                        <TextView
-                            android:id="@+id/btn_find"
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.6"
-                            android:background="@drawable/dark_blue_blwrdetl_screen_box"
-                            android:gravity="center"
-                            android:paddingLeft="@dimen/_5sdp"
-                            android:paddingTop="@dimen/_3sdp"
-                            android:paddingRight="@dimen/_5sdp"
-                            android:paddingBottom="@dimen/_3sdp"
-                            android:text="FIND"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_15sdp" />
+                            android:layout_weight="1.6">
+
+                            <TextView
+                                android:id="@+id/btn_find"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.6"
+                                android:background="@drawable/dark_blue_blwrdetl_screen_box"
+                                android:gravity="center"
+                                android:paddingLeft="@dimen/_5sdp"
+                                android:paddingTop="@dimen/_3sdp"
+                                android:paddingRight="@dimen/_5sdp"
+                                android:paddingBottom="@dimen/_3sdp"
+                                android:text="FIND"
+                                android:visibility="visible"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_15sdp" />
+
+                            <ImageView
+                                android:id="@+id/img_model_no"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="30dp"
+                                android:layout_centerVertical="true"
+                                android:visibility="gone"
+                                android:layout_marginTop="@dimen/_2sdp"
+                                android:src="@drawable/ic_edit_icon"/>
+
+                        </RelativeLayout>
+
 
                     </LinearLayout>
 
@@ -681,7 +698,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/black_home_screen_textbox"
-                android:layout_margin="10dp"
+                android:layout_margin="0dp"
                 android:visibility="gone">
 
                 <TextView
@@ -689,6 +706,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="Model number does not exits please try again"

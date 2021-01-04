@@ -112,7 +112,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
 
     private void loadScreen() {
         rackDetailsModel = dpHelper.getDataFromRackBlowerDetails();
-        if (rackDetailsModel.getmId() != null) {
+        if (rackDetailsModel != null) {
             getUpdateRackBlowerDetails_Api(rackDetailsModel.getmId(), rackDetailsModel.getmRackBlowerCustomerID());
         } else {
             mRelativeLayoutSerialCustomerMain.setVisibility(View.VISIBLE);
@@ -550,6 +550,10 @@ public class RackDetailScreenActivity extends AppCompatActivity {
     }
 
     private void getRackNewId_Api(String serialNumber, String customerName) {
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
+            Log.e("HostName :- ", "Host Name is Not Available");
+            return;
+        }
         relative_progress_rack_detail_screen.setVisibility(View.VISIBLE);
         // if (NetworkUtil.getConnectivityStatus(act)) {
         JSONObject objParam = new JSONObject();
@@ -617,6 +621,10 @@ public class RackDetailScreenActivity extends AppCompatActivity {
     }
 
     private void getUpdateRackBlowerDetails_Api(String id, String customerId) {
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
+            Log.e("HostName :- ", "Host Name is Not Available");
+            return;
+        }
         relative_progress_rack_detail_screen.setVisibility(View.VISIBLE);
         // if (NetworkUtil.getConnectivityStatus(act)) {
         JSONObject objParam = new JSONObject();

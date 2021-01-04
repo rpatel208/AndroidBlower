@@ -1104,6 +1104,7 @@ public class Utility {
                 usbManager = (UsbManager) act.getSystemService(Context.USB_SERVICE);
                 PendingIntent permissionIntent = PendingIntent.getBroadcast(act, 0, new Intent(ACTION_USB_PERMISSION), 0);
                 IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
+
                 act.registerReceiver(broadcast_reciever, filter);
                 usbManager.requestPermission(device, permissionIntent);
             }

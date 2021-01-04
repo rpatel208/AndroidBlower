@@ -27,6 +27,9 @@ public class PrefManager {
     private static final String isServiceRunning = "isServiceRunning";
     private static final String isFirstTime = "isFirstTime";
     private static final String currentDate = "currentDate";
+    private static final String setCount = "setCount";
+    private static final String setKeyFromApi = "setKeyFromApi";
+    private static final String setMultiCommandCount = "setMultiCommandCount";
 
     private static final String str_Z0 = "str_Z0";
     private static final String str_Z2 = "str_Z2";
@@ -81,6 +84,50 @@ public class PrefManager {
 
     public String getSendCommandS() {
         return pref.getString(SendCommandS, "S");
+    }
+
+    public void setCount(int count){
+        editor.putInt(setCount,count);
+        editor.commit();
+    }
+
+    public int getCount(){
+        return pref.getInt(setCount,0);
+    }
+
+    public void setKeyFromApi(String setCommand){
+        editor.putString(setKeyFromApi,setCommand);
+        editor.commit();
+    }
+
+    public boolean saveArray(String[] array) {
+        editor.putInt(setKeyFromApi +"_size", array.length);
+        for(int i=0;i<array.length;i++){
+            editor.putString(setKeyFromApi + "_" + i, array[i]);
+        }
+
+        return editor.commit();
+    }
+
+    public String[] loadArray() {
+        int size = pref.getInt(setKeyFromApi + "_size", 0);
+        String array[] = new String[size];
+        for(int i=0;i<size;i++)
+            array[i] = pref.getString(setKeyFromApi + "_" + i, null);
+        return array;
+    }
+
+    public String getSetKeyFromApi(){
+        return pref.getString(setKeyFromApi,"");
+    }
+
+    public void setMultiCommandCount(int multiCommandCount){
+        editor.putInt(setMultiCommandCount,multiCommandCount);
+        editor.commit();
+    }
+
+    public int getMultiCommandCount(){
+        return pref.getInt(setMultiCommandCount,0);
     }
 
     public void setServiceRunning(boolean ServiceRunning) {

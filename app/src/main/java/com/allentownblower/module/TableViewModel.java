@@ -91,9 +91,6 @@ import java.util.Set;
  */
 
 public class TableViewModel {
-
-    private ArrayList<FeedbackCommand> feedbackArrayList = new ArrayList<>();
-    private ResponseHandler responseHandler;
     SqliteHelper sqliteHelper;
     private Activity act;
     private String startDate, endDate;
@@ -116,19 +113,6 @@ public class TableViewModel {
         endDate = mEndDate;
         sqliteHelper = mSqliteHelper;
     }
-
-//    @NonNull
-//    private List<RowHeader> getSimpleRowHeaderList() {
-//        responseHandler = new ResponseHandler(act);
-//        int count = responseHandler.getBLFeedBackCount();
-//        List<RowHeader> list = new ArrayList<>();
-//        for (int i = 0; i <= count; i++) {
-//            RowHeader header = new RowHeader(String.valueOf(i), "" + i);
-//            list.add(header);
-//        }
-//
-//        return list;
-//    }
 
     @NonNull
     private List<ColumnHeader> getRandomColumnHeaderListForAllRecord() {
@@ -240,7 +224,6 @@ public class TableViewModel {
         } else {
             return getCellListForAllRecord();
         }
-//        return getCellListForSortingTest1();
     }
 
     @NonNull
@@ -251,13 +234,8 @@ public class TableViewModel {
         } else {
             return getRandomColumnHeaderListForAllRecord();
         }
-//        return getRandomColumnHeaderList1();
     }
 
-//    @NonNull
-//    public List<RowHeader> getRowHeaderList() {
-//        return getSimpleRowHeaderList();
-//    }
     // Report File Export Function
     @SuppressLint("NewApi")
     public void csvFileExportFunction(String tag, boolean isFromChangeUnit, boolean isUSBDetected) {
@@ -270,22 +248,10 @@ public class TableViewModel {
             if (tag.equals("1")) {
                 getColumnHeaderList(tag);
                 data = responseHandler.getBLFeedbackDataMaxMinAvgExport(startDate, endDate, setpointArrayList, rackModelArrayList, responseHandler, isFromChangeUnit, columnNameListSingle);
-//            for (int i = 0; i < listSingle.size(); i++) {
-//                List<Cell> cells = listSingle.get(i);
-//                data.append("\n");
-//                for (int j = 0; j < cells.size(); j++) {
-//                    Cell cellObject = cells.get(j);
-////                Log.e("CellObject Data", cellObject.getData().toString());
-//                    data.append(cellObject.getData().toString() + ",");
-//                }
-//            }
             } else {
                 getColumnHeaderList(tag);
                 data = responseHandler.getBLFeedbackDataAllExport(startDate, endDate, setpointArrayList, rackModelArrayList, responseHandler, isFromChangeUnit, columnNameListAll);
             }
-//            Boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
-//            Boolean isSDSupportedDevice = Environment.isExternalStorageRemovable();
-//            Log.e("isSDPresent", ""+isSDPresent + " --isSDSupportedDevice-- "+ isSDSupportedDevice);
             Boolean isSDPresent = false;
             File[] filedirs = act.getApplicationContext().getExternalFilesDirs(null);
             if (filedirs.length > 0) {
@@ -307,103 +273,6 @@ public class TableViewModel {
                     }
                 }
             }
-            //******
-//            String[] filedirs = getStorageDirectories();
-//            File[] filedirs = act.getApplicationContext().getExternalFilesDirs(null);
-//            if (filedirs.length > 0) {
-//
-//                //0 = "/storage/7E69-9983"
-//                for (File file : filedirs)
-//                {
-//                    String sdCard = Environment.getExternalStorageState().toString();
-//
-//                    if (sdCard.equals(Environment.MEDIA_MOUNTED)) {
-//                        sdCard = file.toString();
-//                        //String sdCardPath = Environment.getExternalStorageDirectory().getPath();
-//                        String sdCardPath = file.getPath();
-//                        //String sdCardPath = getExternalSdCardPath();
-//                        Log.e("sdCardPath", "" + sdCardPath);
-//                        File dir = new File(sdCardPath + File.separator + CodeReUse.folderName + File.separator);
-//                        Calendar calendar = Calendar.getInstance();
-////                    SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
-////                    Date date;
-//                        String createon = null;
-//                        try {
-////                        date = formatter.parse(calendar.getTime().toString());
-//                            createon = CodeReUse.formatreport.format(calendar.getTime());
-//                            createon = createon.replace(":","");
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                        //verifyStoragePermissions(act);
-//                        File fileLocation = new File(dir, createon + "_reportfile.csv");
-//                        if (!dir.exists()) {
-//                            try
-//                            {
-//                                if (dir.mkdir())
-//                                    Log.e("Directory Created.", "" + dir.toString());
-//                            }
-//                            catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-//
-//                        }
-//
-//                        if (fileLocation.exists()) {
-//                            try {
-//                                final String dataString = new String(data.toString().getBytes());
-//                                FileOutputStream fout = new FileOutputStream(fileLocation);
-//                                OutputStreamWriter osw = new OutputStreamWriter(fout);
-//
-//                                //Writing the string to file
-//                                osw.write(dataString);
-//                                osw.flush();
-//                                osw.close();
-//
-//                                if (isFromChangeUnit) {
-//                                    sqliteHelper.deleteAllRecordFromAllTable(true);
-//                                } else {
-//                                    Utility.dismissAlertDialog();
-//                                    Toast.makeText(act, "File exported successfully..!", Toast.LENGTH_LONG).show();
-//                                }
-//
-//                            } catch (Exception e) {
-//                                Log.e("ErrorEx", e.getMessage());
-//                                Utility.dismissAlertDialog();
-//                            }
-//                        } else {
-//                            try {
-//                                final String dataString = new String(data.toString().getBytes());
-//                                if (fileLocation.createNewFile())
-//                                    Log.e("File Created.", "" + fileLocation.toString());
-//
-//
-//                                FileOutputStream fout = new FileOutputStream(fileLocation);
-//                                OutputStreamWriter osw = new OutputStreamWriter(fout);
-//
-//                                //Writing the string to file
-//                                osw.write(dataString);
-//                                osw.flush();
-//                                osw.close();
-//                                //exporting
-//                                if (isFromChangeUnit) {
-//                                    sqliteHelper.deleteAllRecordFromAllTable(true);
-//                                } else {
-//                                    Utility.dismissAlertDialog();
-//                                    Toast.makeText(act, "File exported successfully..!", Toast.LENGTH_LONG).show();
-//                                }
-//
-//                            } catch (Exception e) {
-//                                Log.e("ErrorEx", e.getMessage());
-//                                Utility.dismissAlertDialog();
-//                            }
-//                        }
-//                    }
-//                }
-//
-//            }
-
-            //******
             if (isUSBDetected) {
                 UsbMassStorageDevice[] devices = UsbMassStorageDevice.getMassStorageDevices(act);
                 FileSystem currentFs = null;
@@ -436,28 +305,23 @@ public class TableViewModel {
                             OutputStream os = new UsbFileOutputStream(file);
                             os.write(data.toString().getBytes());
                             os.close();
-                            Utility.dismissAlertDialog();
                             Utility.ShowMessage(act,"Success",createon + "_reportfile.csv" + "  File has been exported to USB.","Ok");
+                            Utility.dismissAlertDialog();
                             //Toast.makeText(act, "File exported successfully..!", Toast.LENGTH_LONG).show();
                         } catch (Exception e) {
                             if (e.getMessage().equals("Index: 0, Size: 0")) {
                                 Toast.makeText(act, "Please make sure pendrive is MS-DOS (FAT) (Master Boot record) formatted", Toast.LENGTH_LONG).show();
                             } else {
-                                Log.e("Error", e.getMessage());
+                                Log.e("Error USB Export", e.getMessage());
                                 Toast.makeText(act, "" + e.getMessage(), Toast.LENGTH_LONG).show();
                             }
                             Utility.dismissAlertDialog();
                         }
-
-
                     }
                 }
-
             }
-
-            if (isSDPresent)
+            else if (isSDPresent)
             {
-
                 if (filedirs.length > 0)
                 {
                     for (File file : filedirs) {
@@ -727,10 +591,11 @@ public class TableViewModel {
                         if (isFromChangeUnit) {
                             sqliteHelper.deleteAllRecordFromAllTable(true);
                         } else {
-                            Utility.dismissAlertDialog();
+                            //Utility.dismissAlertDialog();
                             if (!isUSBDetected || !isSDPresent)
                                 Utility.ShowMessage(act,"Success",createon + "_reportfile.csv" + "  File has been exported to Internal Storage.","Ok");
                             //Toast.makeText(act, "File exported successfully..!", Toast.LENGTH_LONG).show();
+                            Utility.dismissAlertDialog();
                         }
 
                     } catch (Exception e) {
@@ -751,10 +616,11 @@ public class TableViewModel {
                         if (isFromChangeUnit) {
                             sqliteHelper.deleteAllRecordFromAllTable(true);
                         } else {
-                            Utility.dismissAlertDialog();
+                            //Utility.dismissAlertDialog();
                             if (!isUSBDetected || !isSDPresent)
                                 Utility.ShowMessage(act,"Success",createon + "_reportfile.csv" + "  File has been exported to Internal Storage.","Ok");
                             //Toast.makeText(act, "File exported successfully..!", Toast.LENGTH_LONG).show();
+                            Utility.dismissAlertDialog();
                         }
 
                     } catch (Exception e) {
@@ -764,197 +630,15 @@ public class TableViewModel {
                 }
             }
             //******
-
-
         } catch (Exception e) {
             if (e.getMessage().equals("Index: 0, Size: 0")) {
                 Toast.makeText(act, "Please make sure pendrive is MS-DOS (FAT) (Master Boot record) formatted", Toast.LENGTH_LONG).show();
             } else {
-                Log.e("Error", e.getMessage());
+                Log.e("Error Main TryCatch :- ", e.getMessage());
                 Toast.makeText(act, "" + e.getMessage(), Toast.LENGTH_LONG).show();
             }
             Utility.dismissAlertDialog();
         }
-    }
-
-    public static String getExternalSdCardPath() {
-        String path = null;
-        File sdCardFile = null;
-        //List<String> sdCardPossiblePath = Arrays.asList("external_sd", "ext_sd", "external", "extSdCard", "sdcard2", "sdcard1", "sdcard0", "external_sdcard",
-          //      "sdcard","microsd", "emmc", "external_SD", "sdext", "sdext2", "sdext3", "sdext4","media_rw","shm");
-
-        List<String> sdCardPossiblePath = Arrays.asList(
-                "/mnt/Removable/MicroSD",
-                "/storage/removable/sdcard1", // !< Sony Xperia Z1
-                "/Removable/MicroSD", // Asus ZenPad C
-                "/removable/microsd",
-                "/external_sd", // Samsung
-                "/_ExternalSD", // some LGs
-                "/storage/extSdCard", // later Samsung
-                "/storage/extsdcard", // Main filesystem is case-sensitive; FAT isn't.
-                "/mnt/extsd", // some Chinese tablets, e.g. Zeki
-                "/storage/sdcard1", // If this exists it's more likely than sdcard0 to be removable.
-                "/mnt/extSdCard",
-                "/mnt/sdcard/external_sd",
-                "/mnt/external_sd",
-                "/storage/external_SD",
-                "/storage/ext_sd", // HTC One Max
-                "/mnt/sdcard/_ExternalSD",
-                "/mnt/sdcard-ext",
-
-                "/sdcard2", // HTC One M8s
-                "/sdcard1", // Sony Xperia Z
-                "/mnt/media_rw/sdcard1",   // 4.4.2 on CyanogenMod S3
-                "/mnt/sdcard", // This can be built-in storage (non-removable).
-                "/sdcard",
-                "/storage/sdcard0",
-                "/emmc",
-                "/mnt/emmc",
-                "/sdcard/sd",
-                "/mnt/sdcard/bpemmctest",
-                "/mnt/external1",
-                "/data/sdext4",
-                "/data/sdext3",
-                "/data/sdext2",
-                "/data/sdext",
-                "/storage/microsd" );
-
-        for (String sdPath : sdCardPossiblePath) {
-            File file = new File("", sdPath);
-
-            if (file.isDirectory() && file.canWrite()) {
-                path = file.getAbsolutePath();
-            }
-        }
-
-        if (path != null) {
-            sdCardFile = new File(path);
-        }
-        else {
-            sdCardFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
-        }
-
-        return sdCardFile.getAbsolutePath();
-    }
-
-    public static String getSdCardPath() {
-        String removableStoragePath = "";
-        File fileList[] = new File("/storage/").listFiles();
-        for (File file : fileList) {
-            if (!file.getAbsolutePath().equalsIgnoreCase(Environment.getExternalStorageDirectory().getAbsolutePath()) && file.isDirectory() && file.canRead())
-                removableStoragePath = file.getAbsolutePath();
-            return removableStoragePath;
-        }
-        return removableStoragePath;
-    }
-
-    private static String getExternalStoragePath(Activity mContext, boolean is_removable) {
-
-        StorageManager mStorageManager = (StorageManager) mContext.getSystemService(Context.STORAGE_SERVICE);
-        Class<?> storageVolumeClazz = null;
-        try {
-            storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
-            Method getVolumeList = mStorageManager.getClass().getMethod("getVolumeList");
-            Method getPath = storageVolumeClazz.getMethod("getPath");
-            Method isRemovable = storageVolumeClazz.getMethod("isRemovable");
-            Object result = getVolumeList.invoke(mStorageManager);
-            final int length = Array.getLength(result);
-            for (int i = 0; i < length; i++) {
-                Object storageVolumeElement = Array.get(result, i);
-                String path = (String) getPath.invoke(storageVolumeElement);
-                boolean removable = (Boolean) isRemovable.invoke(storageVolumeElement);
-                if (is_removable == removable) {
-                    return path;
-                }
-            }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public String[] getExternalStorageDirectories(Activity act) {
-
-        List<String> results = new ArrayList<>();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) { //Method 1 for KitKat & above
-            File[] externalDirs = act.getExternalFilesDirs(null);
-            String internalRoot = Environment.getExternalStorageDirectory().getAbsolutePath().toLowerCase();
-
-            for (File file : externalDirs) {
-                if(file==null) //solved NPE on some Lollipop devices
-                    continue;
-                String path = file.getPath().split("/Android")[0];
-
-                if(path.toLowerCase().startsWith(internalRoot))
-                    continue;
-
-                boolean addPath = false;
-
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    addPath = Environment.isExternalStorageRemovable(file);
-                }
-                else{
-                    addPath = Environment.MEDIA_MOUNTED.equals(EnvironmentCompat.getStorageState(file));
-                }
-
-                if(addPath){
-                    results.add(path);
-                }
-            }
-        }
-
-        if(results.isEmpty()) { //Method 2 for all versions
-            // better variation of: http://stackoverflow.com/a/40123073/5002496
-            String output = "";
-            try {
-                final Process process = new ProcessBuilder().command("mount | grep /dev/block/vold")
-                        .redirectErrorStream(true).start();
-                process.waitFor();
-                final InputStream is = process.getInputStream();
-                final byte[] buffer = new byte[1024];
-                while (is.read(buffer) != -1) {
-                    output = output + new String(buffer);
-                }
-                is.close();
-            } catch (final Exception e) {
-                e.printStackTrace();
-            }
-            if(!output.trim().isEmpty()) {
-                String devicePoints[] = output.split("\n");
-                for(String voldPoint: devicePoints) {
-                    results.add(voldPoint.split(" ")[2]);
-                }
-            }
-        }
-
-        //Below few lines is to remove paths which may not be external memory card, like OTG (feel free to comment them out)
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            for (int i = 0; i < results.size(); i++) {
-                if (!results.get(i).toLowerCase().matches(".*[0-9a-f]{4}[-][0-9a-f]{4}")) {
-                    Log.d("LOG_TAG", results.get(i) + " might not be extSDcard");
-                    results.remove(i--);
-                }
-            }
-        } else {
-            for (int i = 0; i < results.size(); i++) {
-                if (!results.get(i).toLowerCase().contains("ext") && !results.get(i).toLowerCase().contains("sdcard")) {
-                    Log.d("LOG_TAG", results.get(i)+" might not be extSDcard");
-                    results.remove(i--);
-                }
-            }
-        }
-
-        String[] storageDirectories = new String[results.size()];
-        for(int i=0; i<results.size(); ++i) storageDirectories[i] = results.get(i);
-
-        return storageDirectories;
     }
 
     // Report File Export Function
@@ -1098,6 +782,11 @@ public class TableViewModel {
 
     public void getSendReportEmail_Api(String tag, String email, RackDetailsModel rackDetailsModel, AllentownBlowerApplication allentownBlowerApplication, PrefManager prefManager, Activity act, boolean isFromChangeUnit) {
         // if (NetworkUtil.getConnectivityStatus(act)) {
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
+            Log.e("HostName :- ", "Host Name is Not Available");
+            return;
+        }
+
         ResponseHandler responseHandler = new ResponseHandler(act);
         setpointArrayList = responseHandler.getBLSetPointData(startDate, endDate);
         rackModelArrayList = responseHandler.getBLRackSetUpData(startDate, endDate);
@@ -1175,73 +864,4 @@ public class TableViewModel {
         allentownBlowerApplication.getInstance().cancelPendingRequests(PendingID.nSendReportEmail);
         allentownBlowerApplication.getInstance().addToRequestQueue(request, PendingID.nSendReportEmail);
     }
-
-    /**
-     * Returns all available external SD-Card roots in the system.
-     *
-     * @return paths to all available external SD-Card roots in the system.
-     *  String[] dors = getStorageDirectories();
-     * //            this = {HomeActivity@4533}
-     * //            dors = {String[1]@6467}
-     * //            0 = "/storage/7E69-9983"
-     */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public String[] getStorageDirectories() {
-        String [] storageDirectories;
-        String rawSecondaryStoragesStr = System.getenv("SECONDARY_STORAGE");
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            List<String> results = new ArrayList<String>();
-            //File[] externalDirs = applicationContext.getExternalFilesDirs(null);
-            File[] externalDirs = act.getApplicationContext().getExternalFilesDirs(null);
-
-            for (File file : externalDirs) {
-                String path = file.getPath().split("/Android")[0];
-                if((Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && Environment.isExternalStorageRemovable(file))
-                        || rawSecondaryStoragesStr != null && rawSecondaryStoragesStr.contains(path)){
-                    results.add(path);
-                }
-            }
-            storageDirectories = results.toArray(new String[0]);
-        }else{
-            final Set<String> rv = new HashSet<String>();
-
-            if (!TextUtils.isEmpty(rawSecondaryStoragesStr)) {
-                final String[] rawSecondaryStorages = rawSecondaryStoragesStr.split(File.pathSeparator);
-                Collections.addAll(rv, rawSecondaryStorages);
-            }
-            storageDirectories = rv.toArray(new String[rv.size()]);
-        }
-        return storageDirectories;
-    }
-
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-
-    /**
-     * Checks if the app has permission to write to device storage
-     *
-     * If the app does not has permission then the user will be prompted to grant permissions
-     *
-     * @param activity
-     */
-    public static void verifyStoragePermissions(Activity activity) {
-        // Check if we have write permission
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    activity,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-            );
-        }
-    }
-
-
-
 }

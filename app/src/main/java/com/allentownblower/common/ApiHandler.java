@@ -30,6 +30,7 @@ public class ApiHandler {
     /*Parameter UpdateRackBlowerDetails*/
     public static String strUpdateRackBlowerDetailsId = "RackBlowerDetailsID";
     public static String strUpdateRackBlowerCustomerID = "RackBlowerCustomerID";
+    public static String strUpdatecompletedCMD = "completedCMD";
 
     public static String strRackSerialNumberId = "RackBlowerDetailsID";
     public static String strRackBlowerCustomerID = "RackBlowerCustomerID";
