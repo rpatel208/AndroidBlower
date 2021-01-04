@@ -110,7 +110,6 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
         responseHandler = new ResponseHandler(act);
         prefManager = new PrefManager(act);
         rackDetailsModel = sqliteHelper.getDataFromRackBlowerDetails();
-
         initializeMethod();
 
         mClickEvent();
@@ -268,8 +267,10 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                             tableViewModel = new TableViewModel(act, mStartDate, mEndDate,sqliteHelper);
                             final Runnable r = new Runnable() {
                                 public void run() {
-                                    if (rackDetailsModel.getmId() != null) {
+                                    if (rackDetailsModel != null) {
                                         tableViewModel.getSendReportEmail_Api(mRadioButtonValue,email, rackDetailsModel, allentownBlowerApplication, prefManager, act, false);
+                                    }else {
+                                        Utility.dismissAlertDialog();
                                     }
                                 }
                             };
