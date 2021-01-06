@@ -289,8 +289,8 @@ public class HomeActivity extends BaseActivity implements Observer {
     private static final String DEBUG_TAG = "Gestures";
     private GestureDetector mDetector;
     private RackDetailsModel rackDetailsModel;
-    private TextView txt_S022_Value,txt_S023_Value,txt_S024_Value,txt_S025_Value;
-    private TextView txt_Supply_Temp,txt_Supply_Humidity,txt_Exhaust_Temp,txt_Exhaust_Humidity;
+    private TextView txt_S022_Value, txt_S023_Value, txt_S024_Value, txt_S025_Value;
+    private TextView txt_Supply_Temp, txt_Supply_Humidity, txt_Exhaust_Temp, txt_Exhaust_Humidity;
 
     @SuppressLint({"HandlerLeak", "ServiceCast", "MissingPermission"})
     @Override
@@ -300,7 +300,7 @@ public class HomeActivity extends BaseActivity implements Observer {
         act = this;
         Utility.setSoftInputAlwaysHide(act);
 //        Utility.hideNavigationBar(act);
-       // Utility.getBroadCast(act);
+        // Utility.getBroadCast(act);
 
         alertview_diagnostics = new Dialog(act, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         alertview_diagnostics_details = new Dialog(act, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
@@ -328,14 +328,15 @@ public class HomeActivity extends BaseActivity implements Observer {
         prefManager = new PrefManager(act);
         sqliteHelper = new SqliteHelper(act);
         rackDetailsModel = sqliteHelper.getDataFromRackBlowerDetails();
-        if(rackDetailsModel != null){
+        if (rackDetailsModel != null) {
             responseHandler = new ResponseHandler(act, rackDetailsModel, allentownBlowerApplication, sqliteHelper);
-        }else {
+        } else {
             responseHandler = new ResponseHandler(act, sqliteHelper);
         }
         portConversion = new SerialPortConversion(act, responseHandler);
 
-        mDetector = new GestureDetector(act,new MyGestureListener());
+        mDetector = new GestureDetector(act, new MyGestureListener());
+        //rackDetailsModel = sqliteHelper.getDataFromRackBlowerDetails();
 
         // TODO :- Delete Records From Both Table BLFEEDBACK and BLSETPOINT
 //        sqliteHelper.deleteRecordOlderThan2Month();
@@ -518,9 +519,7 @@ public class HomeActivity extends BaseActivity implements Observer {
                 // TODO :- Vacuum Fuction Called Here For Database
 
 
-                try{
-
-
+                try {
 
 
                     SimpleDateFormat sdffortime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa", Locale.getDefault());
@@ -529,24 +528,23 @@ public class HomeActivity extends BaseActivity implements Observer {
                     ct = ct + " 02:00:00 AM";
                     Date setdt = sdffortime.parse(ct);
 
-                    ct = ct.replace(" 02:00:00 AM","") + " 02:00:04 AM";
+                    ct = ct.replace(" 02:00:00 AM", "") + " 02:00:04 AM";
                     Date added = sdffortime.parse(ct);
 
-                    ct = ct.replace(" 02:00:04 AM","") + " " + Utility.getCurrentTimeOnly();
+                    ct = ct.replace(" 02:00:04 AM", "") + " " + Utility.getCurrentTimeOnly();
                     Date now = sdffortime.parse(ct);
 
                     //Log.e("TAG","Outside : Setdt : " + setdt + "  now: " + now + "  Added :   " + added);
-                    if (now.after(setdt) && now.before(added))
-                    {
+                    if (now.after(setdt) && now.before(added)) {
                         Thread.sleep(4000);
-                        Log.e("TAG","Inside : Setdt : " + setdt + "  now: " + now + "  Added :   " + added);
+                        Log.e("TAG", "Inside : Setdt : " + setdt + "  now: " + now + "  Added :   " + added);
                         Log.e("TIME", "DB Vacuum started");
                         sqliteHelper.vacuum();
                         sqliteHelper.deleteRecordOlderThan2Month();
 //                    sqliteHelper.deleteRecordOlderThan2Month();
                         Log.e("TIME", "Vacuum has been finished.");
                     }
-                }catch(ParseException | InterruptedException ex){
+                } catch (ParseException | InterruptedException ex) {
                     // handle parsing exception if date string was different from the pattern applying into the SimpleDateFormat contructor
                     ex.printStackTrace();
                 }
@@ -986,7 +984,6 @@ public class HomeActivity extends BaseActivity implements Observer {
                 }
 
 
-
                 return res1.toString();
             }
         } catch (Exception ex) {
@@ -1018,7 +1015,6 @@ public class HomeActivity extends BaseActivity implements Observer {
                 }
 
 
-
                 return res1.toString();
             }
         } catch (Exception ex) {
@@ -1039,7 +1035,7 @@ public class HomeActivity extends BaseActivity implements Observer {
             if (btManagerService != null) {
                 bluetoothMacAddress = (String) btManagerService.getClass().getMethod("getAddress").invoke(btManagerService);
             }
-        } catch (Exception ex){
+        } catch (Exception ex) {
 
         }
         return bluetoothMacAddress;
@@ -1455,6 +1451,7 @@ public class HomeActivity extends BaseActivity implements Observer {
 
     class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         private static final String DEBUG_TAG = "Gestures";
+
         @Override
         public void onLongPress(MotionEvent e) {
             super.onLongPress(e);
@@ -2971,6 +2968,7 @@ public class HomeActivity extends BaseActivity implements Observer {
             public void onClick(View v) {
                 Log.e("RackActivityOpen... :---", "RackActivityOpen");
                 Intent intent = new Intent(act, RackSetUpNewActivity.class);
+//                Intent intent = new Intent(act, TestingActivity.class);
                 intent.putExtra("isFromSettingScreen", true);
                 startActivity(intent);
                 ResetCounter(0);
@@ -3368,28 +3366,28 @@ public class HomeActivity extends BaseActivity implements Observer {
         txt_S022_Value.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowEditTextDialogToUpdateValueBox("Supply Temp",txt_S022_Value,"S22");
+                ShowEditTextDialogToUpdateValueBox("Supply Temp", txt_S022_Value, "S22");
             }
         });
 
         txt_S023_Value.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowEditTextDialogToUpdateValueBox("Supply Humidity",txt_S023_Value,"S23");
+                ShowEditTextDialogToUpdateValueBox("Supply Humidity", txt_S023_Value, "S23");
             }
         });
 
         txt_S024_Value.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowEditTextDialogToUpdateValueBox("Exhaust Temp",txt_S024_Value,"S24");
+                ShowEditTextDialogToUpdateValueBox("Exhaust Temp", txt_S024_Value, "S24");
             }
         });
 
         txt_S025_Value.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowEditTextDialogToUpdateValueBox("Exhaust Humidity",txt_S025_Value,"S25");
+                ShowEditTextDialogToUpdateValueBox("Exhaust Humidity", txt_S025_Value, "S25");
             }
         });
     }
@@ -3973,26 +3971,26 @@ public class HomeActivity extends BaseActivity implements Observer {
                                                 // TODO :- Supply And Exhaust Temp, Humidity Alarm
 
                                                 String strF15 = feedbackArrayList.get(0).getF15();
-                                                if (!TextUtils.isEmpty(strF15)){
-                                                    if (strF15.charAt(0) == '1'){
+                                                if (!TextUtils.isEmpty(strF15)) {
+                                                    if (strF15.charAt(0) == '1') {
                                                         txt_Supply_Temp.setText("X");
                                                     } else {
                                                         txt_Supply_Temp.setText("");
                                                     }
 
-                                                    if (strF15.charAt(1) == '1'){
+                                                    if (strF15.charAt(1) == '1') {
                                                         txt_Supply_Humidity.setText("X");
                                                     } else {
                                                         txt_Supply_Humidity.setText("");
                                                     }
 
-                                                    if (strF15.charAt(2) == '1'){
+                                                    if (strF15.charAt(2) == '1') {
                                                         txt_Exhaust_Temp.setText("X");
                                                     } else {
                                                         txt_Exhaust_Temp.setText("");
                                                     }
 
-                                                    if (strF15.charAt(3) == '1'){
+                                                    if (strF15.charAt(3) == '1') {
                                                         txt_Exhaust_Humidity.setText("X");
                                                     } else {
                                                         txt_Exhaust_Humidity.setText("");
@@ -4002,7 +4000,7 @@ public class HomeActivity extends BaseActivity implements Observer {
                                             }
                                         } catch (Exception e) {
                                             e.printStackTrace();
-                                            Log.e("HomeSetAnalysisError",""+ e.getMessage());
+                                            Log.e("HomeSetAnalysisError", "" + e.getMessage());
                                         }
 
                                         // Sub SettingActivity AnalysisData
@@ -4515,17 +4513,15 @@ public class HomeActivity extends BaseActivity implements Observer {
             setAllColorToHomeScreenLayout("yellow");
         } else if (responseHandler.hexToBinary(feedbackArrayList.get(0).getF12()).charAt(6) == '1') { // for x1 = 1 yellow Screen
             setAllColorToHomeScreenLayout("yellow");
-        }
-        else if (strF15.charAt(0) == '1'){
+        } else if (strF15.charAt(0) == '1') {
             setAllColorToHomeScreenLayout("yellow");
-        }else if (strF15.charAt(1) == '1'){
+        } else if (strF15.charAt(1) == '1') {
             setAllColorToHomeScreenLayout("yellow");
-        }else if (strF15.charAt(2) == '1'){
+        } else if (strF15.charAt(2) == '1') {
             setAllColorToHomeScreenLayout("yellow");
-        }else if (strF15.charAt(3) == '1'){
+        } else if (strF15.charAt(3) == '1') {
             setAllColorToHomeScreenLayout("yellow");
-        }
-            else {
+        } else {
             isRedYellowColorHomeScreen = false;
             Log.e(TAG, "Calling setAllColorToHomeScreenLayout from getSupplyOrExhaustPassOrFail");
             setAllColorToHomeScreenLayout("green");
@@ -7173,9 +7169,9 @@ public class HomeActivity extends BaseActivity implements Observer {
                         if (edit_EnterTxt_alartview_box_max.getText().toString().length() == 0 && edit_EnterTxt_alartview_box_min.getText().toString().length() == 0) {
                             Utility.ShowMessage(act, "Warning!", "Please enter vaild text", "OK");
                         } else {
-                            textView.setText(edit_EnterTxt_alartview_box_max.getText().toString() +"/" + edit_EnterTxt_alartview_box_min.getText().toString());
+                            textView.setText(edit_EnterTxt_alartview_box_max.getText().toString() + "/" + edit_EnterTxt_alartview_box_min.getText().toString());
 
-                            String commandNew = responseHandler.stringToHex(edit_EnterTxt_alartview_box_max.getText().toString() ,true) +
+                            String commandNew = responseHandler.stringToHex(edit_EnterTxt_alartview_box_max.getText().toString(), true) +
                                     responseHandler.stringToHex(edit_EnterTxt_alartview_box_min.getText().toString(), true);
 
                             String command = Command + "=" + commandNew.toUpperCase();
@@ -7199,9 +7195,9 @@ public class HomeActivity extends BaseActivity implements Observer {
                         if (edit_EnterTxt_alartview_box_max.getText().toString().length() == 0 && edit_EnterTxt_alartview_box_min.getText().toString().length() == 0) {
                             Utility.ShowMessage(act, "Warning!", "Please enter vaild text", "OK");
                         } else {
-                            textView.setText(edit_EnterTxt_alartview_box_max.getText().toString() +"/" + edit_EnterTxt_alartview_box_min.getText().toString());
+                            textView.setText(edit_EnterTxt_alartview_box_max.getText().toString() + "/" + edit_EnterTxt_alartview_box_min.getText().toString());
 
-                            String commandNew = responseHandler.stringToHex(edit_EnterTxt_alartview_box_max.getText().toString() ,true) +
+                            String commandNew = responseHandler.stringToHex(edit_EnterTxt_alartview_box_max.getText().toString(), true) +
                                     responseHandler.stringToHex(edit_EnterTxt_alartview_box_min.getText().toString(), true);
                             String command = Command + "=" + commandNew.toUpperCase();
 
@@ -7224,9 +7220,9 @@ public class HomeActivity extends BaseActivity implements Observer {
                         if (edit_EnterTxt_alartview_box_max.getText().toString().length() == 0 && edit_EnterTxt_alartview_box_min.getText().toString().length() == 0) {
                             Utility.ShowMessage(act, "Warning!", "Please enter vaild text", "OK");
                         } else {
-                            textView.setText(edit_EnterTxt_alartview_box_max.getText().toString() +"/" + edit_EnterTxt_alartview_box_min.getText().toString());
+                            textView.setText(edit_EnterTxt_alartview_box_max.getText().toString() + "/" + edit_EnterTxt_alartview_box_min.getText().toString());
 
-                            String commandNew = responseHandler.stringToHex(edit_EnterTxt_alartview_box_max.getText().toString() ,true) +
+                            String commandNew = responseHandler.stringToHex(edit_EnterTxt_alartview_box_max.getText().toString(), true) +
                                     responseHandler.stringToHex(edit_EnterTxt_alartview_box_min.getText().toString(), true);
                             String command = Command + "=" + commandNew.toUpperCase();
 
@@ -7249,9 +7245,9 @@ public class HomeActivity extends BaseActivity implements Observer {
                         if (edit_EnterTxt_alartview_box_max.getText().toString().length() == 0 && edit_EnterTxt_alartview_box_min.getText().toString().length() == 0) {
                             Utility.ShowMessage(act, "Warning!", "Please enter vaild text", "OK");
                         } else {
-                            textView.setText(edit_EnterTxt_alartview_box_max.getText().toString() +"/" + edit_EnterTxt_alartview_box_min.getText().toString());
+                            textView.setText(edit_EnterTxt_alartview_box_max.getText().toString() + "/" + edit_EnterTxt_alartview_box_min.getText().toString());
 
-                            String commandNew = responseHandler.stringToHex(edit_EnterTxt_alartview_box_max.getText().toString() ,true) +
+                            String commandNew = responseHandler.stringToHex(edit_EnterTxt_alartview_box_max.getText().toString(), true) +
                                     responseHandler.stringToHex(edit_EnterTxt_alartview_box_min.getText().toString(), true);
                             String command = Command + "=" + commandNew.toUpperCase();
 
@@ -7520,9 +7516,7 @@ public class HomeActivity extends BaseActivity implements Observer {
                 alertView_Export_Delete_Record.dismiss();
                 try {
                     responseHandler.resetFAndSDataForBlower_Api();
-                }
-                catch (JSONException e)
-                {
+                } catch (JSONException e) {
                     Log.e("TAG", e.getMessage());
                 }
 
@@ -8134,7 +8128,7 @@ public class HomeActivity extends BaseActivity implements Observer {
                 else
                     CallReadWriteFuncation(command, 1); // S01 = 01442 and F01 = 0524
             }
-        } else if(allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nSetPointCommandOnly_Api){
+        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nSetPointCommandOnly_Api) {
             String command = prefManager.getSendCommandS().trim();
             if (command.startsWith("W"))
                 CallReadWriteFuncation(command, 202); // W01 = 01442 or W02 = 0524
@@ -8290,7 +8284,90 @@ public class HomeActivity extends BaseActivity implements Observer {
             reDirectHomeScreenFunction(false);
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nCallUnitChangeObserver) {
             sendS01CommandAfterUnitChange(typeUnitValue);
+        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_ACH_Value_Write_Only_From_Setting_Screen) {
+            String achValue = prefManager.getACHValue().trim();
+            ArrayList<SetPointCommand> setpointArrayList = responseHandler.getLastSetPointData();
+            String S07_YY = responseHandler.stringToHex(achValue, true);
+            String S07_XX = responseHandler.getHexString(setpointArrayList.get(0).getS07(), true);
+            String command = "S07=" + S07_XX.concat(S07_YY).toUpperCase();
+            Utility.Log(TAG, "Sending S07_YY ==> " + command);
+            CallReadWriteFuncation(command, 301);
+        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Polarity_Value_Write_Only_From_Setting_Screen) {
+            String polarityValue = prefManager.getPolarityValue().trim();
+            String polarityValueId = prefManager.getPolarityIdValue().trim();
+            ArrayList<SetPointCommand> setpointArrayList = responseHandler.getLastSetPointData();
+            String bin = responseHandler.hexToBinary(setpointArrayList.get(0).getS01());
+            Utility.Log(TAG, "hexToBinary => " + bin);
+            //0000111100001000 //0F08
+            //change to 0F00
+            String command = "";
+
+            String S01 = responseHandler.binaryToHex(bin.substring(0, 12).concat(polarityValueId).concat(bin.substring(13))).toUpperCase();
+
+            if (S01.length() == 1)
+                S01 = "000" + S01;
+            else if (S01.length() == 2)
+                S01 = "00" + S01;
+            else if (S01.length() == 3)
+                S01 = "0" + S01;
+
+
+            command = "S01=" + S01;
+
+            Utility.Log(TAG, "Sending S01 ==> " + command);
+
+            CallReadWriteFuncation(command, 302);
+        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Supply_CFM_Value_Write_Only_From_Setting_Screen) {
+            String supplyValue = prefManager.getSupplyValue().trim();
+            String S07_XX = responseHandler.stringToHex(supplyValue, true);
+            String S07_YY = responseHandler.getHexString(setpointArrayList.get(0).getS07(), false);
+            String command = "S07=" + S07_XX.concat(S07_YY).toUpperCase();
+            Utility.Log(TAG, "Sending S07_YY ==> " + command);
+            CallReadWriteFuncation(command, 303);
+
+        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Exhaust_WC_Value_Write_Only_From_Setting_Screen) {
+            String exhaustValue = prefManager.getExhaustValue().trim();
+
+            String barvalue = exhaustValue;
+
+            int S10XYYY = (int) (Float.parseFloat(barvalue.replace("-", "")) * 1000);
+
+            String S10_XYYY = "";
+            String hexvalue = Integer.toHexString(S10XYYY);
+
+            if (hexvalue.length() == 0)
+                hexvalue = "000";
+            else if (hexvalue.length() == 1)
+                hexvalue = "00" + hexvalue;
+            else if (hexvalue.length() == 2)
+                hexvalue = "0" + hexvalue;
+
+            Utility.Log(TAG, "Hex String value =>> " + hexvalue);
+            if (barvalue.startsWith("-")) {
+                S10_XYYY = "8" + hexvalue;
+            } else {
+                S10_XYYY = "0" + hexvalue;
+            }
+
+            String command = "S10=" + S10_XYYY.toUpperCase();
+
+            Utility.Log(TAG, "Sending S10_XYYY ==> " + command);
+            CallReadWriteFuncation(command, 304);
+
+        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Dialog_From_Setting_Screen) {
+//            Toast.makeText(act, "Success..!!", Toast.LENGTH_LONG).show();
+            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Dialog);
         }
+//        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Polarity_Value_Write_Only_From_Setting_Screen) {
+//            String command = prefManager.getSendCommandS().trim();
+//            CallReadWriteFuncation(command, 102);
+//        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Supply_CFM_Value_Write_Only_From_Setting_Screen) {
+//            String command = prefManager.getSendCommandS().trim();
+//            CallReadWriteFuncation(command, 103);
+//        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Exhaust_WC_Value_Write_Only_From_Setting_Screen) {
+//            String command = prefManager.getSendCommandS().trim();
+//            CallReadWriteFuncation(command, 104);
+//        }
     }
 
     public void reDirectHomeScreenFunction(boolean isSubSettingHomeButtonClicked) {
@@ -8714,7 +8791,7 @@ public class HomeActivity extends BaseActivity implements Observer {
                 communicationController.start();
         }
 
-        if (rackDetailsModel != null){
+        if (rackDetailsModel != null) {
             rackDetailsModel = sqliteHelper.getDataFromRackBlowerDetails();
             responseHandler.rackDetailsModels = rackDetailsModel;
             responseHandler.allentownBlowerApplication = allentownBlowerApplication;

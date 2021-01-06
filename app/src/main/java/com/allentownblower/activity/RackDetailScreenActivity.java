@@ -53,7 +53,7 @@ import java.util.Map;
 public class RackDetailScreenActivity extends AppCompatActivity {
 
     private static final String TAG = "RackDetailScreenActivity";
-    private TextView mTxtSerialNo, mTxtCustomerName, mTxtHostName, mTxtGetDetails, mTxtBlowerDetailTab, mTxtOtherDetailsTab, mTxtEmailTab, mTxtHostAddressTab;
+    private TextView mTxtSerialNo, mTxtCustomerName, mTxtHostName, mTxtGetDetails, mTxtBlowerDetailTab, mTxtOtherDetailsTab, mTxtEmailTab, mTxtHostAddressTab, mTxtTouchScreenDetailTab;
     private Activity act;
     private Dialog edittext_alertview_selection;
     private TextView txt_Title_alartview_box, btn_Cancel_alartview_box, btn_Ok_alartview_box, edit_EnterTxt_alartview_box, mTxtUpdateHostName, mTxtUpdateButton;
@@ -67,11 +67,11 @@ public class RackDetailScreenActivity extends AppCompatActivity {
     private ArrayList<RackDetailsModel> arrRackBlowerDetailList = new ArrayList<>();
     private JSONObjectHandler jsonObjectHandler;
     private RelativeLayout mRelativeLayoutSerialCustomerMain, mRelativeLayoutBlowerOtherServerDetailsMain;
-    private LinearLayout mLinearLayoutUpdateButton, mLinearLayoutBackButton, mLinearLayoutTab, mLinearLayoutBlowerDetails, mLinearLayoutOtherDetails, mLinearLayoutHostAddress, mLinearLayoutEmail;
+    private LinearLayout mLinearLayoutUpdateButton, mLinearLayoutBackButton, mLinearLayoutTab, mLinearLayoutBlowerDetails, mLinearLayoutOtherDetails, mLinearLayoutHostAddress, mLinearLayoutEmail, mLinearLayoutTouchScreen;
     private RadioGroup radioGroup_aln_email_service_value, radioGroup_is_reg_alarm_on_value, radioGroup_is_temp_hmd_alarm_value;
     private RadioButton radioButton_aln_Yes, radioButton_aln_No, radioButton_is_reg_On, radioButton_is_reg_Off, radioButton_is_temp_hmd_Yes, radioButton_is_temp_hmd_No;
     private TextView txt_rack_serial_value, txt_blower_model_value, txt_supply_blower_serial_value, txt_exhaust_blower_serial_value, txt_ablower_serial_value,
-            txt_ablower_wifimac_value, txt_ablower_bluetooth_mac_value, txt_ablower_ip_address_value; // TODO :- blower details
+            txt_ablower_wifimac_value, txt_ablower_bluetooth_mac_value, txt_ablower_ip_address_value, txt_ablower_lanmac_value; // TODO :- blower details
     private TextView txt_alert_email_ds_value, txt_report_email_ds_value, txt_last_alarm_value, txt_last_hmdt_alarm_value,
             txt_temp_unit_value, txt_pressure_unit_value, txt_air_flow_unit_value; // TODO:- others details
     private String strAlnEmailServiceSelectValue, strIsRegAlarmOnSelectValue, strIsTempHmdAlarmSelectValue;
@@ -138,6 +138,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
         mTxtGetDetails = findViewById(R.id.txt_get_detail);
 
         mTxtBlowerDetailTab = findViewById(R.id.txt_blower_detail);
+        mTxtTouchScreenDetailTab = findViewById(R.id.txt_touchscreen_detail);
         mTxtOtherDetailsTab = findViewById(R.id.txt_other_detail);
 
         mRelativeLayoutSerialCustomerMain = findViewById(R.id.relative_layout_serial_customer_main);
@@ -155,10 +156,10 @@ public class RackDetailScreenActivity extends AppCompatActivity {
         txt_blower_model_value = findViewById(R.id.txt_blower_model_value);
         txt_supply_blower_serial_value = findViewById(R.id.txt_supply_blower_serial_value);
         txt_exhaust_blower_serial_value = findViewById(R.id.txt_exhaust_blower_serial_value);
-        txt_ablower_serial_value = findViewById(R.id.txt_ablower_serial_value);
-        txt_ablower_wifimac_value = findViewById(R.id.txt_ablower_wifimac_value);
-        txt_ablower_bluetooth_mac_value = findViewById(R.id.txt_ablower_bluetooth_mac_value);
-        txt_ablower_ip_address_value = findViewById(R.id.txt_ablower_ip_address_value);
+
+
+
+
         txt_blower_name = findViewById(R.id.txt_blower_name);
         txt_building_name = findViewById(R.id.txt_building_name);
         txt_room_name = findViewById(R.id.txt_room_name);
@@ -203,6 +204,14 @@ public class RackDetailScreenActivity extends AppCompatActivity {
         mLinearLayoutEmail = findViewById(R.id.email_linear_main_layout);
         mTxtEmailTab = findViewById(R.id.txt_email_detail);
 
+        //TouchScreen Details Variable
+        mLinearLayoutTouchScreen = findViewById(R.id.touch_screen_main_linear_layout);
+        txt_ablower_serial_value = findViewById(R.id.txt_ablower_serial_value);
+        txt_ablower_wifimac_value = findViewById(R.id.txt_ablower_wifimac_value);
+        txt_ablower_lanmac_value = findViewById(R.id.txt_ablower_lanmac_value);
+        txt_ablower_bluetooth_mac_value = findViewById(R.id.txt_ablower_bluetooth_mac_value);
+        txt_ablower_ip_address_value = findViewById(R.id.txt_ablower_ip_address_value);
+
     }
 
     public void showDetailWhenScreenLoad() {
@@ -219,6 +228,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
         txt_exhaust_blower_serial_value.setText(rackDetailsModel.getmExhaustBlowerSerial());
         txt_ablower_serial_value.setText(rackDetailsModel.getmABlowerSerial());
         txt_ablower_wifimac_value.setText(rackDetailsModel.getmABlowerWiFiMAC());
+        txt_ablower_lanmac_value.setText(rackDetailsModel.getmABlowerLANMAC());
         txt_ablower_bluetooth_mac_value.setText(rackDetailsModel.getmABlowerBluetoothMAC());
         if(!rackDetailsModel.getmABlowerWiFiIPAddress().equals("")) {
             txt_ablower_ip_address_value.setText(rackDetailsModel.getmABlowerWiFiIPAddress());
@@ -336,6 +346,24 @@ public class RackDetailScreenActivity extends AppCompatActivity {
                 mLinearLayoutHostAddress.setVisibility(View.GONE);
                 mTxtEmailTab.setBackground(getResources().getDrawable(R.drawable.black_home_screen_textbox));
                 mLinearLayoutEmail.setVisibility(View.GONE);
+                mTxtTouchScreenDetailTab.setBackground(getResources().getDrawable(R.drawable.black_home_screen_textbox));
+                mLinearLayoutTouchScreen.setVisibility(View.GONE);
+            }
+        });
+
+        mTxtTouchScreenDetailTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mTxtTouchScreenDetailTab.setBackground(getResources().getDrawable(R.drawable.dark_blue_blwrdetl_screen_box));
+                mLinearLayoutTouchScreen.setVisibility(View.VISIBLE);
+                mTxtOtherDetailsTab.setBackground(getResources().getDrawable(R.drawable.black_home_screen_textbox));
+                mLinearLayoutOtherDetails.setVisibility(View.GONE);
+                mTxtHostAddressTab.setBackground(getResources().getDrawable(R.drawable.black_home_screen_textbox));
+                mLinearLayoutHostAddress.setVisibility(View.GONE);
+                mTxtEmailTab.setBackground(getResources().getDrawable(R.drawable.black_home_screen_textbox));
+                mLinearLayoutEmail.setVisibility(View.GONE);
+                mTxtBlowerDetailTab.setBackground(getResources().getDrawable(R.drawable.black_home_screen_textbox));
+                mLinearLayoutBlowerDetails.setVisibility(View.GONE);
             }
         });
 
@@ -350,6 +378,8 @@ public class RackDetailScreenActivity extends AppCompatActivity {
                 mLinearLayoutHostAddress.setVisibility(View.GONE);
                 mTxtEmailTab.setBackground(getResources().getDrawable(R.drawable.black_home_screen_textbox));
                 mLinearLayoutEmail.setVisibility(View.GONE);
+                mTxtTouchScreenDetailTab.setBackground(getResources().getDrawable(R.drawable.black_home_screen_textbox));
+                mLinearLayoutTouchScreen.setVisibility(View.GONE);
 
             }
         });
@@ -365,6 +395,8 @@ public class RackDetailScreenActivity extends AppCompatActivity {
                 mLinearLayoutBlowerDetails.setVisibility(View.GONE);
                 mTxtEmailTab.setBackground(getResources().getDrawable(R.drawable.black_home_screen_textbox));
                 mLinearLayoutEmail.setVisibility(View.GONE);
+                mTxtTouchScreenDetailTab.setBackground(getResources().getDrawable(R.drawable.black_home_screen_textbox));
+                mLinearLayoutTouchScreen.setVisibility(View.GONE);
             }
         });
 
@@ -379,6 +411,8 @@ public class RackDetailScreenActivity extends AppCompatActivity {
                 mLinearLayoutOtherDetails.setVisibility(View.GONE);
                 mTxtBlowerDetailTab.setBackground(getResources().getDrawable(R.drawable.black_home_screen_textbox));
                 mLinearLayoutBlowerDetails.setVisibility(View.GONE);
+                mTxtTouchScreenDetailTab.setBackground(getResources().getDrawable(R.drawable.black_home_screen_textbox));
+                mLinearLayoutTouchScreen.setVisibility(View.GONE);
             }
         });
 

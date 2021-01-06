@@ -108,18 +108,23 @@ public class ObserverActionID {
 
     //ACH Value Write for RackSetUp Screen
     public static int nRackSetUp_ACH_Value_Write_Only = 101;
+    public static int nRackSetUp_ACH_Value_Write_Only_From_Setting_Screen = 301;
 
     //Polarity Value Write for RackSetUp Screen
     public static int nRackSetUp_Polarity_Value_Write_Only = 102;
+    public static int nRackSetUp_Polarity_Value_Write_Only_From_Setting_Screen = 302;
 
     //Supply(CFM) Value Write for RackSetUp Screen
     public static int nRackSetUp_Supply_CFM_Value_Write_Only = 103;
+    public static int nRackSetUp_Supply_CFM_Value_Write_Only_From_Setting_Screen = 303;
 
     //Exhaust(WC) Value Write for RackSetUp Screen
     public static int nRackSetUp_Exhaust_WC_Value_Write_Only = 104;
+    public static int nRackSetUp_Exhaust_WC_Value_Write_Only_From_Setting_Screen = 304;
 
     //RackSetUp Screen Completed
     public static int nRackSetUp_Dialog = 105;
+    public static int nRackSetUp_Dialog_From_Setting_Screen = 305;
 
     public static int nCloseProgressBar = 106;
 

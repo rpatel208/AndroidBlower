@@ -195,7 +195,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/relative_layout_update_button"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <!--tab_button_layout-->
             <LinearLayout
@@ -241,6 +241,22 @@
                         android:paddingRight="@dimen/_5sdp"
                         android:paddingBottom="@dimen/_3sdp"
                         android:text="Blower Details"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_15sdp" />
+
+                    <TextView
+                        android:id="@+id/txt_touchscreen_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_weight="1.6"
+                        android:background="@drawable/black_home_screen_textbox"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:paddingTop="@dimen/_3sdp"
+                        android:paddingRight="@dimen/_5sdp"
+                        android:paddingBottom="@dimen/_3sdp"
+                        android:text="TouchScreen Details"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_15sdp" />
 
@@ -950,6 +966,7 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:orientation="horizontal">
 
                         <View
@@ -965,6 +982,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
                         <TextView
@@ -990,7 +1008,7 @@
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/txt_ablower_serial"
+                                    android:id="@+id/txt_ablower_serial1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_2sdp"
@@ -1002,7 +1020,7 @@
                                     android:textSize="@dimen/_12sdp" />
 
                                 <TextView
-                                    android:id="@+id/txt_ablower_wifimac"
+                                    android:id="@+id/txt_ablower_wifimac1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_2sdp"
@@ -1014,7 +1032,7 @@
                                     android:textSize="@dimen/_12sdp" />
 
                                 <TextView
-                                    android:id="@+id/txt_ablower_bluetooth_mac"
+                                    android:id="@+id/txt_ablower_bluetooth_mac1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_2sdp"
@@ -1026,7 +1044,7 @@
                                     android:textSize="@dimen/_12sdp" />
 
                                 <TextView
-                                    android:id="@+id/txt_ablower_ip_address"
+                                    android:id="@+id/txt_ablower_ip_address1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_2sdp"
@@ -1052,7 +1070,7 @@
                                     android:orientation="vertical">
 
                                     <TextView
-                                        android:id="@+id/txt_ablower_serial_value"
+                                        android:id="@+id/txt_ablower_serial_value1"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/_2sdp"
@@ -1065,7 +1083,7 @@
                                         android:textSize="@dimen/_12sdp" />
 
                                     <TextView
-                                        android:id="@+id/txt_ablower_wifimac_value"
+                                        android:id="@+id/txt_ablower_wifimac_value1"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/_2sdp"
@@ -1078,7 +1096,7 @@
                                         android:textSize="@dimen/_12sdp" />
 
                                     <TextView
-                                        android:id="@+id/txt_ablower_bluetooth_mac_value"
+                                        android:id="@+id/txt_ablower_bluetooth_mac_value1"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/_2sdp"
@@ -1091,7 +1109,7 @@
                                         android:textSize="@dimen/_12sdp" />
 
                                     <TextView
-                                        android:id="@+id/txt_ablower_ip_address_value"
+                                        android:id="@+id/txt_ablower_ip_address_value1"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/_2sdp"
@@ -1117,7 +1135,7 @@
 
 
                                 <ImageView
-                                    android:id="@+id/img_ablower_serial"
+                                    android:id="@+id/img_ablower_serial1"
                                     android:layout_width="@dimen/_15sdp"
                                     android:layout_height="@dimen/_15sdp"
                                     android:layout_gravity="left"
@@ -1126,7 +1144,7 @@
                                     android:src="@drawable/ic_edit_icon" />
 
                                 <ImageView
-                                    android:id="@+id/img_ablower_wifi_mac"
+                                    android:id="@+id/img_ablower_wifi_mac1"
                                     android:layout_width="@dimen/_15sdp"
                                     android:layout_height="@dimen/_15sdp"
                                     android:layout_gravity="left"
@@ -1135,7 +1153,7 @@
                                     android:src="@drawable/ic_edit_icon" />
 
                                 <ImageView
-                                    android:id="@+id/img_ablower_bluetooth_mac"
+                                    android:id="@+id/img_ablower_bluetooth_mac1"
                                     android:layout_width="@dimen/_15sdp"
                                     android:layout_height="@dimen/_15sdp"
                                     android:layout_gravity="left"
@@ -1144,7 +1162,7 @@
                                     android:src="@drawable/ic_edit_icon" />
 
                                 <ImageView
-                                    android:id="@+id/img_ablower_ip_address"
+                                    android:id="@+id/img_ablower_ip_address1"
                                     android:layout_width="@dimen/_15sdp"
                                     android:layout_height="@dimen/_15sdp"
                                     android:layout_gravity="left"
@@ -1833,6 +1851,238 @@
 
             </LinearLayout>
 
+            <!--TouchScreen_main_layout_field-->
+            <LinearLayout
+                android:id="@+id/touch_screen_main_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/relative_layout_update_button"
+                android:layout_below="@+id/linear_layout_tab_title"
+                android:background="@drawable/black_home_screen_textbox"
+                android:paddingBottom="0dp"
+                android:visibility="gone"
+                tools:ignore="NotSibling"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:gravity="center"
+                    android:padding="@dimen/_1sdp"
+                    android:text=" TouchScreen "
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:orientation="horizontal">
+
+                    <!--Touch_Screen_name_layout_filed-->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txt_ablower_serial"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:gravity="center_vertical"
+                            android:minLines="2"
+                            android:padding="@dimen/_1sdp"
+                            android:text=" Serial : "
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/txt_ablower_wifimac"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:gravity="center_vertical"
+                            android:minLines="2"
+                            android:padding="@dimen/_1sdp"
+                            android:text=" WiFi MAC :"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/txt_ablower_lanmac"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:gravity="center_vertical"
+                            android:minLines="2"
+                            android:padding="@dimen/_1sdp"
+                            android:text=" Lan Mac :"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/txt_ablower_bluetooth_mac"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:gravity="center_vertical"
+                            android:minLines="2"
+                            android:padding="@dimen/_1sdp"
+                            android:text=" Bluetooth MAC :"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/txt_ablower_ip_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:gravity="center_vertical"
+                            android:minLines="2"
+                            android:padding="@dimen/_1sdp"
+                            android:text=" IP Address :"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </LinearLayout>
+
+                    <!--Touch_Screen_value_layout_filed-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txt_ablower_serial_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_2sdp"
+                                android:background="@drawable/black_home_screen_textbox"
+                                android:gravity="center"
+                                android:minLines="2"
+                                android:padding="@dimen/_1sdp"
+                                android:text="RackSerial"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:id="@+id/txt_ablower_wifimac_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_2sdp"
+                                android:background="@drawable/black_home_screen_textbox"
+                                android:gravity="center"
+                                android:minLines="2"
+                                android:padding="@dimen/_1sdp"
+                                android:text="BlowerModel"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:id="@+id/txt_ablower_lanmac_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_2sdp"
+                                android:background="@drawable/black_home_screen_textbox"
+                                android:gravity="center"
+                                android:minLines="2"
+                                android:padding="@dimen/_1sdp"
+                                android:text="LanMac"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:id="@+id/txt_ablower_bluetooth_mac_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_2sdp"
+                                android:background="@drawable/black_home_screen_textbox"
+                                android:gravity="center"
+                                android:minLines="2"
+                                android:padding="@dimen/_1sdp"
+                                android:text="SupplyBlowerSerial"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:id="@+id/txt_ablower_ip_address_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_2sdp"
+                                android:background="@drawable/black_home_screen_textbox"
+                                android:gravity="center"
+                                android:minLines="2"
+                                android:padding="@dimen/_1sdp"
+                                android:text="ExhaustBlowerSerial"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!--Touch_Screen_icon_layout_filed-->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+
+                        <ImageView
+                            android:id="@+id/img_ablower_serial"
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="@dimen/_15sdp"
+                            android:layout_gravity="left"
+                            android:layout_marginTop="@dimen/_12sdp"
+                            android:backgroundTint="@color/blwrdetl_blue"
+                            android:src="@drawable/ic_edit_icon" />
+
+                        <ImageView
+                            android:id="@+id/img_ablower_wifi_mac"
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="@dimen/_15sdp"
+                            android:layout_gravity="left"
+                            android:layout_marginTop="@dimen/_18sdp"
+                            android:backgroundTint="@color/blwrdetl_blue"
+                            android:src="@drawable/ic_edit_icon" />
+
+                        <ImageView
+                            android:id="@+id/img_ablower_bluetooth_mac"
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="@dimen/_15sdp"
+                            android:layout_gravity="left"
+                            android:layout_marginTop="@dimen/_18sdp"
+                            android:backgroundTint="@color/blwrdetl_blue"
+                            android:src="@drawable/ic_edit_icon" />
+
+                        <ImageView
+                            android:id="@+id/img_ablower_ip_address"
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="@dimen/_15sdp"
+                            android:layout_gravity="left"
+                            android:layout_marginTop="@dimen/_18sdp"
+                            android:backgroundTint="@color/blwrdetl_blue"
+                            android:src="@drawable/ic_edit_icon" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </RelativeLayout>
 

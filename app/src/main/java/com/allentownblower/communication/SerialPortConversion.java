@@ -378,7 +378,7 @@ public class SerialPortConversion {
 //            ResultData = "��";
 //        }
 
-       // Utility.Log(TAG, "Command =  " + ResultData);
+        Utility.Log(TAG, "ResultData =  " + ResultData.toString());
         Utility.Log(TAG, "Comport Received Data Length = " + ResultData.length());
         Utility.Log(TAG, "Command Finished");
 
@@ -430,6 +430,14 @@ public class SerialPortConversion {
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Exhaust_WC_Value_Write_Only);
             } else if (isStart == 104) {
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Dialog);
+            } else if (isStart == 301) {
+                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Polarity_Value_Write_Only_From_Setting_Screen);
+            } else if (isStart == 302) {
+                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Supply_CFM_Value_Write_Only_From_Setting_Screen);
+            } else if (isStart == 303) {
+                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Exhaust_WC_Value_Write_Only_From_Setting_Screen);
+            } else if (isStart == 304) {
+                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Dialog_From_Setting_Screen);
             }
         } else if (command.equals("D12")) {
             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStartService);

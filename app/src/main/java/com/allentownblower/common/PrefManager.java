@@ -30,6 +30,11 @@ public class PrefManager {
     private static final String setCount = "setCount";
     private static final String setKeyFromApi = "setKeyFromApi";
     private static final String setMultiCommandCount = "setMultiCommandCount";
+    private static final String setIsStart = "setIsStart";
+    private static final String setAchValue = "setAchValue";
+    private static final String setPolarityValue = "setPolarityValue";
+    private static final String setSupplyValue = "setSupplyValue";
+    private static final String setExhaustValue = "setExhaustValue";
 
     private static final String str_Z0 = "str_Z0";
     private static final String str_Z2 = "str_Z2";
@@ -84,6 +89,15 @@ public class PrefManager {
 
     public String getSendCommandS() {
         return pref.getString(SendCommandS, "S");
+    }
+
+    public void setIsStart(int isStart) {
+        editor.putInt(setIsStart, isStart);
+        editor.commit();
+    }
+
+    public int getIsStart() {
+        return pref.getInt(setIsStart, 0);
     }
 
     public void setCount(int count){
@@ -326,4 +340,50 @@ public class PrefManager {
     public String getHostName(){
         return pref.getString(HostName,"http://192.168.1.52");
     }
+
+    public void setACHValue(String achValue){
+        editor.putString(setAchValue,achValue);
+        editor.commit();
+    }
+
+    public String getACHValue(){
+        return pref.getString(setAchValue,"");
+    }
+
+    public void setPolarityValue(String polarityValue){
+        editor.putString(setPolarityValue,polarityValue);
+        editor.commit();
+    }
+
+    public String getPolarityValue(){
+        return pref.getString(setPolarityValue,"");
+    }
+
+    public void setSupplyValue(String supplyValue){
+        editor.putString(setSupplyValue,supplyValue);
+        editor.commit();
+    }
+
+    public String getSupplyValue(){
+        return pref.getString(setSupplyValue,"");
+    }
+
+    public void setExhaustValue(String exhaustValue){
+        editor.putString(setExhaustValue,exhaustValue);
+        editor.commit();
+    }
+
+    public String getExhaustValue(){
+        return pref.getString(setExhaustValue,"");
+    }
+
+    public void setPolarityIdValue(String polarityIdValue){
+        editor.putString(setExhaustValue,polarityIdValue);
+        editor.commit();
+    }
+
+    public String getPolarityIdValue(){
+        return pref.getString(setExhaustValue,"");
+    }
+
 }
