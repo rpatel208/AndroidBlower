@@ -62,8 +62,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".activity.TestingActivity"
-            android:screenOrientation="landscape"></activity>
         <activity
             android:name=".activity.RackDetailScreenActivity"
             android:screenOrientation="landscape"></activity>
