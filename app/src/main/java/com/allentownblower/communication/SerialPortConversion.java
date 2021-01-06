@@ -378,7 +378,7 @@ public class SerialPortConversion {
 //            ResultData = "��";
 //        }
 
-        Utility.Log(TAG, "ResultData =  " + ResultData.toString());
+//        Utility.Log(TAG, "ResultData =  " + ResultData.toString());
         Utility.Log(TAG, "Comport Received Data Length = " + ResultData.length());
         Utility.Log(TAG, "Command Finished");
 

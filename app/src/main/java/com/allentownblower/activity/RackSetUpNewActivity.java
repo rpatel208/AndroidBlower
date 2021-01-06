@@ -1349,9 +1349,9 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
                 if (alertview_Save_Dialog != null && alertview_Save_Dialog.isShowing()) {
                     alertview_Save_Dialog.dismiss();
                 }
-                saveButtonFunction();
                 dpHelper.setIsSetUpCompletedColoumn();
                 dpHelper.deleteAllRecordFromAllTable(false);
+                saveButtonFunction();
 //                alertview_Save_Dialog.dismiss();
             }
         });
