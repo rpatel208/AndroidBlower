@@ -139,6 +139,9 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             isFromSettingScreen = false;
         } else {
             isFromSettingScreen = extras.getBoolean("isFromSettingScreen", false);
+            responseHandler = (ResponseHandler) getIntent().getSerializableExtra("responseHandler");
+            portConversion = (SerialPortConversion) getIntent().getSerializableExtra("portConversion");
+            prefManager = (PrefManager) getIntent().getSerializableExtra("prefManager");
         }
 
         if (!isFromSettingScreen) {
@@ -572,7 +575,17 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
 //                dpHelper.updateValueIntoDatabase(subModelNo, Utility.getCurrentTimeStamp(), "", Utility.getCurrentTimeStamp(), 1,
 //                        ACHValue, polarityValue, supplyValue, exhaustValue, mLockValue);
 //                Toast.makeText(act, "Updated Succesfully", Toast.LENGTH_SHORT).show();
-            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_ACH_Value_Write_Only);
+            if (!isFromSettingScreen){
+                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_ACH_Value_Write_Only);
+            } else {
+                prefManager.setACHValue(ACHValue);
+                prefManager.setPolarityValue(polarityValue);
+                prefManager.setSupplyValue(supplyValue);
+                prefManager.setExhaustValue(exhaustValue);
+                prefManager.setPolarityIdValue(polarityValueId);
+                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_ACH_Value_Write_Only_From_Setting_Screen);
+            }
+
         }
 
     }
@@ -1087,6 +1100,12 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
         mRadioGroupLock.setOnCheckedChangeListener(null);
         mRadioGroupLock.clearCheck();
         mLockValue = "";
+        ACHValue = "";
+        polarityValue = "";
+        supplyValue = "";
+        exhaustValue = "";
+        exhaustSelectedSpinnerValue = "";
+        supplySelectedSpinnerValue = "";
     }
 
     private void polarityResetFunction() {
@@ -1330,9 +1349,9 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
                 if (alertview_Save_Dialog != null && alertview_Save_Dialog.isShowing()) {
                     alertview_Save_Dialog.dismiss();
                 }
-                dpHelper.deleteAllRecordFromAllTable(false);
-                dpHelper.setIsSetUpCompletedColoumn();
                 saveButtonFunction();
+                dpHelper.setIsSetUpCompletedColoumn();
+                dpHelper.deleteAllRecordFromAllTable(false);
 //                alertview_Save_Dialog.dismiss();
             }
         });
@@ -1372,13 +1391,13 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             }
         });
 
-        if (!isFromSettingScreen) {
-            if (prefManager != null) {
-                if (prefManager.getOpenNode()) {
-                    portConversion.closeNode();
-                }
-            }
-        }
+//        if (!isFromSettingScreen) {
+//            if (prefManager != null) {
+//                if (prefManager.getOpenNode()) {
+//                    portConversion.closeNode();
+//                }
+//            }
+//        }
 
         TextView txt_dailogTitle = alertview.findViewById(R.id.txt_dailogTitle);
         TextView txt_dailogDesc = alertview.findViewById(R.id.txt_dailogDesc);
@@ -1490,11 +1509,10 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
                         Utility.AlertShowMessage(act, "Alert", "serial port not found.", "OK");
                 }
             }
-
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_ACH_Value_Write_Only) {
             Log.e(TAG, spinnerSelectedACHValue);
             ACHValue = spinnerSelectedACHValue;
-            setpointArrayList = responseHandler.getLastSetPointData();
+            ArrayList<SetPointCommand> setpointArrayList = responseHandler.getLastSetPointData();
             String S07_YY = responseHandler.stringToHex(ACHValue, true);
             String S07_XX = responseHandler.getHexString(setpointArrayList.get(0).getS07(), true);
             String command = "S07=" + S07_XX.concat(S07_YY).toUpperCase();
@@ -1502,7 +1520,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             CallReadWriteFuncation(command, 101);
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Polarity_Value_Write_Only) {
             Log.e(TAG, polarityValue);
-            setpointArrayList = responseHandler.getLastSetPointData();
+            ArrayList<SetPointCommand> setpointArrayList = responseHandler.getLastSetPointData();
             String bin = responseHandler.hexToBinary(setpointArrayList.get(0).getS01());
             Utility.Log(TAG, "hexToBinary => " + bin);
             //0000111100001000 //0F08
@@ -1526,7 +1544,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             CallReadWriteFuncation(command, 102);
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Supply_CFM_Value_Write_Only) {
             Log.e(TAG, supplyValue);
-            setpointArrayList = responseHandler.getLastSetPointData();
+            ArrayList<SetPointCommand> setpointArrayList = responseHandler.getLastSetPointData();
             String S07_XX = responseHandler.stringToHex(supplyValue, true);
             String S07_YY = responseHandler.getHexString(setpointArrayList.get(0).getS07(), false);
             String command = "S07=" + S07_XX.concat(S07_YY).toUpperCase();
