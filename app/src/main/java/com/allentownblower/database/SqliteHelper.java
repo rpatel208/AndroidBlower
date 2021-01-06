@@ -528,7 +528,8 @@ public class SqliteHelper extends SQLiteOpenHelper {
 //                        DatabaseTable.COL_BLRACKSETUP_WITH_WITHOUT_LOCK + " = " + "'" + mLockValue + "'";
 //            }
             else {
-                updateQuery = "UPDATE " + DatabaseTable.TBL_BLRACKSETUP + " SET " + DatabaseTable.COL_BLRACKSETUP_SUPPLYCFM + " = " + "'" + strSupplyValue + "'" + ", " +
+                updateQuery = "UPDATE " + DatabaseTable.TBL_BLRACKSETUP + " SET " +
+                        DatabaseTable.COL_BLRACKSETUP_SUPPLYCFM + " = " + "'" + strSupplyValue + "'" + ", " +
 //                    DatabaseTable.COL_BLRACKSETUP_EXHAUSTWC + " = " + "'" + strExhaustValue + "'" + ", " +
                         DatabaseTable.COL_BLRACKSETUP_ISSETUPCOMPLETED + " = " + "'" + setUpCompletedValue + "'" + ", " +
                         DatabaseTable.COL_BLRACKSETUP_SETUPCOMPLETED_DATETIME + " = " + "'" + setUpCompletedDateTime + "'" + ", " +
@@ -577,9 +578,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
                         DatabaseTable.COL_BLRACKSETUP_MODEL_NO + " = " + "'" + modelNumber + "'" + " and " +
                         DatabaseTable.COL_BLRACKSETUP_ACH + " = " + "'" + spinnerACHValue + "'" + " and " +
                         DatabaseTable.COL_BLRACKSETUP_POLARITY + " = " + "'" + spinnerPolarityValue + "'" + " and " +
-                        DatabaseTable.COL_BLRACKSETUP_SUPPLYCFM + " = " + "'" + strSupplyValue + "'" + " and " +
-                        DatabaseTable.COL_BLRACKSETUP_EXHAUSTWC + " = " + "'" + mStrExitExhaustValue + "'" + " and " +
-                        DatabaseTable.COL_BLRACKSETUP_WITH_WITHOUT_LOCK + " = " + "'" + mLockValue + "'";
+                        DatabaseTable.COL_BLRACKSETUP_SUPPLYCFM + " = " + "'" + strSupplyValue + "'";
             } else {
                 updateQuery = "UPDATE " + DatabaseTable.TBL_BLRACKSETUP + " SET " +
 //                    DatabaseTable.COL_BLRACKSETUP_SUPPLYCFM + " = " + "'" + strSupplyValue + "'" + ", " +
@@ -819,6 +818,8 @@ public class SqliteHelper extends SQLiteOpenHelper {
 
     public void setIsSetUpCompletedColoumn() {
         db = getWritableDatabase();
+        String updateRackSetupTable = "UPDATE " + DatabaseTable.TBL_BLRACKSETUP + " SET " + DatabaseTable.COL_BLRACKSETUP_ISSETUPCOMPLETED + " = " + "'" + "0" + "'";
+        Log.e("strQuery",updateRackSetupTable);
         db.execSQL("UPDATE " + DatabaseTable.TBL_BLRACKSETUP + " SET " + DatabaseTable.COL_BLRACKSETUP_ISSETUPCOMPLETED + " = " + "'" + "0" + "'");
     }
 
