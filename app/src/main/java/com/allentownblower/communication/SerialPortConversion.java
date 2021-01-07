@@ -441,7 +441,7 @@ public class SerialPortConversion {
             else if (isStart == 302) {
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Exhaust_WC_Value_Write_Only_From_Setting_Screen);
             } else if (isStart == 303) {
-                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Dialog_From_Setting_Screen);
+                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Dialog);
             }
         } else if (command.equals("D12")) {
             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStartService);
