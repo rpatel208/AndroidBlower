@@ -582,7 +582,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             } else {
                 rackDetailsModel = dpHelper.getDataFromRackBlowerDetails();
                 if (rackDetailsModel != null) {
-                    if (prefManager.getHostName() != null){
+                    if (prefManager.getHostName() != null || prefManager.getHostName().contains("http")){
                         responseHandler.getUpdateRackBlowerDetails_Api(act,prefManager,allentownBlowerApplication,rackDetailsModel,mStrBlowerName,mStrBuildingName,mStrRoomName,subModelNo,dpHelper);
                     }
                 }
@@ -1376,7 +1376,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
 
     }
 
-    public void AlertDialogBoxSuccessfully(Observable o){
+    public void AlertDialogBoxSuccessfully(){
         alertview = new Dialog(act);
 
         int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
@@ -1388,17 +1388,6 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
         alertview.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         alertview.setContentView(R.layout.alertview_racksetup_layout); // Seekbar Selection
-
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // show dialog here
-                if (!isFinishing()) {
-                    alertview.show();
-                }
-            }
-        });
-
 //        if (!isFromSettingScreen) {
 //            if (prefManager != null) {
 //                if (prefManager.getOpenNode()) {
@@ -1406,7 +1395,6 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
 //                }
 //            }
 //        }
-
         TextView txt_dailogTitle = alertview.findViewById(R.id.txt_dailogTitle);
         TextView txt_dailogDesc = alertview.findViewById(R.id.txt_dailogDesc);
         TextView btn_Ok_selection = alertview.findViewById(R.id.btn_Ok_Selection);
@@ -1436,7 +1424,15 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             }
         });
 
-
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // show dialog here
+                if (!isFinishing()) {
+                    alertview.show();
+                }
+            }
+        });
     }
 
     @Override
@@ -1595,7 +1591,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    AlertDialogBoxSuccessfully(o);
+                    AlertDialogBoxSuccessfully();
                 }
             });
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nCloseProgressBar) {
