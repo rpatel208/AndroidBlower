@@ -317,7 +317,7 @@ public class ResponseHandler {
         jsonArr.put(objParam);
         JSONObject jsonObj = new JSONObject();
         try {
-            jsonObj.put("SetPointData", jsonArr);
+            jsonObj.put("RackBlowerDetails", jsonArr);
         } catch (JSONException e) {
             Log.e(TAG, "Json exception : " + e.toString());
         }
