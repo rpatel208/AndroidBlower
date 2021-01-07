@@ -291,6 +291,73 @@ public class ResponseHandler {
 
     }
 
+    public void getUpdateRackBlowerDetails_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication, RackDetailsModel model, boolean isWait, SqliteHelper db) {
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
+            Log.e("HostName :- ", "Host Name is Not Available");
+            return;
+        }
+//        relative_progress_rack_detail_screen.setVisibility(View.VISIBLE);
+        // if (NetworkUtil.getConnectivityStatus(act)) {
+        JSONObject objParam = new JSONObject();
+        try {
+            objParam.put(ApiHandler.strUpdateRackBlowerDetailsId, model.getmId());
+            objParam.put(ApiHandler.strUpdateRackBlowerCustomerID, model.getmRackBlowerCustomerID());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                prefManager.getHostName() + ApiHandler.strUrlUpdateRackBlowerDetails, objParam,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) {
+//                        relative_progress_rack_detail_screen.setVisibility(View.GONE);
+                        Utility.Log("getUpdateRackBlowerDetails_Api_Response : " + jsonObject);
+                        try {
+                            if (jsonObject.getBoolean("result")) {
+                                RackDetailsModel rackDetailsModel = model;
+                                if (isWait){
+                                    resetFAndSDataForBlower_Api();
+                                }
+                                db.updateRackBlowerDetailsInDataBase(jsonObject);
+                                rackDetailsModel = db.getDataFromRackBlowerDetails();
+                                rackDetailsModel.setmRackBlowerCustomerName(jsonObject.getString("CustomerName"));
+                            } else {
+                                if (jsonObject.has("message"))
+                                    // Utility.showAlertDialog(act, jsonObject.getString("message"), getString(R.string.ok));
+                                    Utility.Log("UpdateRackBlowerDetails_Api_Response Fail : " + jsonObject.getString("message"));
+                                else
+                                    Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
+
+                            }
+//                            showDetailWhenScreenLoad();
+                        } catch (JSONException e) {
+                            Utility.Log("getUpdateRackBlowerDetailsresponse_Api Error : " + e.toString());
+                            e.printStackTrace();
+//                            showDetailWhenScreenLoad();
+                            Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+//                        relative_progress_rack_detail_screen.setVisibility(View.GONE);
+//                        showDetailWhenScreenLoad();
+                        Utility.Log("UpdateRackBlowerDetails_Api Error : " + error.toString());
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                return allentownBlowerApplication.getInstance().getHeader();
+            }
+        };
+
+        allentownBlowerApplication.getInstance().cancelPendingRequests(PendingID.nUpdateRackBlowerDetails);
+        allentownBlowerApplication.getInstance().addToRequestQueue(request, PendingID.nUpdateRackBlowerDetails);
+    }
+
     private void getFCommandCalling_Api(HashMap<String, String> stringHashMap) throws JSONException {
         if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")) {
             Log.e("HostName :- ", "Host Name is Not Available");

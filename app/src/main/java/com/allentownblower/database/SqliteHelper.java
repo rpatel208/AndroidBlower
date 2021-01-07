@@ -1009,6 +1009,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
         allentownBlowerApplication.getInstance().addToRequestQueue(request, PendingID.nUpdateCommandCompleted);
     }
 
+
     public boolean insert(String tabName, ContentValues cv) {
         db = this.getWritableDatabase();
         long result = db.insert(tabName,null ,cv);

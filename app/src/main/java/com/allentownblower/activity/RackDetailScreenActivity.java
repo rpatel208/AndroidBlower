@@ -62,7 +62,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
     private ResponseHandler responseHandler;
     private PrefManager prefManager;
     private AllentownBlowerApplication allentownBlowerApplication;
-    private SqliteHelper dpHelper;
+    private static SqliteHelper dpHelper;
     private ArrayList<RackModel> arrRackList = new ArrayList<>();
     private ArrayList<RackDetailsModel> arrRackBlowerDetailList = new ArrayList<>();
     private JSONObjectHandler jsonObjectHandler;
@@ -113,7 +113,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
     private void loadScreen() {
         rackDetailsModel = dpHelper.getDataFromRackBlowerDetails();
         if (rackDetailsModel != null) {
-            getUpdateRackBlowerDetails_Api(rackDetailsModel.getmId(), rackDetailsModel.getmRackBlowerCustomerID());
+            getUpdateRackBlowerDetails_Api(rackDetailsModel.getmId(), rackDetailsModel.getmRackBlowerCustomerID(), false);
         } else {
             mRelativeLayoutSerialCustomerMain.setVisibility(View.VISIBLE);
             mLinearLayoutTab.setVisibility(View.GONE);
@@ -619,7 +619,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
                         try {
                             if (jsonObject.getBoolean("result")) {
                                 dpHelper.saveNewIDForRackBlowerInDataBase(jsonObject);
-                                getUpdateRackBlowerDetails_Api(dpHelper.getString(jsonObject, ApiHandler.strRackSerialNumberId), dpHelper.getString(jsonObject, ApiHandler.strRackBlowerCustomerID));
+                                getUpdateRackBlowerDetails_Api(dpHelper.getString(jsonObject, ApiHandler.strRackSerialNumberId), dpHelper.getString(jsonObject, ApiHandler.strRackBlowerCustomerID), false);
                             } else {
 
                                 if (jsonObject.has("message"))
@@ -654,7 +654,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
         allentownBlowerApplication.getInstance().addToRequestQueue(request, PendingID.nGetNewIDForRackBlower);
     }
 
-    private void getUpdateRackBlowerDetails_Api(String id, String customerId) {
+    public void getUpdateRackBlowerDetails_Api(String id, String customerId, boolean isWait) {
         if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
             Log.e("HostName :- ", "Host Name is Not Available");
             return;

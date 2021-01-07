@@ -44,6 +44,7 @@ import com.allentownblower.common.Utility;
 import com.allentownblower.communication.SerialPortConversion;
 import com.allentownblower.database.DatabaseTable;
 import com.allentownblower.database.SqliteHelper;
+import com.allentownblower.module.RackDetailsModel;
 import com.allentownblower.module.RackModel;
 import com.allentownblower.module.SetPointCommand;
 import com.allentownblower.module.SpinnerObject;
@@ -113,6 +114,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
     private RadioButton radioButtonWithOut, radioButtonWith;
     private int currentApiVersion;
     private String spinnerSelectedACHValue = "";
+    private RackDetailsModel rackDetailsModel = null;
 
     @SuppressLint("WifiManagerLeak")
     @Override
@@ -578,6 +580,12 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             if (!isFromSettingScreen){
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_ACH_Value_Write_Only);
             } else {
+                rackDetailsModel = dpHelper.getDataFromRackBlowerDetails();
+                if (rackDetailsModel != null) {
+                    if (prefManager.getHostName() != null){
+                        responseHandler.getUpdateRackBlowerDetails_Api(act,prefManager,allentownBlowerApplication,rackDetailsModel,true,dpHelper);
+                    }
+                }
                 prefManager.setACHValue(ACHValue);
                 prefManager.setPolarityValue(polarityValue);
                 prefManager.setSupplyValue(supplyValue);
