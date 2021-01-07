@@ -307,6 +307,7 @@ public class ResponseHandler {
         try {
             objParam.put(ApiHandler.strUpdateRackBlowerDetailsId, rackDetailsModel.getmId());
             objParam.put(ApiHandler.strUpdateRackBlowerCustomerID, rackDetailsModel.getmRackBlowerCustomerID());
+            objParam.put(ApiHandler.strRackBlowerABlowerSerial, rackDetailsModel.getmABlowerSerial());
             objParam.put(ApiHandler.strUpdatedRackBlowerABlowerName, BlowerName);
             objParam.put(ApiHandler.strUpdatedRackBlowerABlowerBuilding, BuildingName);
             objParam.put(ApiHandler.strUpdatedRackBlowerABlowerRoom, RoomName);
@@ -338,7 +339,7 @@ public class ResponseHandler {
 //                                db.updateRackBlowerDetailsInDataBase(jsonObject);
 //                                rackDetailsModel = db.getDataFromRackBlowerDetails();
 //                                rackDetailsModel.setmRackBlowerCustomerName(jsonObject.getString("CustomerName"));
-//                                resetFAndSDataForBlower_Api(rackDetailsModel);
+                                resetFAndSDataForBlower_Api(rackDetailsModel);
                             } else {
                                 if (jsonObject.has("message"))
                                     // Utility.showAlertDialog(act, jsonObject.getString("message"), getString(R.string.ok));
