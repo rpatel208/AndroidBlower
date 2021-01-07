@@ -1399,6 +1399,16 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
         TextView txt_dailogDesc = alertview.findViewById(R.id.txt_dailogDesc);
         TextView btn_Ok_selection = alertview.findViewById(R.id.btn_Ok_Selection);
 
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // show dialog here
+                if (!isFinishing()) {
+                    alertview.show();
+                }
+            }
+        });
+
         btn_Ok_selection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1424,15 +1434,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             }
         });
 
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // show dialog here
-                if (!isFinishing()) {
-                    alertview.show();
-                }
-            }
-        });
+
     }
 
     @Override

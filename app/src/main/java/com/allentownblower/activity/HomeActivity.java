@@ -8357,10 +8357,11 @@ public class HomeActivity extends BaseActivity implements Observer {
             Utility.Log(TAG, "Sending S10_XYYY ==> " + command);
             CallReadWriteFuncation(command, 303);
 
-        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Dialog_From_Setting_Screen) {
-//            Toast.makeText(act, "Success..!!", Toast.LENGTH_LONG).show();
-            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Dialog);
         }
+//        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Dialog_From_Setting_Screen) {
+////            Toast.makeText(act, "Success..!!", Toast.LENGTH_LONG).show();
+//            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Dialog);
+//        }
 //        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Polarity_Value_Write_Only_From_Setting_Screen) {
 //            String command = prefManager.getSendCommandS().trim();
 //            CallReadWriteFuncation(command, 102);
