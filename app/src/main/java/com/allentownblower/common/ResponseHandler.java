@@ -233,7 +233,7 @@ public class ResponseHandler {
         myDb.getUpdateCommandCompleted_Api(act, prefManager, allentownBlowerApplication, rackDetailsModels);
     }
 
-    public void resetFAndSDataForBlower_Api() throws JSONException {
+    public void resetFAndSDataForBlower_Api(RackDetailsModel model) throws JSONException {
 
         if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")) {
             Log.e("HostName :- ", "Host Name is Not Available");
@@ -242,8 +242,14 @@ public class ResponseHandler {
 
         JSONObject objParam = new JSONObject();
         try {
-            objParam.put(ApiHandler.strUpdateRackBlowerDetailsId, rackDetailsModels.getmId());
-            objParam.put(ApiHandler.strUpdateRackBlowerCustomerID, rackDetailsModels.getmRackBlowerCustomerID());
+            if (model != null){
+                objParam.put(ApiHandler.strUpdateRackBlowerDetailsId, model.getmId());
+                objParam.put(ApiHandler.strUpdateRackBlowerCustomerID, model.getmRackBlowerCustomerID());
+            }else {
+                objParam.put(ApiHandler.strUpdateRackBlowerDetailsId, rackDetailsModels.getmId());
+                objParam.put(ApiHandler.strUpdateRackBlowerCustomerID, rackDetailsModels.getmRackBlowerCustomerID());
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e("ErrorFParameter", "" + e.getMessage());
@@ -317,7 +323,7 @@ public class ResponseHandler {
                             if (jsonObject.getBoolean("result")) {
                                 RackDetailsModel rackDetailsModel = model;
                                 if (isWait){
-                                    resetFAndSDataForBlower_Api();
+                                    resetFAndSDataForBlower_Api(model);
                                 }
                                 db.updateRackBlowerDetailsInDataBase(jsonObject);
                                 rackDetailsModel = db.getDataFromRackBlowerDetails();

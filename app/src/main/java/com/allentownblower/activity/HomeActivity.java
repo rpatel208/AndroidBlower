@@ -7515,7 +7515,7 @@ public class HomeActivity extends BaseActivity implements Observer {
                 mHandler.postDelayed(r, 5000);
                 alertView_Export_Delete_Record.dismiss();
                 try {
-                    responseHandler.resetFAndSDataForBlower_Api();
+                    responseHandler.resetFAndSDataForBlower_Api(rackDetailsModel);
                 } catch (JSONException e) {
                     Log.e("TAG", e.getMessage());
                 }
