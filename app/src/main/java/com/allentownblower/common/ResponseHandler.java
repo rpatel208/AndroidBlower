@@ -295,7 +295,7 @@ public class ResponseHandler {
 
     }
 
-    public void getUpdateRackBlowerDetails_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication,RackDetailsModel rackDetailsModel, RackModel model, SqliteHelper db) {
+    public void getUpdateRackBlowerDetails_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication,RackDetailsModel rackDetailsModel,String BlowerName, String BuildingName, String RoomName, String ModelNo, SqliteHelper db) {
         if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")) {
             Log.e("HostName :- ", "Host Name is Not Available");
             return;
@@ -304,10 +304,10 @@ public class ResponseHandler {
         // if (NetworkUtil.getConnectivityStatus(act)) {
         JSONObject objParam = new JSONObject();
         try {
-            objParam.put(ApiHandler.strUpdatedRackBlowerABlowerName, model.getBlowerName());
-            objParam.put(ApiHandler.strUpdatedRackBlowerABlowerBuilding, model.getBuildingName());
-            objParam.put(ApiHandler.strUpdatedRackBlowerABlowerRoom, model.getRoomName());
-            objParam.put(ApiHandler.strUpdatedRackBlowerRackModel, model.getModelNo());
+            objParam.put(ApiHandler.strUpdatedRackBlowerABlowerName, BlowerName);
+            objParam.put(ApiHandler.strUpdatedRackBlowerABlowerBuilding, BuildingName);
+            objParam.put(ApiHandler.strUpdatedRackBlowerABlowerRoom, RoomName);
+            objParam.put(ApiHandler.strUpdatedRackBlowerRackModel, ModelNo);
         } catch (JSONException e) {
             e.printStackTrace();
         }
