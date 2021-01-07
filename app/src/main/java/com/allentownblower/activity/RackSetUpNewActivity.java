@@ -1511,12 +1511,14 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             }
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_ACH_Value_Write_Only) {
             Log.e(TAG, spinnerSelectedACHValue);
+            Log.e(TAG, supplyValue);
             ACHValue = spinnerSelectedACHValue;
             ArrayList<SetPointCommand> setpointArrayList = responseHandler.getLastSetPointData();
             String S07_YY = responseHandler.stringToHex(ACHValue, true);
-            String S07_XX = responseHandler.getHexString(setpointArrayList.get(0).getS07(), true);
+            String S07_XX = responseHandler.stringToHex(supplyValue, true);
+//            String S07_XX = responseHandler.getHexString(setpointArrayList.get(0).getS07(), true);
             String command = "S07=" + S07_XX.concat(S07_YY).toUpperCase();
-            Utility.Log(TAG, "Sending S07_YY ==> " + command);
+            Utility.Log(TAG, "Sending S07_XXYY ==> " + command);
             CallReadWriteFuncation(command, 101);
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Polarity_Value_Write_Only) {
             Log.e(TAG, polarityValue);
@@ -1542,15 +1544,17 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             Utility.Log(TAG, "Sending S01 ==> " + command);
 
             CallReadWriteFuncation(command, 102);
-        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Supply_CFM_Value_Write_Only) {
-            Log.e(TAG, supplyValue);
-            ArrayList<SetPointCommand> setpointArrayList = responseHandler.getLastSetPointData();
-            String S07_XX = responseHandler.stringToHex(supplyValue, true);
-            String S07_YY = responseHandler.getHexString(setpointArrayList.get(0).getS07(), false);
-            String command = "S07=" + S07_XX.concat(S07_YY).toUpperCase();
-            Utility.Log(TAG, "Sending S07_YY ==> " + command);
-            CallReadWriteFuncation(command, 103);
-        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Exhaust_WC_Value_Write_Only) {
+        }
+//        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Supply_CFM_Value_Write_Only) {
+//            Log.e(TAG, supplyValue);
+//            ArrayList<SetPointCommand> setpointArrayList = responseHandler.getLastSetPointData();
+//            String S07_XX = responseHandler.stringToHex(supplyValue, true);
+//            String S07_YY = responseHandler.getHexString(setpointArrayList.get(0).getS07(), false);
+//            String command = "S07=" + S07_XX.concat(S07_YY).toUpperCase();
+//            Utility.Log(TAG, "Sending S07_YY ==> " + command);
+//            CallReadWriteFuncation(command, 103);
+//        }
+        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Exhaust_WC_Value_Write_Only) {
             Log.e(TAG, exhaustValue);
             String barvalue = exhaustValue;
 
@@ -1576,7 +1580,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             String command = "S10=" + S10_XYYY.toUpperCase();
 
             Utility.Log(TAG, "Sending S10_XYYY ==> " + command);
-            CallReadWriteFuncation(command, 104);
+            CallReadWriteFuncation(command, 103);
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Dialog) {
             mRelativeProgressBarLayoutRackScreen.setVisibility(View.GONE);
 

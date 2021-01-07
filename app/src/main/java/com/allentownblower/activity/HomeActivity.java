@@ -8286,11 +8286,12 @@ public class HomeActivity extends BaseActivity implements Observer {
             sendS01CommandAfterUnitChange(typeUnitValue);
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_ACH_Value_Write_Only_From_Setting_Screen) {
             String achValue = prefManager.getACHValue().trim();
+            String supplyValue = prefManager.getSupplyValue().trim();
             ArrayList<SetPointCommand> setpointArrayList = responseHandler.getLastSetPointData();
             String S07_YY = responseHandler.stringToHex(achValue, true);
-            String S07_XX = responseHandler.getHexString(setpointArrayList.get(0).getS07(), true);
+            String S07_XX = responseHandler.stringToHex(supplyValue, true);
             String command = "S07=" + S07_XX.concat(S07_YY).toUpperCase();
-            Utility.Log(TAG, "Sending S07_YY ==> " + command);
+            Utility.Log(TAG, "Sending S07_XXYY ==> " + command);
             CallReadWriteFuncation(command, 301);
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Polarity_Value_Write_Only_From_Setting_Screen) {
             String polarityValue = prefManager.getPolarityValue().trim();
@@ -8317,15 +8318,17 @@ public class HomeActivity extends BaseActivity implements Observer {
             Utility.Log(TAG, "Sending S01 ==> " + command);
 
             CallReadWriteFuncation(command, 302);
-        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Supply_CFM_Value_Write_Only_From_Setting_Screen) {
-            String supplyValue = prefManager.getSupplyValue().trim();
-            String S07_XX = responseHandler.stringToHex(supplyValue, true);
-            String S07_YY = responseHandler.getHexString(setpointArrayList.get(0).getS07(), false);
-            String command = "S07=" + S07_XX.concat(S07_YY).toUpperCase();
-            Utility.Log(TAG, "Sending S07_YY ==> " + command);
-            CallReadWriteFuncation(command, 303);
-
-        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Exhaust_WC_Value_Write_Only_From_Setting_Screen) {
+        }
+//        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Supply_CFM_Value_Write_Only_From_Setting_Screen) {
+//            String supplyValue = prefManager.getSupplyValue().trim();
+//            String S07_XX = responseHandler.stringToHex(supplyValue, true);
+//            String S07_YY = responseHandler.getHexString(setpointArrayList.get(0).getS07(), false);
+//            String command = "S07=" + S07_XX.concat(S07_YY).toUpperCase();
+//            Utility.Log(TAG, "Sending S07_YY ==> " + command);
+//            CallReadWriteFuncation(command, 303);
+//
+//        }
+        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Exhaust_WC_Value_Write_Only_From_Setting_Screen) {
             String exhaustValue = prefManager.getExhaustValue().trim();
 
             String barvalue = exhaustValue;
@@ -8352,7 +8355,7 @@ public class HomeActivity extends BaseActivity implements Observer {
             String command = "S10=" + S10_XYYY.toUpperCase();
 
             Utility.Log(TAG, "Sending S10_XYYY ==> " + command);
-            CallReadWriteFuncation(command, 304);
+            CallReadWriteFuncation(command, 303);
 
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Dialog_From_Setting_Screen) {
 //            Toast.makeText(act, "Success..!!", Toast.LENGTH_LONG).show();

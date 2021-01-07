@@ -424,19 +424,23 @@ public class SerialPortConversion {
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.mD31CommandResponse);
             } else if (isStart == 101) {
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Polarity_Value_Write_Only);
-            } else if (isStart == 102) {
-                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Supply_CFM_Value_Write_Only);
-            } else if (isStart == 103) {
+            }
+//            else if (isStart == 102) {
+//                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Supply_CFM_Value_Write_Only);
+//            }
+            else if (isStart == 102) {
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Exhaust_WC_Value_Write_Only);
-            } else if (isStart == 104) {
+            } else if (isStart == 103) {
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Dialog);
             } else if (isStart == 301) {
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Polarity_Value_Write_Only_From_Setting_Screen);
-            } else if (isStart == 302) {
-                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Supply_CFM_Value_Write_Only_From_Setting_Screen);
-            } else if (isStart == 303) {
+            }
+//            else if (isStart == 302) {
+//                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Supply_CFM_Value_Write_Only_From_Setting_Screen);
+//            }
+            else if (isStart == 302) {
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Exhaust_WC_Value_Write_Only_From_Setting_Screen);
-            } else if (isStart == 304) {
+            } else if (isStart == 303) {
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_Dialog_From_Setting_Screen);
             }
         } else if (command.equals("D12")) {
