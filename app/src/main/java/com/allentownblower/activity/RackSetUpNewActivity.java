@@ -583,7 +583,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
                 rackDetailsModel = dpHelper.getDataFromRackBlowerDetails();
                 if (rackDetailsModel != null) {
                     if (prefManager.getHostName() != null){
-                        responseHandler.getUpdateRackBlowerDetails_Api(act,prefManager,allentownBlowerApplication,rackDetailsModel,rackModel,dpHelper);
+                        responseHandler.getUpdateRackBlowerDetails_Api(act,prefManager,allentownBlowerApplication,rackDetailsModel,mStrBlowerName,mStrBuildingName,mStrRoomName,subModelNo,dpHelper);
                     }
                 }
                 prefManager.setACHValue(ACHValue);
