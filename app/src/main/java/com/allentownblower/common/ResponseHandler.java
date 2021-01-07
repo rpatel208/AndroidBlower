@@ -295,7 +295,8 @@ public class ResponseHandler {
 
     }
 
-    public void getUpdateRackBlowerDetails_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication,RackDetailsModel rackDetailsModel,String BlowerName, String BuildingName, String RoomName, String ModelNo, SqliteHelper db) {
+    @SuppressLint("LongLogTag")
+    public void getUpdateRackBlowerDetails_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication, RackDetailsModel rackDetailsModel, String BlowerName, String BuildingName, String RoomName, String ModelNo, SqliteHelper db) {
         if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")) {
             Log.e("HostName :- ", "Host Name is Not Available");
             return;
@@ -312,8 +313,18 @@ public class ResponseHandler {
             e.printStackTrace();
         }
 
+        JSONArray jsonArr = new JSONArray();
+        jsonArr.put(objParam);
+        JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("SetPointData", jsonArr);
+        } catch (JSONException e) {
+            Log.e(TAG, "Json exception : " + e.toString());
+        }
+        Log.e("ObjParam_UpdatedRackBlowerDetails", "" + jsonObj);
+
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                prefManager.getHostName() + ApiHandler.strUrlUpdateRackBlowerDetails, objParam,
+                prefManager.getHostName() + ApiHandler.strUrlUpdateRackBlowerDetails, jsonObj,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
