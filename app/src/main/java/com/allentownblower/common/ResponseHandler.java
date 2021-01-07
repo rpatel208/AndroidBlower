@@ -305,6 +305,8 @@ public class ResponseHandler {
         // if (NetworkUtil.getConnectivityStatus(act)) {
         JSONObject objParam = new JSONObject();
         try {
+            objParam.put(ApiHandler.strUpdateRackBlowerDetailsId, rackDetailsModel.getmId());
+            objParam.put(ApiHandler.strUpdateRackBlowerCustomerID, rackDetailsModel.getmRackBlowerCustomerID());
             objParam.put(ApiHandler.strUpdatedRackBlowerABlowerName, BlowerName);
             objParam.put(ApiHandler.strUpdatedRackBlowerABlowerBuilding, BuildingName);
             objParam.put(ApiHandler.strUpdatedRackBlowerABlowerRoom, RoomName);
