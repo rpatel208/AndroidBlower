@@ -113,7 +113,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
     private void loadScreen() {
         rackDetailsModel = dpHelper.getDataFromRackBlowerDetails();
         if (rackDetailsModel != null) {
-            getUpdateRackBlowerDetails_Api(rackDetailsModel.getmId(), rackDetailsModel.getmRackBlowerCustomerID(), false);
+            getUpdateRackBlowerDetails_Api(rackDetailsModel.getmId(), rackDetailsModel.getmRackBlowerCustomerID());
         } else {
             mRelativeLayoutSerialCustomerMain.setVisibility(View.VISIBLE);
             mLinearLayoutTab.setVisibility(View.GONE);
@@ -619,7 +619,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
                         try {
                             if (jsonObject.getBoolean("result")) {
                                 dpHelper.saveNewIDForRackBlowerInDataBase(jsonObject);
-                                getUpdateRackBlowerDetails_Api(dpHelper.getString(jsonObject, ApiHandler.strRackSerialNumberId), dpHelper.getString(jsonObject, ApiHandler.strRackBlowerCustomerID), false);
+                                getUpdateRackBlowerDetails_Api(dpHelper.getString(jsonObject, ApiHandler.strRackSerialNumberId), dpHelper.getString(jsonObject, ApiHandler.strRackBlowerCustomerID));
                             } else {
 
                                 if (jsonObject.has("message"))
@@ -654,7 +654,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
         allentownBlowerApplication.getInstance().addToRequestQueue(request, PendingID.nGetNewIDForRackBlower);
     }
 
-    public void getUpdateRackBlowerDetails_Api(String id, String customerId, boolean isWait) {
+    public void getUpdateRackBlowerDetails_Api(String id, String customerId) {
         if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
             Log.e("HostName :- ", "Host Name is Not Available");
             return;

@@ -242,10 +242,10 @@ public class ResponseHandler {
 
         JSONObject objParam = new JSONObject();
         try {
-            if (model != null){
+            if (model != null) {
                 objParam.put(ApiHandler.strUpdateRackBlowerDetailsId, model.getmId());
                 objParam.put(ApiHandler.strUpdateRackBlowerCustomerID, model.getmRackBlowerCustomerID());
-            }else {
+            } else {
                 objParam.put(ApiHandler.strUpdateRackBlowerDetailsId, rackDetailsModels.getmId());
                 objParam.put(ApiHandler.strUpdateRackBlowerCustomerID, rackDetailsModels.getmRackBlowerCustomerID());
             }
@@ -297,8 +297,8 @@ public class ResponseHandler {
 
     }
 
-    public void getUpdateRackBlowerDetails_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication, RackDetailsModel model, boolean isWait, SqliteHelper db) {
-        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
+    public void getUpdateRackBlowerDetails_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication, RackDetailsModel model, SqliteHelper db) {
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")) {
             Log.e("HostName :- ", "Host Name is Not Available");
             return;
         }
@@ -322,12 +322,10 @@ public class ResponseHandler {
                         try {
                             if (jsonObject.getBoolean("result")) {
                                 RackDetailsModel rackDetailsModel = model;
-                                if (isWait){
-                                    resetFAndSDataForBlower_Api(model);
-                                }
                                 db.updateRackBlowerDetailsInDataBase(jsonObject);
                                 rackDetailsModel = db.getDataFromRackBlowerDetails();
                                 rackDetailsModel.setmRackBlowerCustomerName(jsonObject.getString("CustomerName"));
+                                resetFAndSDataForBlower_Api(rackDetailsModel);
                             } else {
                                 if (jsonObject.has("message"))
                                     // Utility.showAlertDialog(act, jsonObject.getString("message"), getString(R.string.ok));
