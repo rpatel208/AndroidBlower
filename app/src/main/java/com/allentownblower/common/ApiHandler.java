@@ -7,13 +7,14 @@ public class ApiHandler {
 
     /*GetNewIDForRackBlowerUrl with All param*/
     public static String strUrlGetNewIDForRackBlower = strDomain + "/RackBlower/GetNewIDForRackBlower";
-    public static String strUrlUpdateRackBlowerDetails = strDomain + "/RackBlower/GetRackBlowerDetails";
+    public static String strUrlGetUpdateRackBlowerDetails = strDomain + "/RackBlower/GetRackBlowerDetails";
     public static String strUrlInsertRackBlowerSetPointData = strDomain + "/RackBlower/InsertRackBlowerSetPointData";
     public static String strUrlInsertRackBlowerFeedbackData = strDomain + "/RackBlower/InsertRackBlowerFeedbackData";
     public static String strUrlUpdatedByWebAppCompleted = strDomain + "/RackBlower/UpdatedByWebAppCompleted";
     public static String strUrlUpdateCommandCompleted = strDomain + "/RackBlower/UpdateCommandCompleted";
     public static String strUrlSendReportEmail = strDomain + "/RackBlower/SendReportEmail";
     public static String strURLResetFAndSData = strDomain + "/RackBlower/ResetRackBlowerFAndSData";
+    public static String strUrlUpdateRackBlowerDetails = strDomain + "/RackBlower/UpdateRackBlowerDetails";
 
     /*Parameter*/
     public static String strGetNewIDForRackBlowerSerialNumber = "SerialNumber";
@@ -27,7 +28,7 @@ public class ApiHandler {
     public static String strGetSendEmailAllData = "AllData";
     public static String strGetSendEmail_EmailIDs = "EmailIDs";
 
-    /*Parameter UpdateRackBlowerDetails*/
+    /*Parameter GetUpdateRackBlowerDetails*/
     public static String strUpdateRackBlowerDetailsId = "RackBlowerDetailsID";
     public static String strUpdateRackBlowerCustomerID = "RackBlowerCustomerID";
     public static String strUpdatecompletedCMD = "completedCMD";
@@ -35,6 +36,12 @@ public class ApiHandler {
     public static String strRackSerialNumberId = "RackBlowerDetailsID";
     public static String strRackBlowerCustomerID = "RackBlowerCustomerID";
     public static String strRackBlowerABlowerSerial = "ABlowerSerial";
+
+    /*Parameter UpdateRackBlowerDetails*/
+    public static String strUpdatedRackBlowerABlowerName = "ABlowerName";
+    public static String strUpdatedRackBlowerABlowerBuilding = "ABlowerBuilding";
+    public static String strUpdatedRackBlowerABlowerRoom = "ABlowerRoom";
+    public static String strUpdatedRackBlowerRackModel = "RackModel";
 
     //string SerialNumber, string Customer, string ABlowerWiFiMAC, string ABlowerLANMAC, string ABlowerBluetoothMAC, string ABlowerWiFiIPAddress, string ABlowerLANIPAddress)
 
