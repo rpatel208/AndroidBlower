@@ -10,7 +10,6 @@ import android.util.Log;
 import com.allentownblower.R;
 import com.allentownblower.application.AllentownBlowerApplication;
 import com.allentownblower.database.DatabaseTable;
-import com.allentownblower.database.MyDbSource;
 import com.allentownblower.database.SqliteHelper;
 import com.allentownblower.module.Cell;
 import com.allentownblower.module.DiagnosticsCommand;
@@ -36,7 +35,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Mayur Yadav on 01 Sep 2019.
@@ -297,7 +295,7 @@ public class ResponseHandler {
 
     }
 
-    public void getUpdateRackBlowerDetails_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication, RackDetailsModel model, SqliteHelper db) {
+    public void getUpdateRackBlowerDetails_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication,RackDetailsModel rackDetailsModel, RackModel model, SqliteHelper db) {
         if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")) {
             Log.e("HostName :- ", "Host Name is Not Available");
             return;
@@ -306,8 +304,10 @@ public class ResponseHandler {
         // if (NetworkUtil.getConnectivityStatus(act)) {
         JSONObject objParam = new JSONObject();
         try {
-            objParam.put(ApiHandler.strUpdateRackBlowerDetailsId, model.getmId());
-            objParam.put(ApiHandler.strUpdateRackBlowerCustomerID, model.getmRackBlowerCustomerID());
+            objParam.put(ApiHandler.strUpdatedRackBlowerABlowerName, model.getBlowerName());
+            objParam.put(ApiHandler.strUpdatedRackBlowerABlowerBuilding, model.getBuildingName());
+            objParam.put(ApiHandler.strUpdatedRackBlowerABlowerRoom, model.getRoomName());
+            objParam.put(ApiHandler.strUpdatedRackBlowerRackModel, model.getModelNo());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -318,14 +318,14 @@ public class ResponseHandler {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
 //                        relative_progress_rack_detail_screen.setVisibility(View.GONE);
-                        Utility.Log("getUpdateRackBlowerDetails_Api_Response : " + jsonObject);
+                        Utility.Log("UpdateRackBlowerDetails_Api_Response : " + jsonObject);
                         try {
                             if (jsonObject.getBoolean("result")) {
-                                RackDetailsModel rackDetailsModel = model;
-                                db.updateRackBlowerDetailsInDataBase(jsonObject);
-                                rackDetailsModel = db.getDataFromRackBlowerDetails();
-                                rackDetailsModel.setmRackBlowerCustomerName(jsonObject.getString("CustomerName"));
-                                resetFAndSDataForBlower_Api(rackDetailsModel);
+//                                RackDetailsModel rackDetailsModel = model;
+//                                db.updateRackBlowerDetailsInDataBase(jsonObject);
+//                                rackDetailsModel = db.getDataFromRackBlowerDetails();
+//                                rackDetailsModel.setmRackBlowerCustomerName(jsonObject.getString("CustomerName"));
+//                                resetFAndSDataForBlower_Api(rackDetailsModel);
                             } else {
                                 if (jsonObject.has("message"))
                                     // Utility.showAlertDialog(act, jsonObject.getString("message"), getString(R.string.ok));

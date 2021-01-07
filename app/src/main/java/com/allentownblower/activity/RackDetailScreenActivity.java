@@ -197,7 +197,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
         mTxtHostAddressTab = findViewById(R.id.txt_host_address_tab);
         txt_serial_no_host = findViewById(R.id.txt_serial_no_host);
         txt_customer_name_host = findViewById(R.id.txt_customer_name_host);
-        txt_host_name_host = findViewById(R.id.txt_host_name_host);
+//        txt_host_name_host = findViewById(R.id.txt_host_name_host);
         mTxtUpdateButton = findViewById(R.id.txt_update);
 
         // Email Details Variable
@@ -275,7 +275,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
 
         txt_serial_no_host.setText(rackDetailsModel.getmABlowerSerial());
         txt_customer_name_host.setText(rackDetailsModel.getmRackBlowerCustomerName());
-        txt_host_name_host.setText(prefManager.getHostName());
+        mTxtUpdateHostName.setText(prefManager.getHostName());
     }
 
     private void mClickListerMethod() {
@@ -670,7 +670,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
         }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                prefManager.getHostName() + ApiHandler.strUrlUpdateRackBlowerDetails, objParam,
+                prefManager.getHostName() + ApiHandler.strUrlGetUpdateRackBlowerDetails, objParam,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {

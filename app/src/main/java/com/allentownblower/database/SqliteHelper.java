@@ -11,10 +11,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
-import android.view.View;
 
 import com.allentownblower.R;
-import com.allentownblower.activity.RackDetailScreenActivity;
 import com.allentownblower.application.AllentownBlowerApplication;
 import com.allentownblower.common.ApiHandler;
 import com.allentownblower.common.ObserverActionID;
@@ -840,7 +838,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
         }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                prefManager.getHostName() + ApiHandler.strUrlUpdateRackBlowerDetails, objParam,
+                prefManager.getHostName() + ApiHandler.strUrlGetUpdateRackBlowerDetails, objParam,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
