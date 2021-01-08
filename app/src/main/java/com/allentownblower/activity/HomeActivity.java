@@ -8302,7 +8302,22 @@ public class HomeActivity extends BaseActivity implements Observer {
             Utility.Log(TAG, "Sending S07_XXYY ==> " + command);
             CallReadWriteFuncation(command, 301);
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Polarity_Value_Write_Only_From_Setting_Screen) {
-            String polarityValueId = prefManager.getPolarityIdValue().trim();
+
+            ArrayList<RackModel> arrRackList = new ArrayList<>();
+            arrRackList = sqliteHelper.getDataFromRackSetUpTable();
+
+            if (arrRackList.size() > 0) {
+                rackModel = arrRackList.get(0);
+            }
+
+//            String polarityValueId = prefManager.getPolarityIdValue().trim();
+            String polarityValueId = "";
+            String polarityValue = rackModel.getPolarity();
+            if(polarityValue.equalsIgnoreCase("+")){
+                polarityValueId = "1";
+            }else{
+                polarityValueId = "0";
+            }
             ArrayList<SetPointCommand> setpointArrayList = responseHandler.getLastSetPointData();
             String bin = responseHandler.hexToBinary(setpointArrayList.get(0).getS01());
             Utility.Log(TAG, "hexToBinary => " + bin);

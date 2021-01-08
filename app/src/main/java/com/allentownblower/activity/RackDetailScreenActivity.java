@@ -736,7 +736,6 @@ public class RackDetailScreenActivity extends AppCompatActivity {
             if (CodeReUse.isBolwerAdmin) {
 
                 if (CodeReUse.isBolwerConnected) {
-
                     Utility.Log(TAG, "onFinish");
                     AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nTimerFinishedReportAndRack);
                     finish();

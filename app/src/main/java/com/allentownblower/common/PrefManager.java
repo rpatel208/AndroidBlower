@@ -344,15 +344,6 @@ public class PrefManager {
     }
 
 
-    public void setPolarityIdValue(String polarityIdValue){
-        editor.putString(setPolarityIdValue,polarityIdValue);
-        editor.commit();
-    }
-
-    public String getPolarityIdValue(){
-        return pref.getString(setPolarityIdValue,"");
-    }
-
     public void setModelName(String modelName){
         editor.putString(setModelName,modelName);
         editor.commit();
