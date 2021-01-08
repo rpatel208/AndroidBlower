@@ -8426,6 +8426,7 @@ public class HomeActivity extends BaseActivity implements Observer {
             report_layout.setVisibility(View.GONE);
             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRedirectHome);
             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStartService);
+            ResetCounter(0);
         }
 
     }
