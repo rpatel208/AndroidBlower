@@ -343,41 +343,6 @@ public class PrefManager {
         return pref.getString(HostName,"http://192.168.1.52");
     }
 
-    public void setACHValue(String achValue){
-        editor.putString(setAchValue,achValue);
-        editor.commit();
-    }
-
-    public String getACHValue(){
-        return pref.getString(setAchValue,"");
-    }
-
-    public void setPolarityValue(String polarityValue){
-        editor.putString(setPolarityValue,polarityValue);
-        editor.commit();
-    }
-
-    public String getPolarityValue(){
-        return pref.getString(setPolarityValue,"");
-    }
-
-    public void setSupplyValue(String supplyValue){
-        editor.putString(setSupplyValue,supplyValue);
-        editor.commit();
-    }
-
-    public String getSupplyValue(){
-        return pref.getString(setSupplyValue,"");
-    }
-
-    public void setExhaustValue(String exhaustValue){
-        editor.putString(setExhaustValue,exhaustValue);
-        editor.commit();
-    }
-
-    public String getExhaustValue(){
-        return pref.getString(setExhaustValue,"");
-    }
 
     public void setPolarityIdValue(String polarityIdValue){
         editor.putString(setPolarityIdValue,polarityIdValue);
