@@ -1401,6 +1401,14 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
         TextView txt_dailogDesc = alertview.findViewById(R.id.txt_dailogDesc);
         TextView btn_Ok_selection = alertview.findViewById(R.id.btn_Ok_Selection);
 
+        if (!isFromSettingScreen) {
+            if (prefManager != null) {
+                if (prefManager.getOpenNode()) {
+                    portConversion.closeNode();
+                }
+            }
+        }
+
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
