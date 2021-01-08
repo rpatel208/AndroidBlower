@@ -584,6 +584,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
                 if (rackDetailsModel != null) {
                     if (!prefManager.getModelName().equalsIgnoreCase(subModelNo)){
                         if (prefManager.getHostName() != null || prefManager.getHostName().contains("http")){
+                            prefManager.setModelName(subModelNo);
                             responseHandler.getUpdateRackBlowerNumber_Api(act,prefManager,allentownBlowerApplication,rackDetailsModel,mStrBlowerName,mStrBuildingName,mStrRoomName,subModelNo,dpHelper);
                         }
                     }
