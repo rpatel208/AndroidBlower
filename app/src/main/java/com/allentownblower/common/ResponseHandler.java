@@ -296,7 +296,7 @@ public class ResponseHandler {
     }
 
     @SuppressLint("LongLogTag")
-    public void getUpdateRackBlowerDetails_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication, RackDetailsModel rackDetailsModel, String BlowerName, String BuildingName, String RoomName, String ModelNo, SqliteHelper db) {
+    public void getUpdateRackBlowerNumber_Api(Activity act, PrefManager prefManager, AllentownBlowerApplication allentownBlowerApplication, RackDetailsModel rackDetailsModel, String BlowerName, String BuildingName, String RoomName, String ModelNo, SqliteHelper db) {
         if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")) {
             Log.e("HostName :- ", "Host Name is Not Available");
             return;
@@ -307,7 +307,6 @@ public class ResponseHandler {
         try {
             objParam.put(ApiHandler.strUpdateRackBlowerDetailsId, rackDetailsModel.getmId());
             objParam.put(ApiHandler.strUpdateRackBlowerCustomerID, rackDetailsModel.getmRackBlowerCustomerID());
-            objParam.put(ApiHandler.strRackBlowerABlowerSerial, rackDetailsModel.getmABlowerSerial());
             objParam.put(ApiHandler.strUpdatedRackBlowerABlowerName, BlowerName);
             objParam.put(ApiHandler.strUpdatedRackBlowerABlowerBuilding, BuildingName);
             objParam.put(ApiHandler.strUpdatedRackBlowerABlowerRoom, RoomName);
@@ -324,33 +323,29 @@ public class ResponseHandler {
         } catch (JSONException e) {
             Log.e(TAG, "Json exception : " + e.toString());
         }
-        Log.e("ObjParam_UpdatedRackBlowerDetails", "" + jsonObj);
+        Log.e("ObjParam_getUpdateRackBlowerNumber", "" + jsonObj);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                prefManager.getHostName() + ApiHandler.strUrlUpdateRackBlowerDetails, jsonObj,
+                prefManager.getHostName() + ApiHandler.strUrlUpdateRackBlowerNumber, jsonObj,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
 //                        relative_progress_rack_detail_screen.setVisibility(View.GONE);
-                        Utility.Log("UpdateRackBlowerDetails_Api_Response : " + jsonObject);
+                        Utility.Log("getUpdateRackBlowerNumber_Api_Response : " + jsonObject);
                         try {
                             if (jsonObject.getBoolean("result")) {
-//                                RackDetailsModel rackDetailsModel = model;
-//                                db.updateRackBlowerDetailsInDataBase(jsonObject);
-//                                rackDetailsModel = db.getDataFromRackBlowerDetails();
-//                                rackDetailsModel.setmRackBlowerCustomerName(jsonObject.getString("CustomerName"));
-                                resetFAndSDataForBlower_Api(rackDetailsModel);
+                                Utility.Log("getUpdateRackBlowerNumber_Api_Result : " + jsonObject.getBoolean("result"));
                             } else {
                                 if (jsonObject.has("message"))
                                     // Utility.showAlertDialog(act, jsonObject.getString("message"), getString(R.string.ok));
-                                    Utility.Log("UpdateRackBlowerDetails_Api_Response Fail : " + jsonObject.getString("message"));
+                                    Utility.Log("getUpdateRackBlowerNumber_Api_Response Fail : " + jsonObject.getString("message"));
                                 else
                                     Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
 
                             }
 //                            showDetailWhenScreenLoad();
                         } catch (JSONException e) {
-                            Utility.Log("getUpdateRackBlowerDetailsresponse_Api Error : " + e.toString());
+                            Utility.Log("getUpdateRackBlowerNumber_Api Error : " + e.toString());
                             e.printStackTrace();
 //                            showDetailWhenScreenLoad();
                             Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
@@ -362,7 +357,7 @@ public class ResponseHandler {
                     public void onErrorResponse(VolleyError error) {
 //                        relative_progress_rack_detail_screen.setVisibility(View.GONE);
 //                        showDetailWhenScreenLoad();
-                        Utility.Log("UpdateRackBlowerDetails_Api Error : " + error.toString());
+                        Utility.Log("getUpdateRackBlowerNumber_Api Error : " + error.toString());
                     }
                 }
         ) {

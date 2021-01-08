@@ -36,6 +36,7 @@ public class PrefManager {
     private static final String setSupplyValue = "setSupplyValue";
     private static final String setExhaustValue = "setExhaustValue";
     private static final String setPolarityIdValue = "setPolarityIdValue";
+    private static final String setModelName = "setModelName";
 
     private static final String str_Z0 = "str_Z0";
     private static final String str_Z2 = "str_Z2";
@@ -385,6 +386,15 @@ public class PrefManager {
 
     public String getPolarityIdValue(){
         return pref.getString(setPolarityIdValue,"");
+    }
+
+    public void setModelName(String modelName){
+        editor.putString(setModelName,modelName);
+        editor.commit();
+    }
+
+    public String getModelName(){
+        return pref.getString(setModelName,"");
     }
 
 }

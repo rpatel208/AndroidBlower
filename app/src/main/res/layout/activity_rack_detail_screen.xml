@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/relative_layout_update_button"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <!--serailno_customer_name_layout-->
             <LinearLayout
@@ -206,7 +206,7 @@
                 android:layout_marginTop="@dimen/_6sdp"
                 android:layout_marginRight="@dimen/_6sdp"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -308,7 +308,7 @@
                 android:background="@drawable/black_home_screen_textbox"
                 android:orientation="vertical"
                 android:paddingBottom="0dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:ignore="NotSibling">
 
                 <!--main_layout_blower_detail-->
