@@ -589,7 +589,6 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
                         }
                     }
                 }
-                prefManager.setPolarityIdValue(polarityValueId);
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_ACH_Value_Write_Only_From_Setting_Screen);
             }
 
