@@ -421,16 +421,17 @@ public class RackDetailScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 hostAddress = mTxtUpdateHostName.getText().toString().trim();
+                mCustomerName = txt_customer_name_host.getText().toString().trim();
                 if (!hostAddress.matches("((http)[s]?(://).*)")){
                     Toast.makeText(act, "Server address is not valid..!", Toast.LENGTH_SHORT).show();
                 } else if (!TextUtils.isEmpty(hostAddress)) {
                     prefManager.setHostName(hostAddress);
-                    Toast.makeText(act, "Updated Successfully..!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(act, "Server Address updated successfully..!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(act, "Please enter Host Address..!", Toast.LENGTH_SHORT).show();
                 }
 
-                getRackNewId_Api(rackDetailsModel.getmABlowerSerial(),rackDetailsModel.getmRackBlowerCustomerName());
+                getRackNewId_Api(rackDetailsModel.getmABlowerSerial(),mCustomerName);
 
             }
         });
