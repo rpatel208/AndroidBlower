@@ -1179,6 +1179,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
         btn_Cancel_alartview_box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Utility.hideNavigationBar(act);
                 if (alertview_selection != null && alertview_selection.isShowing()) {
                     alertview_selection.dismiss();
                 }
