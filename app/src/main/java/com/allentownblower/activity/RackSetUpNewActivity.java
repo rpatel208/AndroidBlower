@@ -1316,7 +1316,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
 
     // RackSetUp Save Click From Setting Screen AlertDailogBox
     public void ShowRackSetUpDetailSaveDialog(final String title, String btn1, String btn2) {
-
+        Utility.hideNavigationBar(act);
         alertview_Save_Dialog = new Dialog(act);
 
         int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
@@ -1376,6 +1376,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
     }
 
     public void AlertDialogBoxSuccessfully(){
+        Utility.hideNavigationBar(act);
         alertview = new Dialog(act);
 
         int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
