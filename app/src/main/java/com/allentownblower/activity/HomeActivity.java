@@ -8287,12 +8287,7 @@ public class HomeActivity extends BaseActivity implements Observer {
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nCallUnitChangeObserver) {
             sendS01CommandAfterUnitChange(typeUnitValue);
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_ACH_Value_Write_Only_From_Setting_Screen) {
-            ArrayList<RackModel> arrRackList = new ArrayList<>();
-            arrRackList = sqliteHelper.getDataFromRackSetUpTable();
-
-            if (arrRackList.size() > 0) {
-                rackModel = arrRackList.get(0);
-            }
+            initRackModelNullOrNot();
             String achValue = String.valueOf(rackModel.getACH());
             String supplyValue = String.valueOf(rackModel.getSupplyCFM());
             ArrayList<SetPointCommand> setpointArrayList = responseHandler.getLastSetPointData();
@@ -8302,15 +8297,7 @@ public class HomeActivity extends BaseActivity implements Observer {
             Utility.Log(TAG, "Sending S07_XXYY ==> " + command);
             CallReadWriteFuncation(command, 301);
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Polarity_Value_Write_Only_From_Setting_Screen) {
-
-            ArrayList<RackModel> arrRackList = new ArrayList<>();
-            arrRackList = sqliteHelper.getDataFromRackSetUpTable();
-
-            if (arrRackList.size() > 0) {
-                rackModel = arrRackList.get(0);
-            }
-
-//            String polarityValueId = prefManager.getPolarityIdValue().trim();
+            initRackModelNullOrNot();
             String polarityValueId = "";
             String polarityValue = rackModel.getPolarity();
             if(polarityValue.equalsIgnoreCase("+")){
@@ -8351,14 +8338,7 @@ public class HomeActivity extends BaseActivity implements Observer {
 //
 //        }
         else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Exhaust_WC_Value_Write_Only_From_Setting_Screen) {
-            ArrayList<RackModel> arrRackList = new ArrayList<>();
-            arrRackList = sqliteHelper.getDataFromRackSetUpTable();
-
-            if (arrRackList.size() > 0) {
-                rackModel = arrRackList.get(0);
-            }
-
-//            String exhaustValue = prefManager.getExhaustValue().trim();
+            initRackModelNullOrNot();
             String exhaustValue = rackModel.getExhaustWC();
 
             String barvalue = exhaustValue;
@@ -8404,6 +8384,19 @@ public class HomeActivity extends BaseActivity implements Observer {
 //        }
     }
 
+    public void initRackModelNullOrNot(){
+        if (rackModel == null){
+            ArrayList<RackModel> arrRackList = new ArrayList<>();
+            arrRackList = sqliteHelper.getDataFromRackSetUpTable();
+
+            if (arrRackList.size() > 0) {
+                rackModel = arrRackList.get(0);
+            }
+        } else {
+            Log.e("RackModel","Rack Model Already Field");
+        }
+    }
+
     public void reDirectHomeScreenFunction(boolean isSubSettingHomeButtonClicked) {
         if (isSubSettingHomeButtonClicked) {
             mRelativeProgressBarLayoutSetting.setVisibility(View.GONE);
@@ -8426,7 +8419,7 @@ public class HomeActivity extends BaseActivity implements Observer {
             report_layout.setVisibility(View.GONE);
             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRedirectHome);
             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStartService);
-            ResetCounter(0);
+//            ResetCounter(0);
         }
 
     }
@@ -8826,8 +8819,8 @@ public class HomeActivity extends BaseActivity implements Observer {
                 communicationController.start();
         }
 
+        rackDetailsModel = sqliteHelper.getDataFromRackBlowerDetails();
         if (rackDetailsModel != null) {
-            rackDetailsModel = sqliteHelper.getDataFromRackBlowerDetails();
             responseHandler.rackDetailsModels = rackDetailsModel;
             responseHandler.allentownBlowerApplication = allentownBlowerApplication;
             responseHandler.myDb = sqliteHelper;
