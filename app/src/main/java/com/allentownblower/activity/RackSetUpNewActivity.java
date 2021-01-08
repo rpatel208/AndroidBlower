@@ -15,7 +15,6 @@ import android.text.format.Formatter;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -578,12 +577,15 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
 //                        ACHValue, polarityValue, supplyValue, exhaustValue, mLockValue);
 //                Toast.makeText(act, "Updated Succesfully", Toast.LENGTH_SHORT).show();
             if (!isFromSettingScreen){
+                prefManager.setModelName(subModelNo);
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRackSetUp_ACH_Value_Write_Only);
             } else {
                 rackDetailsModel = dpHelper.getDataFromRackBlowerDetails();
                 if (rackDetailsModel != null) {
-                    if (prefManager.getHostName() != null || prefManager.getHostName().contains("http")){
-                        responseHandler.getUpdateRackBlowerDetails_Api(act,prefManager,allentownBlowerApplication,rackDetailsModel,mStrBlowerName,mStrBuildingName,mStrRoomName,subModelNo,dpHelper);
+                    if (!prefManager.getModelName().equalsIgnoreCase(subModelNo)){
+                        if (prefManager.getHostName() != null || prefManager.getHostName().contains("http")){
+                            responseHandler.getUpdateRackBlowerNumber_Api(act,prefManager,allentownBlowerApplication,rackDetailsModel,mStrBlowerName,mStrBuildingName,mStrRoomName,subModelNo,dpHelper);
+                        }
                     }
                 }
                 prefManager.setACHValue(ACHValue);

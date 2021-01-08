@@ -14,7 +14,7 @@ public class ApiHandler {
     public static String strUrlUpdateCommandCompleted = strDomain + "/RackBlower/UpdateCommandCompleted";
     public static String strUrlSendReportEmail = strDomain + "/RackBlower/SendReportEmail";
     public static String strURLResetFAndSData = strDomain + "/RackBlower/ResetRackBlowerFAndSData";
-    public static String strUrlUpdateRackBlowerDetails = strDomain + "/RackBlower/UpdateRackBlowerDetails";
+    public static String strUrlUpdateRackBlowerNumber = strDomain + "/RackBlower/UpdateRackModelNumber";
 
     /*Parameter*/
     public static String strGetNewIDForRackBlowerSerialNumber = "SerialNumber";

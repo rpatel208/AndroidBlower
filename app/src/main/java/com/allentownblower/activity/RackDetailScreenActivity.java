@@ -312,7 +312,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
         mTxtUpdateHostName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditTextAlertDialogBox("Update Host Name", mTxtHostName);
+                EditTextAlertDialogBox("Update Host Name", mTxtUpdateHostName);
             }
         });
 
@@ -428,6 +428,8 @@ public class RackDetailScreenActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(act, "Please enter Host Address..!", Toast.LENGTH_SHORT).show();
                 }
+
+                getRackNewId_Api(rackDetailsModel.getmABlowerSerial(),rackDetailsModel.getmRackBlowerCustomerName());
 
             }
         });
@@ -546,6 +548,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
                                 edittext_alertview_selection.dismiss();
                             }
                             textView.setText(edit_EnterTxt_alartview_box.getText().toString());
+                            prefManager.setHostName(edit_EnterTxt_alartview_box.getText().toString());
 //                            edittext_alertview_selection.dismiss();
                         }
                     }
