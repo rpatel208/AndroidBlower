@@ -1191,6 +1191,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
         btn_Ok_alartview_box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Utility.hideNavigationBar(act);
                 if (typr.equals("Company Name")) {
                     if (TextUtils.isEmpty(edit_EnterTxt_alartview_box.getText().toString())) {
                         Toast.makeText(act, "Please enter company name", Toast.LENGTH_SHORT).show();
@@ -1342,6 +1343,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
         btn_dailogNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Utility.hideNavigationBar(act);
                 if (alertview_Save_Dialog != null && alertview_Save_Dialog.isShowing()) {
                     alertview_Save_Dialog.dismiss();
                 }
@@ -1353,6 +1355,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
             @SuppressLint("LongLogTag")
             @Override
             public void onClick(View view) {
+                Utility.hideNavigationBar(act);
                 if (alertview_Save_Dialog != null && alertview_Save_Dialog.isShowing()) {
                     alertview_Save_Dialog.dismiss();
                 }
@@ -1376,7 +1379,6 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
     }
 
     public void AlertDialogBoxSuccessfully(){
-        Utility.hideNavigationBar(act);
         alertview = new Dialog(act);
 
         int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
@@ -1420,6 +1422,7 @@ public class RackSetUpNewActivity extends AppCompatActivity implements Observer 
         btn_Ok_selection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Utility.hideNavigationBar(act);
                 if (isFromSettingScreen) {
                     if (alertview != null && alertview.isShowing()) {
                         alertview.dismiss();
