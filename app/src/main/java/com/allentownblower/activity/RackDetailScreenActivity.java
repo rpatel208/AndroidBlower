@@ -1,5 +1,6 @@
 package com.allentownblower.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
@@ -657,6 +658,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
         allentownBlowerApplication.getInstance().addToRequestQueue(request, PendingID.nGetNewIDForRackBlower);
     }
 
+    @SuppressLint("LongLogTag")
     public void getUpdateRackBlowerDetails_Api(String id, String customerId) {
         if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
             Log.e("HostName :- ", "Host Name is Not Available");
@@ -671,6 +673,8 @@ public class RackDetailScreenActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        Log.e("UpdateRackBlowerDetailsobjParam","" + objParam.toString());
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
                 prefManager.getHostName() + ApiHandler.strUrlGetUpdateRackBlowerDetails, objParam,

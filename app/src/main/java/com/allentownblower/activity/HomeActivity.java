@@ -73,6 +73,7 @@ import com.allentownblower.module.DiagnosticsCommand;
 import com.allentownblower.module.FeedbackCommand;
 import com.allentownblower.module.MultipleSelection;
 import com.allentownblower.module.RackDetailsModel;
+import com.allentownblower.module.RackModel;
 import com.allentownblower.module.SetPointCommand;
 import com.allentownblower.module.TableViewModel;
 import com.allentownblower.module.WiFiCommand;
@@ -291,6 +292,7 @@ public class HomeActivity extends BaseActivity implements Observer {
     private RackDetailsModel rackDetailsModel;
     private TextView txt_S022_Value, txt_S023_Value, txt_S024_Value, txt_S025_Value;
     private TextView txt_Supply_Temp, txt_Supply_Humidity, txt_Exhaust_Temp, txt_Exhaust_Humidity;
+    private RackModel rackModel;
 
     @SuppressLint({"HandlerLeak", "ServiceCast", "MissingPermission"})
     @Override
@@ -8285,8 +8287,14 @@ public class HomeActivity extends BaseActivity implements Observer {
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nCallUnitChangeObserver) {
             sendS01CommandAfterUnitChange(typeUnitValue);
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_ACH_Value_Write_Only_From_Setting_Screen) {
-            String achValue = prefManager.getACHValue().trim();
-            String supplyValue = prefManager.getSupplyValue().trim();
+            ArrayList<RackModel> arrRackList = new ArrayList<>();
+            arrRackList = sqliteHelper.getDataFromRackSetUpTable();
+
+            if (arrRackList.size() > 0) {
+                rackModel = arrRackList.get(0);
+            }
+            String achValue = String.valueOf(rackModel.getACH());
+            String supplyValue = String.valueOf(rackModel.getSupplyCFM());
             ArrayList<SetPointCommand> setpointArrayList = responseHandler.getLastSetPointData();
             String S07_YY = responseHandler.stringToHex(achValue, true);
             String S07_XX = responseHandler.stringToHex(supplyValue, true);
@@ -8294,7 +8302,6 @@ public class HomeActivity extends BaseActivity implements Observer {
             Utility.Log(TAG, "Sending S07_XXYY ==> " + command);
             CallReadWriteFuncation(command, 301);
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Polarity_Value_Write_Only_From_Setting_Screen) {
-            String polarityValue = prefManager.getPolarityValue().trim();
             String polarityValueId = prefManager.getPolarityIdValue().trim();
             ArrayList<SetPointCommand> setpointArrayList = responseHandler.getLastSetPointData();
             String bin = responseHandler.hexToBinary(setpointArrayList.get(0).getS01());
@@ -8329,7 +8336,15 @@ public class HomeActivity extends BaseActivity implements Observer {
 //
 //        }
         else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_Exhaust_WC_Value_Write_Only_From_Setting_Screen) {
-            String exhaustValue = prefManager.getExhaustValue().trim();
+            ArrayList<RackModel> arrRackList = new ArrayList<>();
+            arrRackList = sqliteHelper.getDataFromRackSetUpTable();
+
+            if (arrRackList.size() > 0) {
+                rackModel = arrRackList.get(0);
+            }
+
+//            String exhaustValue = prefManager.getExhaustValue().trim();
+            String exhaustValue = rackModel.getExhaustWC();
 
             String barvalue = exhaustValue;
 
