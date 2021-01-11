@@ -114,7 +114,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
     private void loadScreen() {
         rackDetailsModel = dpHelper.getDataFromRackBlowerDetails();
         if (rackDetailsModel != null) {
-            getUpdateRackBlowerDetails_Api(rackDetailsModel.getmId(), rackDetailsModel.getmRackBlowerCustomerID());
+            getRackBlowerDetails_Api(rackDetailsModel.getmId(), rackDetailsModel.getmRackBlowerCustomerID());
         } else {
             mRelativeLayoutSerialCustomerMain.setVisibility(View.VISIBLE);
             mLinearLayoutTab.setVisibility(View.GONE);
@@ -624,7 +624,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
                         try {
                             if (jsonObject.getBoolean("result")) {
                                 dpHelper.saveNewIDForRackBlowerInDataBase(jsonObject);
-                                getUpdateRackBlowerDetails_Api(dpHelper.getString(jsonObject, ApiHandler.strRackSerialNumberId), dpHelper.getString(jsonObject, ApiHandler.strRackBlowerCustomerID));
+                                getRackBlowerDetails_Api(dpHelper.getString(jsonObject, ApiHandler.strRackSerialNumberId), dpHelper.getString(jsonObject, ApiHandler.strRackBlowerCustomerID));
                             } else {
 
                                 if (jsonObject.has("message"))
@@ -660,7 +660,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
     }
 
     @SuppressLint("LongLogTag")
-    public void getUpdateRackBlowerDetails_Api(String id, String customerId) {
+    public void getRackBlowerDetails_Api(String id, String customerId) {
         if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
             Log.e("HostName :- ", "Host Name is Not Available");
             return;
@@ -675,7 +675,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Log.e("UpdateRackBlowerDetailsobjParam","" + objParam.toString());
+        Log.e("getRackBlowerDetailsobjParam","" + objParam.toString());
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
                 prefManager.getHostName() + ApiHandler.strUrlGetUpdateRackBlowerDetails, objParam,
@@ -683,7 +683,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         relative_progress_rack_detail_screen.setVisibility(View.GONE);
-                        Utility.Log("getUpdateRackBlowerDetails_Api_Response : " + jsonObject);
+                        Utility.Log("getRackBlowerDetails_Api_Response : " + jsonObject);
                         try {
                             if (jsonObject.getBoolean("result")) {
                                 dpHelper.updateRackBlowerDetailsInDataBase(jsonObject);
@@ -692,14 +692,14 @@ public class RackDetailScreenActivity extends AppCompatActivity {
                             } else {
                                 if (jsonObject.has("message"))
                                    // Utility.showAlertDialog(act, jsonObject.getString("message"), getString(R.string.ok));
-                                    Utility.Log("UpdateRackBlowerDetails_Api_Response Fail : " + jsonObject.getString("message"));
+                                    Utility.Log("getRackBlowerDetails_Api_Response Fail : " + jsonObject.getString("message"));
                                 else
                                     Utility.showAlertDialog(act, getString(R.string.error), getString(R.string.ok));
 
                             }
                             showDetailWhenScreenLoad();
                         } catch (JSONException e) {
-                            Utility.Log("getUpdateRackBlowerDetailsresponse_Api Error : " + e.toString());
+                            Utility.Log("getRackBlowerDetailsresponse_Api Error : " + e.toString());
                             e.printStackTrace();
                             showDetailWhenScreenLoad();
                             Utility.showAlertDialog(act, getString(R.string.error), getString(R.string.ok));
@@ -711,7 +711,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         relative_progress_rack_detail_screen.setVisibility(View.GONE);
                         showDetailWhenScreenLoad();
-                        Utility.Log("UpdateRackBlowerDetails_Api Error : " + error.toString());
+                        Utility.Log("getRackBlowerDetails_Api Error : " + error.toString());
                     }
                 }
         ) {

@@ -8282,6 +8282,12 @@ public class HomeActivity extends BaseActivity implements Observer {
             txt_BluetoothDisconnectPassword.setText(prefManager.getBluetoothDisconnectPassword());
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nBackPressedReportAndRack) {
             ResetCounter(1);
+            rackDetailsModel = sqliteHelper.getDataFromRackBlowerDetails();
+            if (rackDetailsModel != null) {
+                responseHandler.rackDetailsModels = rackDetailsModel;
+                responseHandler.allentownBlowerApplication = allentownBlowerApplication;
+                responseHandler.myDb = sqliteHelper;
+            }
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nTimerFinishedReportAndRack) {
             reDirectHomeScreenFunction(false);
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nCallUnitChangeObserver) {
