@@ -729,8 +729,8 @@ public class SqliteHelper extends SQLiteOpenHelper {
                 cv.put(DatabaseTable.COL_RACKBLOWERDETAILS_AIR_FLOW_UNIT, getString(jsonObject, ApiHandler.strUpdateAirFlowUnit));
                 cv.put(DatabaseTable.COL_RACKBLOWERDETAILS_IS_UPDATED_BY_WEB_APP, getString(jsonObject, ApiHandler.strUpdateIsUpdatedByWebApp) == "true" ? 1 : 0);
 
-                db.update(DatabaseTable.TBL_RACKBLOWERDETAILS, cv, DatabaseTable.COL_RACKBLOWERDETAILS_ID + " = " + "'" + getString(jsonObject, ApiHandler.strRackSerialNumberId)+ "'" + " and "+
-                        DatabaseTable.COL_RACKBLOWERDETAILS_RACKBLOWERCUSTOMER_ID + " = " + "'" + getString(jsonObject, ApiHandler.strRackBlowerCustomerID) + "'", null);
+                db.update(DatabaseTable.TBL_RACKBLOWERDETAILS, cv, DatabaseTable.COL_RACKBLOWERDETAILS_ID + " = " + "'" + getString(jsonObject, ApiHandler.strUpdateRackBlowerDetailsID)+ "'" + " and "+
+                        DatabaseTable.COL_RACKBLOWERDETAILS_RACKBLOWERCUSTOMER_ID + " = " + "'" + getString(jsonObject, ApiHandler.strUpdateRackCustomerID) + "'", null);
                 Utility.Log("Update Successfully");
                 cv.clear();
                 db.setTransactionSuccessful();
