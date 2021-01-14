@@ -48,6 +48,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.evrencoskun.tableview.TableView;
+import com.koushikdutta.async.Util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -188,7 +189,11 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                     Toast.makeText(ReportFilterActivity.this, "Please select start date", Toast.LENGTH_LONG).show();
                 } else if (TextUtils.isEmpty(mTxtEndDate.getText().toString())) {
                     Toast.makeText(ReportFilterActivity.this, "Please select end date", Toast.LENGTH_LONG).show();
-                } else {
+                } else if (Utility.getshortDateFromString(mTxtStartDate.getText().toString()).after(Utility.getshortDateFromString(mTxtEndDate.getText().toString())))
+                {
+                    Utility.ShowMessage(act, "Warning", "End Date must be higher than Start Date.","Ok");
+                }
+                else {
                     alertDialogBox();
                     mStartDate = mTxtStartDate.getText().toString();
                     mEndDate = mTxtEndDate.getText().toString();
@@ -223,7 +228,11 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                     Toast.makeText(ReportFilterActivity.this, "Please select start date", Toast.LENGTH_LONG).show();
                 } else if (TextUtils.isEmpty(mTxtEndDate.getText().toString())) {
                     Toast.makeText(ReportFilterActivity.this, "Please select end date", Toast.LENGTH_LONG).show();
-                } else {
+                } else if (Utility.getshortDateFromString(mTxtStartDate.getText().toString()).after(Utility.getshortDateFromString(mTxtEndDate.getText().toString())))
+                {
+                    Utility.ShowMessage(act, "Warning", "End Date must be higher than Start Date.","Ok");
+                }
+                else {
                     Utility.ShowMessageReport(act, "Please wait while we are export data...");
                     mStartDate = mTxtStartDate.getText().toString();
                     mEndDate = mTxtEndDate.getText().toString();
@@ -254,13 +263,26 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                 isExportButtonClicked = false;
                 email = mTxtEmail.getText().toString().trim();
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplicationContext(), "enter email address", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please Enter Email Address.", Toast.LENGTH_SHORT).show();
 
-                } else {
+                } else if (TextUtils.isEmpty(mTxtStartDate.getText().toString())) {
+                    Toast.makeText(ReportFilterActivity.this, "Please select start date", Toast.LENGTH_LONG).show();
+                } else if (TextUtils.isEmpty(mTxtEndDate.getText().toString())) {
+                    Toast.makeText(ReportFilterActivity.this, "Please select end date", Toast.LENGTH_LONG).show();
+                } else if (Utility.getshortDateFromString(mTxtStartDate.getText().toString()).after(Utility.getshortDateFromString(mTxtEndDate.getText().toString())))
+                {
+                    Utility.ShowMessage(act, "Warning", "End Date must be higher than Start Date.","Ok");
+                }
+                else {
                     if (email.matches(emailPattern)) {
                         if (act == null) {
                             Log.e("LOG_TAG", "Activity context is null");
-                        } else {
+                        } else if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
+                            Log.e("HostName :- ", "Host Name is Not Available");
+                            Utility.ShowMessage(act, "Warning", "Server has not been configured to send email. \nPlease contact administrator.","Ok");
+                            return;
+                        }
+                        else {
                             alertDialogBoxEmail();
                             mStartDate = mTxtStartDate.getText().toString();
                             mEndDate = mTxtEndDate.getText().toString();
@@ -352,13 +374,30 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
 
-//                        mTxtStartDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                        if (dayOfMonth <= 9) {
-                            mTxtStartDate.setText(year + "-" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
-                        } else {
-                            mTxtStartDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+
+//                        if (dayOfMonth <= 9) {
+//                            mTxtStartDate.setText(year + "-" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
+//                        } else {
+//                            mTxtStartDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+//                        }
+
+                        if (monthOfYear <=9 )
+                        {
+                            if (dayOfMonth <= 9) {
+                                mTxtStartDate.setText(year + "-" + "0" +(monthOfYear + 1) + "-" + "0" + dayOfMonth);
+                            } else {
+                                mTxtStartDate.setText(year + "-" + "0" + (monthOfYear + 1) + "-" + dayOfMonth);
+                            }
                         }
-//                        mTxtStartDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                        else
+                        {
+                            if (dayOfMonth <= 9) {
+                                mTxtStartDate.setText(year + "-" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
+                            } else {
+                                mTxtStartDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                            }
+                        }
+
 
                     }
                 }, mYear, mMonth, mDay);
@@ -395,13 +434,35 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-//                        mTxtEndDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                        if (dayOfMonth <= 9) {
-                            mTxtEndDate.setText(year + "-" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
-                        } else {
-                            mTxtEndDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+
+//                        if (dayOfMonth <= 9) {
+//                            mTxtEndDate.setText(year + "-" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
+//                        } else {
+//                            mTxtEndDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+//                        }
+
+
+                        if (monthOfYear <=9 ){
+                            if (dayOfMonth <= 9) {
+                                mTxtEndDate.setText(year + "-" + "0" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
+                            } else {
+                                mTxtEndDate.setText(year + "-" + "0" + (monthOfYear + 1) + "-" + dayOfMonth);
+                            }
                         }
-//                        mTxtEndDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                        else
+                        {
+                            if (dayOfMonth <= 9) {
+                                mTxtEndDate.setText(year + "-" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
+                            } else {
+                                mTxtEndDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                            }
+                        }
+
+                        if (Utility.getshortDateFromString(mTxtStartDate.getText().toString()).after(Utility.getshortDateFromString(mTxtEndDate.getText().toString())))
+                        {
+                            Utility.ShowMessage(act, "Warning", "End Date must be higher than Start Date.","Ok");
+                            return;
+                        }
 
                     }
                 }, mYear, mMonth, mDay);

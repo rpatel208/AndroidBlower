@@ -1017,6 +1017,18 @@ public class Utility {
         return mDate;
     }
 
+    public static Date getshortDateFromString(String date)
+    {
+        Date mDate = null;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            mDate = sdf.parse(date);
+        } catch (ParseException ex) {
+            Log.v("Exception", ex.getLocalizedMessage());
+        }
+        return mDate;
+    }
+
     public static String getDateInString(Date date) {
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // yyyy-MM-dd HH:mm:ss
@@ -1104,7 +1116,7 @@ public class Utility {
                 usbManager = (UsbManager) act.getSystemService(Context.USB_SERVICE);
                 PendingIntent permissionIntent = PendingIntent.getBroadcast(act, 0, new Intent(ACTION_USB_PERMISSION), 0);
                 IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
-
+                act.unregisterReceiver(broadcast_reciever);
                 act.registerReceiver(broadcast_reciever, filter);
                 usbManager.requestPermission(device, permissionIntent);
             }

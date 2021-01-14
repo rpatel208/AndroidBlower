@@ -8737,6 +8737,7 @@ public class HomeActivity extends BaseActivity implements Observer {
                 Utility.Log(TAG, "onStart");
             } else if (isCounterRunning == 0) {
                 mCountDownTimer.cancel(); // cancel
+                Utility.dismissAlertDialog();
                 Utility.Log(TAG, "onCancel");
             }
         }
