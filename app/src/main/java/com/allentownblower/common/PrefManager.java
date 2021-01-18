@@ -340,7 +340,7 @@ public class PrefManager {
     }
 
     public String getHostName(){
-        return pref.getString(HostName,"http://192.168.1.52");
+        return pref.getString(HostName,"");
     }
 
 

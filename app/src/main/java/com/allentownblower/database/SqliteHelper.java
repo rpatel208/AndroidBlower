@@ -858,6 +858,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
                                     Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
                             }
                         } catch (JSONException e) {
+                            Utility.dismissAlertDialog();
                             Utility.Log("geUpdateRackBlowerDetailstresponse_Api Error : " + e.toString());
                             e.printStackTrace();
                             Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
@@ -919,6 +920,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
                                     Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
                             }
                         } catch (JSONException e) {
+                            Utility.dismissAlertDialog();
                             Utility.Log("getUpdatedByWebAppCompletedresponse_Api Error : " + e.toString());
                             e.printStackTrace();
                             Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
@@ -983,6 +985,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
                                     Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
                             }
                         } catch (JSONException e) {
+                            Utility.dismissAlertDialog();
                             Utility.Log("getUpdateCommandCompletedresponse_Api Error : " + e.toString());
                             e.printStackTrace();
                             Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));

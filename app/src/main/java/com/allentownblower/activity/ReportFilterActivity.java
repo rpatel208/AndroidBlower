@@ -264,12 +264,12 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                             alertDialogBoxEmail();
                             mStartDate = mTxtStartDate.getText().toString();
                             mEndDate = mTxtEndDate.getText().toString();
-                            tableViewModel = new TableViewModel(act, mStartDate, mEndDate,sqliteHelper);
+                            tableViewModel = new TableViewModel(act, mStartDate, mEndDate, sqliteHelper);
                             final Runnable r = new Runnable() {
                                 public void run() {
                                     if (rackDetailsModel != null) {
-                                        tableViewModel.getSendReportEmail_Api(mRadioButtonValue,email, rackDetailsModel, allentownBlowerApplication, prefManager, act, false);
-                                    }else {
+                                        tableViewModel.getSendReportEmail_Api(mRadioButtonValue, email, rackDetailsModel, allentownBlowerApplication, prefManager, act, false);
+                                    } else {
                                         Utility.dismissAlertDialog();
                                     }
                                 }
@@ -353,6 +353,21 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                                           int monthOfYear, int dayOfMonth) {
 
 //                        mTxtStartDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+
+//                        if (monthOfYear <= 9) {
+//                            if (dayOfMonth <= 9) {
+//                                mTxtStartDate.setText(year + "-" + "0" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
+//                            } else {
+//                                mTxtStartDate.setText(year + "-" + "0" + (monthOfYear + 1) + "-" + dayOfMonth);
+//                            }
+//                        } else {
+//                            if (dayOfMonth <= 9) {
+//                                mTxtStartDate.setText(year + "-" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
+//                            } else {
+//                                mTxtStartDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+//                            }
+//                        }
+
                         if (dayOfMonth <= 9) {
                             mTxtStartDate.setText(year + "-" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
                         } else {
@@ -396,6 +411,22 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
 //                        mTxtEndDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+
+//                        if (monthOfYear <= 9) {
+//                            if (dayOfMonth <= 9) {
+//                                mTxtEndDate.setText(year + "-" + "0" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
+//                            } else {
+//                                mTxtEndDate.setText(year + "-" + "0" + (monthOfYear + 1) + "-" + dayOfMonth);
+//                            }
+//                        } else {
+//                            if (dayOfMonth <= 9) {
+//                                mTxtEndDate.setText(year + "-" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
+//                            } else {
+//                                mTxtEndDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+//                            }
+//                        }
+
+
                         if (dayOfMonth <= 9) {
                             mTxtEndDate.setText(year + "-" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
                         } else {
