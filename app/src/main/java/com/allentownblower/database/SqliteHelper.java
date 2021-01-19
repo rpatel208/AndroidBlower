@@ -952,7 +952,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
             return;
         }
         String command = prefManager.getSendCommandS().trim();
-        Utility.ShowMessageReport(act, "Please wait...");
+        //Utility.ShowMessageReport(act, "Please wait...");
         //Log.e("TAG","getUpdateCommandCompleted_Api method");
         // if (NetworkUtil.getConnectivityStatus(act)) {
         JSONObject objParam = new JSONObject();
@@ -971,7 +971,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         //Utility.dismissProgress();
-                        Utility.dismissAlertDialog();
+                        //Utility.dismissAlertDialog();
                         Utility.Log("getUpdateCommandCompleted_Api_Response : " + jsonObject);
                         try {
                             if (jsonObject.getBoolean("result")) {
