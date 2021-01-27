@@ -8228,16 +8228,18 @@ public class HomeActivity extends BaseActivity implements Observer {
             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointDataOnly);
             // ResetCounter
             ResetCounter(1);
-        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRedirectReport) {
+        }
+        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRedirectReport)
+        {
             bluetooth_layout.setVisibility(View.GONE);
             main_layout.setVisibility(View.GONE);
             setting_layout.setVisibility(View.GONE);
             sub_setting_layout.setVisibility(View.GONE);
             report_layout.setVisibility(View.VISIBLE);
 
-            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointDataOnly);
+            //AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointDataOnly);
             // ResetCounter
-            ResetCounter(1);
+            //ResetCounter(1);
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nBluetoothDisconnect) {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(act);
             builder1.setMessage("Are you sure to disconnect devices?");
@@ -8288,9 +8290,12 @@ public class HomeActivity extends BaseActivity implements Observer {
                 responseHandler.allentownBlowerApplication = allentownBlowerApplication;
                 responseHandler.myDb = sqliteHelper;
             }
-        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nTimerFinishedReportAndRack) {
+        }
+        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nTimerFinishedReportAndRack)
+        {
             reDirectHomeScreenFunction(false);
-        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nCallUnitChangeObserver) {
+        }
+        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nCallUnitChangeObserver) {
             sendS01CommandAfterUnitChange(typeUnitValue);
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nRackSetUp_ACH_Value_Write_Only_From_Setting_Screen) {
             initRackModelNullOrNot();

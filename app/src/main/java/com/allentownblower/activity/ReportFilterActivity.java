@@ -160,6 +160,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
         mTxtStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ResetCounter(1);
                 startDateDialog();
             }
         });
@@ -167,6 +168,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
         mTxtEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ResetCounter(1);
                 endDateDialog();
             }
         });
@@ -176,12 +178,14 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                 // This will get the radiobutton that has changed in its check state
                 RadioButton checkedRadioButton = (RadioButton) group.findViewById(checkedId);
                 mRadioButtonValue = String.valueOf(checkedRadioButton.getTag());
+                ResetCounter(1);
             }
         });
 
         mTxtViewReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ResetCounter(1);
                 isEmailButtonClicked = false;
                 isExportButtonClicked = false;
                 isViewReportClicked = true;
@@ -221,6 +225,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
         mTxtExportReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ResetCounter(1);
                 isExportButtonClicked = true;
                 isEmailButtonClicked = false;
 
@@ -259,6 +264,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
         mTxtSendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ResetCounter(1);
                 isEmailButtonClicked = true;
                 isExportButtonClicked = false;
                 email = mTxtEmail.getText().toString().trim();
@@ -312,6 +318,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
         mTxtResetFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ResetCounter(1);
                 resetFunction();
             }
         });
@@ -319,6 +326,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
         mTxtEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ResetCounter(1);
                 AlertDialogBox("Email", mTxtEmail);
             }
         });
