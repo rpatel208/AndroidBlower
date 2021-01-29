@@ -55,6 +55,7 @@ import com.github.mjdev.libaums.UsbMassStorageDevice;
 import com.github.mjdev.libaums.fs.FileSystem;
 import com.github.mjdev.libaums.fs.UsbFile;
 import com.github.mjdev.libaums.fs.UsbFileOutputStream;
+import com.koushikdutta.async.http.AsyncHttpClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -305,6 +306,12 @@ public class TableViewModel {
                             OutputStream os = new UsbFileOutputStream(file);
                             os.write(data.toString().getBytes());
                             os.close();
+//                            File files[] = new File(directory.getAbsolutePath()).listFiles();
+//                            File reportfile = new File(directory.getAbsolutePath()+createon + "_reportfile.csv");
+//                            JSONHttpClient jsonHttpClient = new JSONHttpClient();
+//                            AsyncHttpClient client = new AsyncHttpClient();
+
+
                             Utility.ShowMessage(act,"Success",createon + "_reportfile.csv" + "  File has been exported to USB.","Ok");
                             Utility.dismissAlertDialog();
                             //Toast.makeText(act, "File exported successfully..!", Toast.LENGTH_LONG).show();
