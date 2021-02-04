@@ -12,5 +12,6 @@ public class PendingID {
     public static int nUpdateCommandCompleted = 5;
     public static int nSendReportEmail = 6;
     public static int nResetRackBlowerFAndSData = 7;
+    public static int SendReportFileToEmail = 8;
 
 }

@@ -28,6 +28,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -47,6 +48,9 @@ import com.allentownblower.common.PrefManager;
 import com.allentownblower.common.ResponseHandler;
 import com.allentownblower.common.Utility;
 import com.allentownblower.database.SqliteHelper;
+import com.allentownblower.volley.VolleyMultipartRequest;
+import com.allentownblower.volley.VolleySingleton;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -63,6 +67,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -870,5 +875,164 @@ public class TableViewModel {
 
         allentownBlowerApplication.getInstance().cancelPendingRequests(PendingID.nSendReportEmail);
         allentownBlowerApplication.getInstance().addToRequestQueue(request, PendingID.nSendReportEmail);
+    }
+
+
+    // Report File Export Function
+    @SuppressLint("NewApi")
+    public void csvFileSendEmailFunction_1(String tag, String email, RackDetailsModel rackDetailsModel, AllentownBlowerApplication allentownBlowerApplication, Activity act, PrefManager prefManager) {
+        StringBuilder data = new StringBuilder();
+        ResponseHandler responseHandler = new ResponseHandler(act);
+//        data.append("\n" + columnNameList.toString());
+        setpointArrayList = responseHandler.getBLSetPointData(startDate, endDate);
+        rackModelArrayList = responseHandler.getBLRackSetUpData(startDate, endDate);
+        if (tag.equals("1")) {
+            getColumnHeaderList(tag);
+            data = responseHandler.getBLFeedbackDataMaxMinAvgExport(startDate, endDate, setpointArrayList, rackModelArrayList, responseHandler, false, columnNameListSingle);
+        } else {
+            getColumnHeaderList(tag);
+            data = responseHandler.getBLFeedbackDataAllExport(startDate, endDate, setpointArrayList, rackModelArrayList, responseHandler, false, columnNameListAll);
+        }
+
+        String sdCard = Environment.getExternalStorageDirectory().getAbsolutePath();
+        File dir = new File(sdCard + File.separator + CodeReUse.folderName);
+        Calendar calendar = Calendar.getInstance();
+//                SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+//                Date date;
+        String createon = null;
+        try {
+//                    date = formatter.parse(calendar.getTime().toString());
+            createon = CodeReUse.formatreport.format(calendar.getTime());
+            createon = createon.replace(":","");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        File fileLocation = new File(dir, createon + "_reportfile.csv");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        Log.e("fileLocation",""+ fileLocation);
+        if (fileLocation.exists()) {
+            try {
+                final String dataString = new String(data.toString().getBytes());
+                FileOutputStream fout = new FileOutputStream(fileLocation);
+                OutputStreamWriter osw = new OutputStreamWriter(fout);
+
+                //Writing the string to file
+                osw.write(dataString);
+                osw.flush();
+                osw.close();
+
+//                if (isFromChangeUnit) {
+//                    sqliteHelper.deleteAllRecordFromAllTable(true);
+//                } else {
+//                    //Utility.dismissAlertDialog();
+////                    if (!isUSBDetected || !isSDPresent)
+//                        Utility.ShowMessage(act,"Success",createon + "_reportfile.csv" + "  File has been exported to Internal Storage.","Ok");
+//                    //Toast.makeText(act, "File exported successfully..!", Toast.LENGTH_LONG).show();
+//                    Utility.dismissAlertDialog();
+//                }
+
+            } catch (Exception e) {
+                Log.e("ErrorEx", e.getMessage());
+                Utility.dismissAlertDialog();
+            }
+        } else {
+            try {
+                final String dataString = new String(data.toString().getBytes());
+                FileOutputStream fout = new FileOutputStream(fileLocation);
+                OutputStreamWriter osw = new OutputStreamWriter(fout);
+
+                //Writing the string to file
+                osw.write(dataString);
+                osw.flush();
+                osw.close();
+                //exporting
+//                if (isFromChangeUnit) {
+//                    sqliteHelper.deleteAllRecordFromAllTable(true);
+//                } else {
+//                    //Utility.dismissAlertDialog();
+//                    if (!isUSBDetected || !isSDPresent)
+//                        Utility.ShowMessage(act,"Success",createon + "_reportfile.csv" + "  File has been exported to Internal Storage.","Ok");
+//                    //Toast.makeText(act, "File exported successfully..!", Toast.LENGTH_LONG).show();
+//                    Utility.dismissAlertDialog();
+//                }
+
+            } catch (Exception e) {
+                Log.e("ErrorEx", e.getMessage());
+                Utility.dismissAlertDialog();
+            }
+        }
+        Uri path = null;
+//        u1 = Uri.fromFile(fileLocation);
+        path = FileProvider.getUriForFile(act, act.getApplicationContext().getPackageName() + ".fileprovider", fileLocation);
+        String filePath = String.valueOf(fileLocation);
+        getSendReportEmail_Api_1(email, rackDetailsModel, allentownBlowerApplication, prefManager, act, filePath);
+    }
+
+    public void getSendReportEmail_Api_1(String email, RackDetailsModel rackDetailsModel, AllentownBlowerApplication allentownBlowerApplication, PrefManager prefManager, Activity act, String filePath) {
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
+            Log.e("HostName :- ", "Host Name is Not Available");
+            return;
+        }
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST,
+                prefManager.getHostName() + ApiHandler.strUrlSendReportFileToEmail, new Response.Listener<NetworkResponse>() {
+            @Override
+            public void onResponse(NetworkResponse response) {
+                try {
+                    JSONObject obj = new JSONObject(new String(response.data));
+                    Utility.dismissAlertDialog();
+                    Utility.Log("getSendReportEmail_Api_Response : " + obj.toString());
+                    if (ResponseHandler.getBool(obj, "result")) {
+                        //Toast.makeText(act, "Email has been sent successfully..!", Toast.LENGTH_LONG).show();
+                        Utility.ShowMessage(act,"Success","Report File has been emailed.","Ok");
+                    } else {
+                        if (obj.has("message")) {
+                            Utility.Log("SendReportEmail_Api_Response Fail : " + obj.getString("message"));
+                        }else {
+                            Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
+                        }
+                    }
+                } catch (JSONException e) {
+                    Utility.Log("SendReportEmail_Api_Error : " + e.toString());
+                    e.printStackTrace();
+                    Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Utility.dismissProgress();
+                Utility.dismissAlertDialog();
+                Utility.Log("SendReportEmail_Api Error : " + error.toString());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("FromDate", startDate);
+                params.put("ToDate", endDate);
+                params.put("RackBlowerDetailsID", rackDetailsModel.getmId());
+                params.put("RackBlowerCustomerID", rackDetailsModel.getmRackBlowerCustomerID());
+                params.put("EmailIDs", email);
+                return params;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                File file = new File(filePath);
+                byte[] data = Utility.convertFileToByteArray(file);
+
+                Log.e("File Name : ","" + file.getName());
+                params.put("file", new DataPart(file.getName(), data));
+                return params;
+            }
+        };
+
+        //adding the request to volley
+        VolleySingleton.getInstance(act).cancelPendingRequests(PendingID.SendReportFileToEmail);
+        VolleySingleton.getInstance(act).addToRequestQueue(volleyMultipartRequest, PendingID.SendReportFileToEmail);
     }
 }

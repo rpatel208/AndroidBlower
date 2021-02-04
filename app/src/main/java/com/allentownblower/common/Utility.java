@@ -28,6 +28,11 @@ import com.allentownblower.application.AllentownBlowerApplication;
 import com.allentownblower.communication.SerialPortConversion;
 import com.github.mjdev.libaums.UsbMassStorageDevice;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1196,6 +1201,25 @@ public class Utility {
 
     public static void Log(Object msg) {
         Log.e("AllenTown App : ", msg + "");
+    }
+
+    public static byte[] convertFileToByteArray(File f) {
+        byte[] byteArray = null;
+        try {
+            InputStream inputStream = new FileInputStream(f);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            byte[] b = new byte[1024 * 8];
+            int bytesRead = 0;
+
+            while ((bytesRead = inputStream.read(b)) != -1) {
+                bos.write(b, 0, bytesRead);
+            }
+
+            byteArray = bos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return byteArray;
     }
 
 }
