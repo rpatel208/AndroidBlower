@@ -186,8 +186,8 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
             @Override
             public void onClick(View v) {
                 ResetCounter(1);
-                isEmailButtonClicked = false;
-                isExportButtonClicked = false;
+//                isEmailButtonClicked = false;
+//                isExportButtonClicked = false;
                 isViewReportClicked = true;
                 if (TextUtils.isEmpty(mTxtStartDate.getText().toString())) {
                     Toast.makeText(ReportFilterActivity.this, "Please select start date", Toast.LENGTH_LONG).show();
@@ -226,8 +226,8 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
             @Override
             public void onClick(View v) {
                 ResetCounter(1);
-                isExportButtonClicked = true;
-                isEmailButtonClicked = false;
+//                isExportButtonClicked = true;
+//                isEmailButtonClicked = false;
 
                 if (TextUtils.isEmpty(mTxtStartDate.getText().toString())) {
                     Toast.makeText(ReportFilterActivity.this, "Please select start date", Toast.LENGTH_LONG).show();
@@ -265,8 +265,8 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
             @Override
             public void onClick(View v) {
                 ResetCounter(1);
-                isEmailButtonClicked = true;
-                isExportButtonClicked = false;
+//                isEmailButtonClicked = true;
+//                isExportButtonClicked = false;
                 email = mTxtEmail.getText().toString().trim();
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(), "Please Enter Email Address.", Toast.LENGTH_SHORT).show();
@@ -547,21 +547,21 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
     @Override
     public void update(Observable o, Object arg) {
         if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nReportViewBindSuccessfully) {
-            if (isEmailButtonClicked) {
-                isEmailButtonClicked = false;
-                isViewReportClicked = false;
-                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nReportEmailSuccessfully);
-            } else if (isExportButtonClicked) {
-                isExportButtonClicked = false;
-                isViewReportClicked = false;
-                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nReportExportSuccessfully);
-            } else {
+//            if (isEmailButtonClicked) {
+//                isEmailButtonClicked = false;
+//                isViewReportClicked = false;
+//                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nReportEmailSuccessfully);
+//            } else if (isExportButtonClicked) {
+//                isExportButtonClicked = false;
+//                isViewReportClicked = false;
+//                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nReportExportSuccessfully);
+//            } else {
                 relative_progress_report.setVisibility(View.GONE);
                 mLinearLayoutDate.setVisibility(View.GONE);
                 mLinearLayoutTable.setVisibility(View.VISIBLE);
                 mLinearLayoutReset.setVisibility(View.VISIBLE);
                 Utility.dismissAlertDialog();
-            }
+//            }
 
         } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nReportEmailSuccessfully) {
             isEmailButtonClicked = false;

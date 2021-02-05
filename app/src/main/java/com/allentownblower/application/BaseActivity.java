@@ -112,6 +112,7 @@ public abstract class BaseActivity extends Activity {
                 e.getStackTrace();
             }
         }
+        deleteOldReportFiles();
 
     }
 
@@ -238,6 +239,35 @@ public abstract class BaseActivity extends Activity {
 //            }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("LongLogTag")
+    protected void deleteOldReportFiles(){
+        Log.e("***************************","deleteOldReportFiles Called");
+        try {
+            String sdCard = Environment.getExternalStorageDirectory().getAbsolutePath();
+            File dir = new File(sdCard + File.separator + CodeReUse.folderName);
+            if (dir.exists()){
+                File[] files = dir.listFiles();
+                //Log.d("Files", "Size: "+ files.length);
+                for (int i = 0; i < files.length; i++) {
+                    //Log.d("Files", "FileName:" + files[i].getName());
+                    Calendar time = Calendar.getInstance();
+                    time.add(Calendar.DAY_OF_YEAR, -6);
+                    //I store the required attributes here and delete them
+                    Date lastModified = new Date(files[i].lastModified());
+                    if (lastModified.before(time.getTime())) {
+                        //file is older than a week
+                        if (files[i].getName().contains("csv")) {
+                            files[i].delete();
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e){
+            Log.e("deleteOldReportFiles Exception", ""+ e.getMessage());
         }
     }
 
