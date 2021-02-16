@@ -792,6 +792,7 @@ public class TableViewModel {
 
     }
 
+    //Old email api where we send json to server.
     public void getSendReportEmail_Api(String tag, String email, RackDetailsModel rackDetailsModel, AllentownBlowerApplication allentownBlowerApplication, PrefManager prefManager, Activity act, boolean isFromChangeUnit) {
         // if (NetworkUtil.getConnectivityStatus(act)) {
         if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
@@ -971,6 +972,7 @@ public class TableViewModel {
         getSendReportEmail_Api_1(email, rackDetailsModel, allentownBlowerApplication, prefManager, act, filePath);
     }
 
+    //New API with sending the file to email server
     public void getSendReportEmail_Api_1(String email, RackDetailsModel rackDetailsModel, AllentownBlowerApplication allentownBlowerApplication, PrefManager prefManager, Activity act, String filePath) {
         if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")){
             Log.e("HostName :- ", "Host Name is Not Available");

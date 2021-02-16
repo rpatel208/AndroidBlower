@@ -67,6 +67,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.TimeUnit;
 
 public class ReportFilterActivity extends AppCompatActivity implements Observer {
 
@@ -189,15 +190,27 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
 //                isEmailButtonClicked = false;
 //                isExportButtonClicked = false;
                 isViewReportClicked = true;
+                boolean check = true;
                 if (TextUtils.isEmpty(mTxtStartDate.getText().toString())) {
-                    Toast.makeText(ReportFilterActivity.this, "Please select start date", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ReportFilterActivity.this, "Please select Start date", Toast.LENGTH_LONG).show();
+                    check = false;
                 } else if (TextUtils.isEmpty(mTxtEndDate.getText().toString())) {
-                    Toast.makeText(ReportFilterActivity.this, "Please select end date", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ReportFilterActivity.this, "Please select End date", Toast.LENGTH_LONG).show();
+                    check = false;
                 } else if (Utility.getshortDateFromString(mTxtStartDate.getText().toString()).after(Utility.getshortDateFromString(mTxtEndDate.getText().toString())))
                 {
                     Utility.ShowMessage(act, "Warning", "End Date must be higher than Start Date.","Ok");
+                    check = false;
                 }
-                else {
+                else if (!mRadioButtonValue.equals("1"))
+                {
+                    if ((int) Utility.getDateDiff(new SimpleDateFormat("yyyy-MM-dd"), mTxtStartDate.getText().toString(), mTxtEndDate.getText().toString())>1)
+                    {
+                        Utility.ShowMessage(act, "Warning", "Please select the date range as 1 day to view report. \nOr\nChange the selection to Max/Min/Avg Data.", "Ok");
+                        check = false;
+                    }
+                }
+                if (check) {
                     alertDialogBox();
                     mStartDate = mTxtStartDate.getText().toString();
                     mEndDate = mTxtEndDate.getText().toString();
@@ -238,7 +251,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                     Utility.ShowMessage(act, "Warning", "End Date must be higher than Start Date.","Ok");
                 }
                 else {
-                    Utility.ShowMessageReport(act, "Please wait while we are export data...");
+                    Utility.ShowMessageReport(act, "Please wait while exporting data...");
                     mStartDate = mTxtStartDate.getText().toString();
                     mEndDate = mTxtEndDate.getText().toString();
                     tableViewModel = new TableViewModel(act, mStartDate, mEndDate, sqliteHelper);
@@ -310,7 +323,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                         }
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Invalid email address.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -406,6 +419,17 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                                 mTxtStartDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
                             }
                         }
+                        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd"); // hh:mm:ss aa
+                        Date now = new Date();
+                        String strDate = sdfDate.format(now);
+                        Date pdate = Utility.getshortDateFromString(strDate);
+
+                        if (Utility.getshortDateFromString(mTxtStartDate.getText().toString()).after(pdate))
+                        {
+                            Utility.ShowMessage(act, "Warning", "Start Date can not be higher than Today's date. \nSelected Start Date : " + mTxtStartDate.getText(),"Ok");
+                            mTxtStartDate.setText("");
+                            return;
+                        }
 
 
                     }
@@ -469,7 +493,8 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
 
                         if (Utility.getshortDateFromString(mTxtStartDate.getText().toString()).after(Utility.getshortDateFromString(mTxtEndDate.getText().toString())))
                         {
-                            Utility.ShowMessage(act, "Warning", "End Date must be higher than Start Date.","Ok");
+                            Utility.ShowMessage(act, "Warning", "End Date must be higher than Start Date. \nSelected End Date : " + mTxtEndDate.getText(),"Ok");
+                            mTxtEndDate.setText("");
                             return;
                         }
 
@@ -527,10 +552,10 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
             public void onClick(View view) {
                 if (type.equals("Email")) {
                     if (edit_EnterTxt_alartview_box.getText().toString().equals(" ") || TextUtils.isEmpty(edit_EnterTxt_alartview_box.getText().toString())) {
-                        Toast.makeText(act, "Please enter email name", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(act, "Please Enter Email.", Toast.LENGTH_SHORT).show();
                     } else {
                         if (edit_EnterTxt_alartview_box.getText().toString().length() == 0) {
-                            Utility.ShowMessage(act, "Warning!", "Please Enter Vaild Text", "OK");
+                            Utility.ShowMessage(act, "Warning!", "Please Enter Valid Email Address.", "OK");
                         } else {
                             textView.setText(edit_EnterTxt_alartview_box.getText().toString());
                             alertview_selection.dismiss();
@@ -589,11 +614,11 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
     }
 
     public void alertDialogBox() {
-        Utility.ShowMessageReport(act, "Please wait while we are loading data...");
+        Utility.ShowMessageReport(act, "Please wait while loading data...");
     }
 
     public void alertDialogBoxEmail() {
-        Utility.ShowMessageReport(act, "Please wait while we are sending mail...");
+        Utility.ShowMessageReport(act, "Please wait while sending mail...");
     }
 
     @SuppressLint("NewApi")
