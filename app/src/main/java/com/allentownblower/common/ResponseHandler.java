@@ -2764,7 +2764,7 @@ public class ResponseHandler {
     // Convert Hexadecimal to Decimal
     public String hexToString(String hex) {
         if (hex.equals("FFFF")) {
-            return "";
+            return "0";
         } else {
             return String.valueOf(Integer.parseInt(hex, 16));
         }

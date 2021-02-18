@@ -309,8 +309,12 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
                             final Runnable r = new Runnable() {
                                 public void run() {
                                     if (rackDetailsModel != null) {
-                                        //tableViewModel.getSendReportEmail_Api(mRadioButtonValue,email, rackDetailsModel, allentownBlowerApplication, prefManager, act, false);
-                                        tableViewModel.csvFileSendEmailFunction_1(mRadioButtonValue,email, rackDetailsModel, allentownBlowerApplication, act, prefManager);
+                                        if (mRadioButtonValue.equals("1")) {
+                                            tableViewModel.getSendReportEmail_Api(mRadioButtonValue, email, rackDetailsModel, allentownBlowerApplication, prefManager, act, false);
+                                        }
+                                        else {
+                                            tableViewModel.csvFileSendEmailFunction_1(mRadioButtonValue, email, rackDetailsModel, allentownBlowerApplication, act, prefManager);
+                                        }
                                     }else {
                                         Utility.dismissAlertDialog();
                                     }

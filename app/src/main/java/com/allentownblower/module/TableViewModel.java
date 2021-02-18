@@ -841,7 +841,7 @@ public class TableViewModel {
                         Utility.Log("getSendReportEmail_Api_Response : " + jsonObject);
                         try {
                             if (jsonObject.getBoolean("result")) {
-                                Toast.makeText(act, "Email has been sent successfully..!", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(act, "Email has been sent successfully..!", Toast.LENGTH_LONG).show();
                                 Utility.ShowMessage(act,"Success","Report File has been emailed.","Ok");
                             } else {
 
