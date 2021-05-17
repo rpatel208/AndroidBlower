@@ -14,7 +14,8 @@ public class CodeReUse {
     public static String strPackageName, strDeviceID, strAppversion, strAppName, strTimezone;
 
     //public static String DefaultSerialPort = "/dev/ttyUSB0"; // DefaultSerialPort
-    public static String DefaultSerialPort = "/dev/ttyUSB0"; // DefaultSerialPort
+    public static String DefaultSerialPort = "/dev/ttyUSB0"; // DefaultSerialPort this is for TCW
+    //public static String DefaultSerialPort = "/dev/ttyS0"; // DefaultSerialPort this is for UTC
 
     //ttyUSB0,1 , ttyS0,ttyS2,ttyS4 are the ports on new winmate 10.1" touch screen and ttyUSB0 is working fine.
     //ttymxc0 is the one on 7.1" winmate touch screen and it's working..

@@ -78,7 +78,7 @@ public class SerialPortConversion {
         //Open serial port and get mfd value
         if (mfd == -1) {
             mfd = node_open(CodeReUse.DefaultSerialPort, CodeReUse.DefaultBaudRate);
-            Utility.Log(TAG, "open node fd = " + mfd + ", baudrate = " + String.valueOf(CodeReUse.DefaultBaudRate));
+            Utility.Log(TAG, "open node fd = " + mfd + " Port= "+CodeReUse.DefaultSerialPort +", baudrate = " + String.valueOf(CodeReUse.DefaultBaudRate));
 
             if (CodeReUse.isBolwerAdmin) {
                 mfd = 0;
@@ -173,7 +173,8 @@ public class SerialPortConversion {
 //        }else {
 //            mHandler.postDelayed(r, 1000);
 //        }
-        mHandler.postDelayed(r, 1000);
+        mHandler.postDelayed(r, 1000); //with old tcw it was 1000 delay
+        //mHandler.postDelayed(r, 2000); //with new utc touch screen i have to let it 2000 then i received all data.
     }
 
     /******************************************************************
@@ -378,7 +379,7 @@ public class SerialPortConversion {
 //            ResultData = "��";
 //        }
 
-//        Utility.Log(TAG, "ResultData =  " + ResultData.toString());
+        //Utility.Log(TAG, "ResultData =  " + ResultData.toString());
         Utility.Log(TAG, "Comport Received Data Length = " + ResultData.length());
         Utility.Log(TAG, "Command Finished");
 

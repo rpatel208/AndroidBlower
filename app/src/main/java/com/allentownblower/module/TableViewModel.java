@@ -263,18 +263,16 @@ public class TableViewModel {
             if (filedirs.length > 0) {
                 for (File file : filedirs) {
                     String sdCard = Environment.getExternalStorageState().toString();
-
-                    if (sdCard.equals(Environment.MEDIA_MOUNTED)) {
-                        sdCard = file.toString();
-                        String sdCardPath = file.getPath();
-                        if (!sdCardPath.contains("emulated"))
-                        {
-                            isSDPresent = true;
-                            break;
-                        }
-                        else
-                        {
-                            isSDPresent = false;
+                    if (file != null) {
+                        if (sdCard.equals(Environment.MEDIA_MOUNTED)) {
+                            sdCard = file.toString();
+                            String sdCardPath = file.getPath();
+                            if (!sdCardPath.contains("emulated")) {
+                                isSDPresent = true;
+                                break;
+                            } else {
+                                isSDPresent = false;
+                            }
                         }
                     }
                 }
@@ -338,91 +336,90 @@ public class TableViewModel {
                 {
                     for (File file : filedirs) {
                         String sdCard = Environment.getExternalStorageState().toString();
-                        if (sdCard.equals(Environment.MEDIA_MOUNTED)) {
-                            sdCard = file.toString();
-                            String sdCardPath = file.getPath();
+                        if (file != null) {
+                            if (sdCard.equals(Environment.MEDIA_MOUNTED)) {
+                                sdCard = file.toString();
+                                String sdCardPath = file.getPath();
 
-                            if (!sdCardPath.contains("emulated"))
-                            {
+                                if (!sdCardPath.contains("emulated")) {
 
-                                File dir = new File(sdCardPath + File.separator + CodeReUse.folderName + File.separator);
-                                Calendar calendar = Calendar.getInstance();
-                                String createon = null;
-                                try {
-                                    createon = CodeReUse.formatreport.format(calendar.getTime());
-                                    createon = createon.replace(":","");
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                //verifyStoragePermissions(act);
-                                File fileLocation = new File(dir, createon + "_reportfile.csv");
-//                                String path = file.getPath().split("/Android")[0];
-//                                Log.e("TAG","Inside path : " + path); //Inside path : /storage/47C4-1719 i tried to create directory here but it doesn't allow. so i will keep it as default path..
-                                if (!dir.exists()) {
-                                    try
-                                    {
-                                        if (dir.mkdir())
-                                            Log.e("Directory Created.", "" + dir.toString());
-                                    }
-                                    catch (Exception e) {
+                                    File dir = new File(sdCardPath + File.separator + CodeReUse.folderName + File.separator);
+                                    Calendar calendar = Calendar.getInstance();
+                                    String createon = null;
+                                    try {
+                                        createon = CodeReUse.formatreport.format(calendar.getTime());
+                                        createon = createon.replace(":", "");
+                                    } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-                                }
-                                if (fileLocation.exists()) {
-                                    try {
-                                        final String dataString = new String(data.toString().getBytes());
-                                        FileOutputStream fout = new FileOutputStream(fileLocation);
-                                        OutputStreamWriter osw = new OutputStreamWriter(fout);
-
-                                        //Writing the string to file
-                                        osw.write(dataString);
-                                        osw.flush();
-                                        osw.close();
-
-                                        if (isFromChangeUnit) {
-                                            sqliteHelper.deleteAllRecordFromAllTable(true);
-                                        } else {
-                                            Utility.dismissAlertDialog();
-                                            if (!isUSBDetected)
-                                                Utility.ShowMessage(act,"Success",createon + "_reportfile.csv" + "  File has been exported to External SD Card.","Ok");
-                                            //Toast.makeText(act, "File exported successfully..!", Toast.LENGTH_LONG).show();
+                                    //verifyStoragePermissions(act);
+                                    File fileLocation = new File(dir, createon + "_reportfile.csv");
+//                                String path = file.getPath().split("/Android")[0];
+//                                Log.e("TAG","Inside path : " + path); //Inside path : /storage/47C4-1719 i tried to create directory here but it doesn't allow. so i will keep it as default path..
+                                    if (!dir.exists()) {
+                                        try {
+                                            if (dir.mkdir())
+                                                Log.e("Directory Created.", "" + dir.toString());
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
                                         }
-
-                                    } catch (Exception e) {
-                                        Log.e("ErrorEx", e.getMessage());
-                                        Utility.dismissAlertDialog();
                                     }
-                                } else {
-                                    try {
-                                        final String dataString = new String(data.toString().getBytes());
-                                        if (fileLocation.createNewFile())
-                                            Log.e("File Created.", "" + fileLocation.toString());
+                                    if (fileLocation.exists()) {
+                                        try {
+                                            final String dataString = new String(data.toString().getBytes());
+                                            FileOutputStream fout = new FileOutputStream(fileLocation);
+                                            OutputStreamWriter osw = new OutputStreamWriter(fout);
 
+                                            //Writing the string to file
+                                            osw.write(dataString);
+                                            osw.flush();
+                                            osw.close();
 
-                                        FileOutputStream fout = new FileOutputStream(fileLocation);
-                                        OutputStreamWriter osw = new OutputStreamWriter(fout);
+                                            if (isFromChangeUnit) {
+                                                sqliteHelper.deleteAllRecordFromAllTable(true);
+                                            } else {
+                                                Utility.dismissAlertDialog();
+                                                if (!isUSBDetected)
+                                                    Utility.ShowMessage(act, "Success", createon + "_reportfile.csv" + "  File has been exported to External SD Card.", "Ok");
+                                                //Toast.makeText(act, "File exported successfully..!", Toast.LENGTH_LONG).show();
+                                            }
 
-                                        //Writing the string to file
-                                        osw.write(dataString);
-                                        osw.flush();
-                                        osw.close();
-                                        //exporting
-                                        if (isFromChangeUnit) {
-                                            sqliteHelper.deleteAllRecordFromAllTable(true);
-                                        } else {
+                                        } catch (Exception e) {
+                                            Log.e("ErrorEx", e.getMessage());
                                             Utility.dismissAlertDialog();
-                                            if (!isUSBDetected)
-                                                Utility.ShowMessage(act,"Success",createon + "_reportfile.csv" + "  File has been exported to External SD Card.","Ok");
-                                            //Toast.makeText(act, "File exported successfully..!", Toast.LENGTH_LONG).show();
                                         }
+                                    } else {
+                                        try {
+                                            final String dataString = new String(data.toString().getBytes());
+                                            if (fileLocation.createNewFile())
+                                                Log.e("File Created.", "" + fileLocation.toString());
 
-                                    } catch (Exception e) {
-                                        Log.e("ErrorEx", e.getMessage());
-                                        Utility.dismissAlertDialog();
+
+                                            FileOutputStream fout = new FileOutputStream(fileLocation);
+                                            OutputStreamWriter osw = new OutputStreamWriter(fout);
+
+                                            //Writing the string to file
+                                            osw.write(dataString);
+                                            osw.flush();
+                                            osw.close();
+                                            //exporting
+                                            if (isFromChangeUnit) {
+                                                sqliteHelper.deleteAllRecordFromAllTable(true);
+                                            } else {
+                                                Utility.dismissAlertDialog();
+                                                if (!isUSBDetected)
+                                                    Utility.ShowMessage(act, "Success", createon + "_reportfile.csv" + "  File has been exported to External SD Card.", "Ok");
+                                                //Toast.makeText(act, "File exported successfully..!", Toast.LENGTH_LONG).show();
+                                            }
+
+                                        } catch (Exception e) {
+                                            Log.e("ErrorEx", e.getMessage());
+                                            Utility.dismissAlertDialog();
+                                        }
                                     }
-                                }
 
                                 }
+                            }
                         }
                     }
                 }
