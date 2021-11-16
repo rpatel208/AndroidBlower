@@ -1810,7 +1810,7 @@
                             android:background="@drawable/black_home_screen_textbox"
                             android:gravity="center_vertical"
                             android:padding="@dimen/_5sdp"
-                            android:text="- Pressure SetPoint"
+                            android:text="- Pressure SetPoint (WC)"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_14sdp" />
 
@@ -1847,7 +1847,7 @@
                             android:background="@drawable/black_home_screen_textbox"
                             android:gravity="center_vertical"
                             android:padding="@dimen/_5sdp"
-                            android:text="+ Pressure SetPoint"
+                            android:text="+ Pressure SetPoint (WC)"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_14sdp" />
 

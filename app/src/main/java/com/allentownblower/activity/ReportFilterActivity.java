@@ -407,7 +407,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
 //                            mTxtStartDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
 //                        }
 
-                        if (monthOfYear <=9 )
+                        if (monthOfYear <=8 )
                         {
                             if (dayOfMonth <= 9) {
                                 mTxtStartDate.setText(year + "-" + "0" +(monthOfYear + 1) + "-" + "0" + dayOfMonth);
@@ -479,7 +479,7 @@ public class ReportFilterActivity extends AppCompatActivity implements Observer 
 //                        }
 
 
-                        if (monthOfYear <=9 ){
+                        if (monthOfYear <=8 ){
                             if (dayOfMonth <= 9) {
                                 mTxtEndDate.setText(year + "-" + "0" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
                             } else {

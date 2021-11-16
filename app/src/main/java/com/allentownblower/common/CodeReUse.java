@@ -14,8 +14,9 @@ public class CodeReUse {
     public static String strPackageName, strDeviceID, strAppversion, strAppName, strTimezone;
 
     //public static String DefaultSerialPort = "/dev/ttyUSB0"; // DefaultSerialPort
-    public static String DefaultSerialPort = "/dev/ttyUSB0"; // DefaultSerialPort this is for TCW
+    public static String DefaultSerialPort = "/dev/ttyUSB0"; // DefaultSerialPort this is for TCP-71W
     //public static String DefaultSerialPort = "/dev/ttyS0"; // DefaultSerialPort this is for UTC
+
 
     //ttyUSB0,1 , ttyS0,ttyS2,ttyS4 are the ports on new winmate 10.1" touch screen and ttyUSB0 is working fine.
     //ttymxc0 is the one on 7.1" winmate touch screen and it's working..
@@ -78,5 +79,8 @@ public class CodeReUse {
 
     @SuppressLint("DefaultLocale")
     public static NumberFormat formatterDecimal2Digit = new DecimalFormat("00.0");
+
+    //To check if customer is active on server then send the data if not then do not send
+    public static boolean isCustomerActive = false; //
 
 }

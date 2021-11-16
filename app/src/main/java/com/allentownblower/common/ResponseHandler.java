@@ -330,9 +330,10 @@ public class ResponseHandler {
                             if (jsonObject.getBoolean("result")) {
                                 Utility.Log("getUpdateRackBlowerNumber_Api_Result : " + jsonObject.getBoolean("result"));
                             } else {
-                                if (jsonObject.has("message"))
-                                    // Utility.showAlertDialog(act, jsonObject.getString("message"), getString(R.string.ok));
+                                if (jsonObject.has("message")) {
                                     Utility.Log("getUpdateRackBlowerNumber_Api_Response Fail : " + jsonObject.getString("message"));
+                                    Utility.showAlertDialog(act, jsonObject.getString("message"), "Ok");
+                                }
                                 else
                                     Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
 
@@ -368,6 +369,12 @@ public class ResponseHandler {
     private void getFCommandCalling_Api(HashMap<String, String> stringHashMap) throws JSONException {
         if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")) {
             Log.e("HostName :- ", "Host Name is Not Available");
+            return;
+        }
+        if (!CodeReUse.isCustomerActive)
+        {
+            Log.e("TAG", "Feedback Data WebAPI call Customer Status Check : Customer is not active on the server.");
+            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
             return;
         }
         // if (NetworkUtil.getConnectivityStatus(act)) {
@@ -441,7 +448,7 @@ public class ResponseHandler {
                                 //String message = jsonObject.getString("message");
                                 Boolean isUpdatedByWebApp = jsonObject.getBoolean("isUpdatedByWebApp");
                                 String SetCommand = jsonObject.getString("SetCommand");
-
+                                CodeReUse.isCustomerActive = true;
                                 if (isUpdatedByWebApp) {
                                     myDb.getUpdateRackBlowerDetails_Api(act, prefManager, allentownBlowerApplication, rackDetailsModels);
                                 }
@@ -466,6 +473,18 @@ public class ResponseHandler {
                                 if (jsonObject.has("message")) {
                                     //Utility.showAlertDialog(act, jsonObject.getString("message"), act.getString(R.string.ok));
                                     Utility.Log("getFCommandCallingresponse_Api_Response Fail : " + jsonObject.getString("message"));
+                                    if (jsonObject.has("IsCustomerActive"))
+                                    {
+                                        if (!jsonObject.getBoolean("IsCustomerActive"))
+                                        {
+                                            //stop sending the data
+                                            CodeReUse.isCustomerActive = false;
+                                        }
+                                        else
+                                        {
+                                            CodeReUse.isCustomerActive = true;
+                                        }
+                                    }
                                 } else {
                                     Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
                                 }
@@ -474,7 +493,7 @@ public class ResponseHandler {
                         } catch (JSONException e) {
                             Utility.Log("getFCommandCallingresponse_Api Error : " + e.toString());
                             e.printStackTrace();
-                            Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
+                            //Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
                             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
                         }
                     }
@@ -602,6 +621,12 @@ public class ResponseHandler {
         }
         // if (NetworkUtil.getConnectivityStatus(act)) {
 
+        if (!CodeReUse.isCustomerActive)
+        {
+            Log.e("TAG", "Setpoint Data WebAPI call Customer Status Check : Customer is not active on the server.");
+            return;
+        }
+
         String strS01 = (String) stringHashMap.get("S01");
         String strS02 = (String) stringHashMap.get("S02");
         String strS03 = (String) stringHashMap.get("S03");
@@ -686,10 +711,24 @@ public class ResponseHandler {
                         try {
                             if (jsonObject.getBoolean("result")) {
                                 Utility.Log("S_Command_Api_responser", "" + jsonObject.toString());
+                                CodeReUse.isCustomerActive = true;
                             } else {
-                                if (jsonObject.has("message"))
+                                if (jsonObject.has("message")) {
                                     //Utility.showAlertDialog(act, jsonObject.getString("message"), act.getString(R.string.ok));
                                     Utility.Log("S_Command_Api_Response Fail : " + jsonObject.getString("message"));
+                                    if (jsonObject.has("IsCustomerActive"))
+                                    {
+                                        if (!jsonObject.getBoolean("IsCustomerActive"))
+                                        {
+                                            //stop sending the data
+                                            CodeReUse.isCustomerActive = false;
+                                        }
+                                        else
+                                        {
+                                            CodeReUse.isCustomerActive = true;
+                                        }
+                                    }
+                                }
                                 else
                                     Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
 

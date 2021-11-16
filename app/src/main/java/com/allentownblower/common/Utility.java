@@ -41,6 +41,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
+import android.provider.Settings;
+
 /**
  * Created by Mayur Yadav on 01 Sep 2019.
  */
@@ -508,7 +510,8 @@ public class Utility {
 
     private static void onDigitClick(String digit, String actString) {
 
-        if (actString.equals("ChangePasswordSetting") || actString.equals("ChangePasswordReport") || actString.equals("DiagnosticsPasswordSetting") || actString.equals("DiagnosticsDetailsPasswordSetting")  || actString.equals("BluetoothDisconnectPasswordSetting")) {
+        if (actString.equals("ChangePasswordSetting") || actString.equals("ChangePasswordReport") || actString.equals("DiagnosticsPasswordSetting")
+                || actString.equals("DiagnosticsDetailsPasswordSetting")  || actString.equals("BluetoothDisconnectPasswordSetting")) {
 
             if (actString.equals("ChangePasswordSetting")) {
                 if (digitList.size() < 4) {
@@ -1066,6 +1069,7 @@ public class Utility {
 
     public static void hideNavigationBar(Activity act) {
         currentApiVersion = android.os.Build.VERSION.SDK_INT;
+        //Just disable this line (| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) in below flags to show the navigation bar always
 
         final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -1230,6 +1234,24 @@ public class Utility {
             e.printStackTrace();
         }
         return byteArray;
+    }
+
+    //below method we do need to use as it doesn't make any difference. we have it just for knowledge purpose
+    public static void changeScreenBrightness(Context context, int screenBrightnessValue)
+    {
+        //Log("Brightness value : " + String.valueOf(screenBrightnessValue));
+        // Change the screen brightness change mode to manual.
+        //Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+        // Apply the screen brightness value to the system, this will change the value in Settings ---> Display ---> Brightness level.
+        // It will also change the screen brightness for the device.
+        //Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, screenBrightnessValue);
+
+        /*
+        Window window = getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        layoutParams.screenBrightness = screenBrightnessValue / 255f;
+        window.setAttributes(layoutParams);
+        */
     }
 
 }

@@ -289,9 +289,9 @@
                         android:paddingRight="@dimen/_5sdp"
                         android:paddingBottom="@dimen/_3sdp"
                         android:text="Others Details"
-                        android:visibility="gone"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_15sdp" />
+                        android:textSize="@dimen/_15sdp"
+                        android:visibility="gone" />
 
 
                 </LinearLayout>
@@ -493,9 +493,9 @@
                                     android:id="@+id/txt_update"
                                     android:layout_width="@dimen/_90sdp"
                                     android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
                                     android:layout_marginRight="@dimen/_5sdp"
                                     android:layout_weight="1"
-                                    android:layout_alignParentRight="true"
                                     android:background="@drawable/dark_blue_blwrdetl_screen_box"
                                     android:gravity="center"
                                     android:paddingLeft="@dimen/_5sdp"
@@ -520,10 +520,10 @@
                                     android:paddingRight="@dimen/_5sdp"
                                     android:paddingBottom="@dimen/_3sdp"
                                     android:text="Cancel"
-                                    android:visibility="gone"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/_15sdp"
-                                    android:textStyle="bold" />
+                                    android:textStyle="bold"
+                                    android:visibility="gone" />
 
                             </RelativeLayout>
 
@@ -962,8 +962,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <View
                             android:layout_width="@dimen/_2sdp"
@@ -978,8 +978,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:visibility="gone"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -1296,9 +1296,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_10sdp"
-                                    android:padding="@dimen/_5sdp"
                                     android:layout_weight="1"
-                                    android:orientation="vertical">
+                                    android:orientation="vertical"
+                                    android:padding="@dimen/_5sdp">
+
                                     <RadioGroup
                                         android:id="@+id/radioGroup_aln_email_service_value"
                                         android:layout_width="match_parent"
@@ -1338,9 +1339,9 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_8sdp"
-                                    android:padding="@dimen/_5sdp"
                                     android:layout_weight="1"
-                                    android:orientation="vertical">
+                                    android:orientation="vertical"
+                                    android:padding="@dimen/_5sdp">
 
                                     <RadioGroup
                                         android:id="@+id/radioGroup_is_reg_alarm_on_value"
@@ -1417,46 +1418,47 @@
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/_12sdp" />
 
-                               <LinearLayout
+                                <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_10sdp"
                                     android:layout_weight="1"
-                                    android:padding="@dimen/_5sdp"
-                                    android:orientation="vertical">
-                                   <RadioGroup
-                                       android:id="@+id/radioGroup_is_temp_hmd_alarm_value"
-                                       android:layout_width="match_parent"
-                                       android:layout_height="wrap_content"
-                                       android:orientation="horizontal"
-                                       android:visibility="visible">
+                                    android:orientation="vertical"
+                                    android:padding="@dimen/_5sdp">
 
-                                       <RadioButton
-                                           android:id="@+id/radioButton_is_temp_hmd_Yes"
-                                           android:layout_width="wrap_content"
-                                           android:layout_height="wrap_content"
-                                           android:layout_gravity="center_vertical"
-                                           android:buttonTint="@color/white"
-                                           android:checked="false"
-                                           android:tag="1"
-                                           android:text="Yes"
-                                           android:textColor="@color/white"
-                                           android:textSize="@dimen/_12sdp" />
+                                    <RadioGroup
+                                        android:id="@+id/radioGroup_is_temp_hmd_alarm_value"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:visibility="visible">
 
-                                       <RadioButton
-                                           android:id="@+id/radioButton_is_temp_hmd_No"
-                                           android:layout_width="wrap_content"
-                                           android:layout_height="wrap_content"
-                                           android:layout_gravity="center_vertical"
-                                           android:layout_marginLeft="@dimen/_15sdp"
-                                           android:buttonTint="@color/white"
-                                           android:checked="false"
-                                           android:tag="0"
-                                           android:text="No"
-                                           android:textColor="@color/white"
-                                           android:textSize="@dimen/_12sdp" />
-                                   </RadioGroup>
-                               </LinearLayout>
+                                        <RadioButton
+                                            android:id="@+id/radioButton_is_temp_hmd_Yes"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_vertical"
+                                            android:buttonTint="@color/white"
+                                            android:checked="false"
+                                            android:tag="1"
+                                            android:text="Yes"
+                                            android:textColor="@color/white"
+                                            android:textSize="@dimen/_12sdp" />
+
+                                        <RadioButton
+                                            android:id="@+id/radioButton_is_temp_hmd_No"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_vertical"
+                                            android:layout_marginLeft="@dimen/_15sdp"
+                                            android:buttonTint="@color/white"
+                                            android:checked="false"
+                                            android:tag="0"
+                                            android:text="No"
+                                            android:textColor="@color/white"
+                                            android:textSize="@dimen/_12sdp" />
+                                    </RadioGroup>
+                                </LinearLayout>
 
                             </LinearLayout>
 
@@ -1796,7 +1798,6 @@
                                 android:textSize="@dimen/_15sdp" />
 
 
-
                         </LinearLayout>
 
                         <View
@@ -1855,10 +1856,10 @@
                 android:layout_above="@+id/relative_layout_update_button"
                 android:layout_below="@+id/linear_layout_tab_title"
                 android:background="@drawable/black_home_screen_textbox"
+                android:orientation="vertical"
                 android:paddingBottom="0dp"
                 android:visibility="gone"
-                tools:ignore="NotSibling"
-                android:orientation="vertical">
+                tools:ignore="NotSibling">
 
                 <TextView
                     android:layout_width="match_parent"

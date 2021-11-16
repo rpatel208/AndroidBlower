@@ -173,7 +173,17 @@ public class SerialPortConversion {
 //        }else {
 //            mHandler.postDelayed(r, 1000);
 //        }
-        mHandler.postDelayed(r, 1000); //with old tcw it was 1000 delay
+
+
+        //below i added on 08/12/21 for testing. as we want to get the data after reseting filter or changing the set point
+        //the orginal was the line 186 and 187
+        if (command.length() > 2)
+            mHandler.postDelayed(r, 500);
+        else
+            mHandler.postDelayed(r, 2000); //for testing with tcp 4 gb unit
+
+        Utility.Log(TAG, "IsStart Value : " + String.valueOf(isStart));
+        //mHandler.postDelayed(r, 1000); //with old tcp 2 GB and new tcp 4 GB it was 1000 delay
         //mHandler.postDelayed(r, 2000); //with new utc touch screen i have to let it 2000 then i received all data.
     }
 

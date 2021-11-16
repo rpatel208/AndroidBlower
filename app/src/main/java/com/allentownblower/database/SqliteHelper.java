@@ -851,9 +851,10 @@ public class SqliteHelper extends SQLiteOpenHelper {
                                 updateRackBlowerDetailsInDataBase(jsonObject);
                                 getUpdatedByWebAppCompleted_Api(act, prefManager, allentownBlowerApplication, model);
                             } else {
-                                if (jsonObject.has("message"))
-                                    //Utility.showAlertDialog(act, jsonObject.getString("message"), act.getString(R.string.ok));
+                                if (jsonObject.has("message")) {
                                     Utility.Log("UpdateRackBlowerDetails_Api_Response Fail : " + jsonObject.getString("message"));
+                                    Utility.showAlertDialog(act, jsonObject.getString("message"), act.getString(R.string.ok));
+                                }
                                 else
                                     Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
                             }

@@ -612,7 +612,7 @@ public class RackDetailScreenActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Log.e("objParam","" + objParam.toString());
+        Log.e("objParam For New RackId","" + objParam.toString());
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
                 prefManager.getHostName() + ApiHandler.strUrlGetNewIDForRackBlower, objParam,
@@ -624,12 +624,26 @@ public class RackDetailScreenActivity extends AppCompatActivity {
                         try {
                             if (jsonObject.getBoolean("result")) {
                                 dpHelper.saveNewIDForRackBlowerInDataBase(jsonObject);
+                                CodeReUse.isCustomerActive = true;
                                 getRackBlowerDetails_Api(dpHelper.getString(jsonObject, ApiHandler.strRackSerialNumberId), dpHelper.getString(jsonObject, ApiHandler.strRackBlowerCustomerID));
                             } else {
 
-                                if (jsonObject.has("message"))
-                                    //Utility.showAlertDialog(act, jsonObject.getString("message"), getString(R.string.ok));
+                                if (jsonObject.has("message")) {
                                     Utility.Log("RackNewId_Api_Response Fail : " + jsonObject.getString("message"));
+                                    Utility.showAlertDialog(act, jsonObject.getString("message"), getString(R.string.ok));
+                                    if (jsonObject.has("IsCustomerActive"))
+                                    {
+                                        if (!jsonObject.getBoolean("IsCustomerActive"))
+                                        {
+                                            //stop sending the data
+                                            CodeReUse.isCustomerActive = false;
+                                        }
+                                        else
+                                        {
+                                            CodeReUse.isCustomerActive = true;
+                                        }
+                                    }
+                                }
                                 else
                                     Utility.showAlertDialog(act, getString(R.string.error), getString(R.string.ok));
 
@@ -690,9 +704,10 @@ public class RackDetailScreenActivity extends AppCompatActivity {
                                 rackDetailsModel = dpHelper.getDataFromRackBlowerDetails();
                                 rackDetailsModel.setmRackBlowerCustomerName(jsonObject.getString("CustomerName"));
                             } else {
-                                if (jsonObject.has("message"))
-                                   // Utility.showAlertDialog(act, jsonObject.getString("message"), getString(R.string.ok));
+                                if (jsonObject.has("message")) {
                                     Utility.Log("getRackBlowerDetails_Api_Response Fail : " + jsonObject.getString("message"));
+                                    Utility.showAlertDialog(act, jsonObject.getString("message"), getString(R.string.ok));
+                                }
                                 else
                                     Utility.showAlertDialog(act, getString(R.string.error), getString(R.string.ok));
 

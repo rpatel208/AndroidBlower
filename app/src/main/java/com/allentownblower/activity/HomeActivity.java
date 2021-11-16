@@ -307,9 +307,9 @@ public class HomeActivity extends BaseActivity implements Observer {
         alertview_diagnostics = new Dialog(act, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         alertview_diagnostics_details = new Dialog(act, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
 
-        /*if (!hasWriteSettingsPermission(act)) {
+        if (!hasWriteSettingsPermission(act)) {
             changeWriteSettingsPermission(act);
-        }*/
+        }
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
@@ -619,6 +619,20 @@ public class HomeActivity extends BaseActivity implements Observer {
                 Utility.AlertShowMessage(act, "Alert", "serial port not found.", "OK");
         }
 
+        //Check if WebAPI Customer is active or not
+        if (prefManager.getHostName() == null || !prefManager.getHostName().contains("http")) {
+            Log.e("TAG", "HostName Check on App Launch : Host is Not Available.");
+        }
+        else
+        {
+            if (!CodeReUse.isCustomerActive)
+            {
+                CodeReUse.isCustomerActive = true;
+                Log.e("TAG", prefManager.getHostName() + " Host is available on app launch.");
+            }
+        }
+
+
         // FilterMenu ClickEvent
         FilterMenuClickEvent();
 
@@ -675,6 +689,8 @@ public class HomeActivity extends BaseActivity implements Observer {
 
         // Read And Set AllData
         setAnalysisData();
+
+        Utility.changeScreenBrightness(getApplicationContext(),1);
     }
 
     @SuppressLint("NewApi")
@@ -688,7 +704,8 @@ public class HomeActivity extends BaseActivity implements Observer {
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE);
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE
+            );
         }
     }
 
@@ -1045,9 +1062,11 @@ public class HomeActivity extends BaseActivity implements Observer {
 
     // FilterMenu ClickEvent
     public void FilterMenuClickEvent() {
+
         layout_filter_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Utility.changeScreenBrightness(getApplicationContext(),100);
                 ResetCounter(1);
                 main_layout.setBackgroundColor(ContextCompat.getColor(act, R.color.blwrdetl_blue));
 
@@ -1103,9 +1122,11 @@ public class HomeActivity extends BaseActivity implements Observer {
 
     // BlwrdetlMenu ClickEvent
     public void BlwrdetlMenuClickEvent() {
+
         layout_blwrdetl_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Utility.changeScreenBrightness(getApplicationContext(),200);
                 ResetCounter(1);
                 main_layout.setBackgroundColor(ContextCompat.getColor(act, R.color.blwrdetl_blue));
 
@@ -1161,9 +1182,11 @@ public class HomeActivity extends BaseActivity implements Observer {
 
     // AlertMenu ClickEvent
     public void AlertMenuClickEvent() {
+
         layout_alert_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Utility.changeScreenBrightness(getApplicationContext(),50);
                 ResetCounter(1);
                 main_layout.setBackgroundColor(ContextCompat.getColor(act, R.color.blwrdetl_blue));
 
@@ -1219,6 +1242,7 @@ public class HomeActivity extends BaseActivity implements Observer {
 
     // HomeMenu ClickEvent
     public void HomeMenuClickEvent() {
+
         layout_home_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1233,7 +1257,7 @@ public class HomeActivity extends BaseActivity implements Observer {
 //
 //                num = getBluetoothMacAddress();
 //                Log.e("TAG","Bluetooth MAC : " + num);
-
+                Utility.changeScreenBrightness(getApplicationContext(),255);
                 if (nightModeStatus) {
                     main_layout.setBackgroundColor(ContextCompat.getColor(act, R.color.nightMode_red));
                     view_home_screen_one.setBackgroundColor(ContextCompat.getColor(act, R.color.black));
@@ -1374,9 +1398,11 @@ public class HomeActivity extends BaseActivity implements Observer {
 
     // SettingMenu ClickEvent
     public void SettingMenuClickEvent() {
+
         layout_setting_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Utility.changeScreenBrightness(getApplicationContext(),1);
                 ResetCounter(1);
                 Utility.ShowSettingPasswordDialog(act, "SettingsActivity");
 
@@ -4590,7 +4616,8 @@ public class HomeActivity extends BaseActivity implements Observer {
                 layout_menubar.setBackground(ContextCompat.getDrawable(act, R.drawable.dark_red_home_screen_box));
                 layout_home_screen.setBackground(ContextCompat.getDrawable(act, R.drawable.dark_red_home_screen_box));
             }
-        } else if (color.equalsIgnoreCase("yellow")) {
+        }
+        else if (color.equalsIgnoreCase("yellow")) {
             isRedYellowColorHomeScreen = true;
             main_layout.setBackgroundColor(ContextCompat.getColor(act, R.color.home_yellow));
             view_home_screen_one.setBackgroundColor(ContextCompat.getColor(act, R.color.white));
@@ -4646,7 +4673,8 @@ public class HomeActivity extends BaseActivity implements Observer {
                 layout_menubar.setBackground(ContextCompat.getDrawable(act, R.drawable.dark_yellow_home_screen_box));
                 layout_home_screen.setBackground(ContextCompat.getDrawable(act, R.drawable.dark_yellow_home_screen_box));
             }
-        } else {
+        }
+        else {
             main_layout.setBackgroundColor(ContextCompat.getColor(act, R.color.home_green));
             view_home_screen_one.setBackgroundColor(ContextCompat.getColor(act, R.color.white));
             view_home_screen_two.setBackgroundColor(ContextCompat.getColor(act, R.color.white));
@@ -5978,7 +6006,7 @@ public class HomeActivity extends BaseActivity implements Observer {
             }
 
         } else if (type.equals("txt_S09_XYYY")) {
-            txt_dailogTitle.setText("- Pressure SetPoint");
+            txt_dailogTitle.setText("- Pressure SetPoint (WC)");
 
             txt_MinSeekbar_Progress = alertview_selection.findViewById(R.id.txt_MinSeekbar_Progress);
             txt_MaxSeekbar_Progress = alertview_selection.findViewById(R.id.txt_MaxSeekbar_Progress);
@@ -6049,7 +6077,7 @@ public class HomeActivity extends BaseActivity implements Observer {
             });
 
         } else if (type.equals("txt_S10_XYYY")) {
-            txt_dailogTitle.setText("+ Pressure SetPoint");
+            txt_dailogTitle.setText("+ Pressure SetPoint (WC)");
 
             txt_MinSeekbar_Progress = alertview_selection.findViewById(R.id.txt_MinSeekbar_Progress);
             txt_MaxSeekbar_Progress = alertview_selection.findViewById(R.id.txt_MaxSeekbar_Progress);
@@ -8301,7 +8329,8 @@ public class HomeActivity extends BaseActivity implements Observer {
             initRackModelNullOrNot();
             String achValue = String.valueOf(rackModel.getACH());
             String supplyValue = String.valueOf(rackModel.getSupplyCFM());
-            ArrayList<SetPointCommand> setpointArrayList = responseHandler.getLastSetPointData();
+            //ArrayList<SetPointCommand> setpointArrayList = responseHandler.getLastSetPointData();
+            //commented above line on 8/12/21 as it is not in use at all in this loop..
             String S07_YY = responseHandler.stringToHex(achValue, true);
             String S07_XX = responseHandler.stringToHex(supplyValue, true);
             String command = "S07=" + S07_XX.concat(S07_YY).toUpperCase();
@@ -8317,6 +8346,11 @@ public class HomeActivity extends BaseActivity implements Observer {
                 polarityValueId = "0";
             }
             ArrayList<SetPointCommand> setpointArrayList = responseHandler.getLastSetPointData();
+            //Added below while loop in case we dont get the latest setpoint data from the table..
+            while (setpointArrayList.size() == 0)
+            {
+                setpointArrayList = responseHandler.getLastSetPointData();
+            }
             String bin = responseHandler.hexToBinary(setpointArrayList.get(0).getS01());
             Utility.Log(TAG, "hexToBinary => " + bin);
             //0000111100001000 //0F08
