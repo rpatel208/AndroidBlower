@@ -827,7 +827,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
             Log.e("HostName :- ", "Host Name is Not Available");
             return;
         }
-        Utility.ShowMessageReport(act, "Please wait...");
+        //Utility.ShowMessageReport(act, "Please wait...");
         //Log.e("TAG","getUpdateRackBlowerDetails_Api method");
         // if (NetworkUtil.getConnectivityStatus(act)) {
         JSONObject objParam = new JSONObject();
@@ -844,7 +844,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         //Utility.dismissProgress();
-                        Utility.dismissAlertDialog();
+                        //Utility.dismissAlertDialog();
                         Utility.Log("getUpdateRackBlowerDetails_Api_Response : " + jsonObject);
                         try {
                             if (jsonObject.getBoolean("result")) {
@@ -853,16 +853,18 @@ public class SqliteHelper extends SQLiteOpenHelper {
                             } else {
                                 if (jsonObject.has("message")) {
                                     Utility.Log("UpdateRackBlowerDetails_Api_Response Fail : " + jsonObject.getString("message"));
-                                    Utility.showAlertDialog(act, jsonObject.getString("message"), act.getString(R.string.ok));
+                                    //Utility.showAlertDialog(act, jsonObject.getString("message"), act.getString(R.string.ok));
                                 }
-                                else
-                                    Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
+                                else{
+                                    //Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
+                                }
+
                             }
                         } catch (JSONException e) {
-                            Utility.dismissAlertDialog();
+                            //Utility.dismissAlertDialog();
                             Utility.Log("geUpdateRackBlowerDetailstresponse_Api Error : " + e.toString());
                             e.printStackTrace();
-                            Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
+                            //Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
                         }
                     }
                 },
@@ -870,7 +872,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //Utility.dismissProgress();
-                        Utility.dismissAlertDialog();
+                        //Utility.dismissAlertDialog();
                         Utility.Log("UpdateRackBlowerDetails_Api Error : " + error.toString());
                     }
                 }
@@ -890,7 +892,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
             Log.e("HostName :- ", "Host Name is Not Available");
             return;
         }
-        Utility.ShowMessageReport(act, "Please wait...");
+        //Utility.ShowMessageReport(act, "Please wait...");
         //Log.e("TAG","getUpdatedByWebAppCompleted_Api method");
         // if (NetworkUtil.getConnectivityStatus(act)) {
         JSONObject objParam = new JSONObject();
@@ -907,24 +909,24 @@ public class SqliteHelper extends SQLiteOpenHelper {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         //Utility.dismissProgress();
-                        Utility.dismissAlertDialog();
+                        //Utility.dismissAlertDialog();
                         Utility.Log("getUpdatedByWebAppCompleted_Api_Response : " + jsonObject);
                         try {
                             if (jsonObject.getBoolean("result")) {
-                                //Utility.Log("UpdatedByWebAppCompleted_Api_Response : " + jsonObject.toString());
+                                Utility.Log("UpdatedByWebAppCompleted_Api_Response : " + jsonObject.toString());
                                 //api
                             } else {
                                 if (jsonObject.has("message"))
                                     //Utility.showAlertDialog(act, jsonObject.getString("message"), act.getString(R.string.ok));
                                     Utility.Log("UpdatedByWebAppCompleted_Api_Response Fail : " + jsonObject.getString("message"));
                                 else
-                                    Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
+                                    Utility.Log("UpdatedByWebAppCompleted_Api_Response: Message element is not in response.");
                             }
                         } catch (JSONException e) {
-                            Utility.dismissAlertDialog();
+                            //Utility.dismissAlertDialog();
                             Utility.Log("getUpdatedByWebAppCompletedresponse_Api Error : " + e.toString());
                             e.printStackTrace();
-                            Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
+                            //Utility.showAlertDialog(act, act.getString(R.string.error), act.getString(R.string.ok));
                         }
                     }
                 },
@@ -932,7 +934,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //Utility.dismissProgress();
-                        Utility.dismissAlertDialog();
+                        //Utility.dismissAlertDialog();
                         Utility.Log("UpdatedByWebAppCompleted_Api Error : " + error.toString());
                     }
                 }

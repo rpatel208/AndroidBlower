@@ -18,6 +18,7 @@ import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,6 +43,7 @@ import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 import android.provider.Settings;
+
 
 /**
  * Created by Mayur Yadav on 01 Sep 2019.
@@ -69,6 +71,8 @@ public class Utility {
     private static int currentApiVersion;
     private static UsbDevice device;
     private static UsbManager usbManager;
+
+
 
     public static void Log(String title, String massage) {
         Log.e(title, massage);
@@ -991,6 +995,8 @@ public class Utility {
         }
     }
 
+
+
     public static String getCurrentTimeStamp() {
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // yyyy-MM-dd HH:mm:ss
@@ -1236,7 +1242,7 @@ public class Utility {
         return byteArray;
     }
 
-    //below method we do need to use as it doesn't make any difference. we have it just for knowledge purpose
+    //below method we do not need to use as it doesn't make any difference. we have it just for knowledge purpose
     public static void changeScreenBrightness(Context context, int screenBrightnessValue)
     {
         //Log("Brightness value : " + String.valueOf(screenBrightnessValue));

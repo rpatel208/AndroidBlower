@@ -283,7 +283,12 @@ public class RackDetailScreenActivity extends AppCompatActivity {
         mTxtSerialNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditTextAlertDialogBox("Serial No", mTxtSerialNo);
+                //Utility.showAlertDialog(act,"Please contact administrator.","Ok");
+                //EditTextAlertDialogBox("Serial No", mTxtSerialNo);
+                if (mTxtSerialNo.getText().toString().equals(""))
+                {
+                    EditTextAlertDialogBox("Serial No", mTxtSerialNo);
+                }
             }
         });
 
@@ -298,6 +303,13 @@ public class RackDetailScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditTextAlertDialogBox("Customer Name",txt_customer_name_host);
+            }
+        });
+
+        mTxtCustomerName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditTextAlertDialogBox("Customer Name",mTxtCustomerName);
             }
         });
 

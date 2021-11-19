@@ -15,10 +15,10 @@
 
     <!-- RackSetup Screen Data -->
     <string name="comapny_name">Allentown</string>
-    <string name="blower_name">Aln</string>
-    <string name="building_name">Main Bldg</string>
+    <string name="blower_name">Blower-A</string>
+    <string name="building_name">ALnBG-01</string>
     <string name="room_name">AFT Lab</string>
-    <string name="model_name">ME14P020</string>
+    <string name="model_name">MEXJP140</string>
     <string name="serail_number">E1EED6D8-7BB4-48E1-91B3-79A65542C744</string>
     <string name="error">There is an error. Please try again later.</string>
     <string name="ok">ok</string>

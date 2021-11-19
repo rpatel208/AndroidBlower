@@ -30,6 +30,7 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.Html;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -1404,8 +1405,8 @@ public class HomeActivity extends BaseActivity implements Observer {
             public void onClick(View view) {
                 Utility.changeScreenBrightness(getApplicationContext(),1);
                 ResetCounter(1);
-                Utility.ShowSettingPasswordDialog(act, "SettingsActivity");
-
+                //Utility.ShowSettingPasswordDialog(act, "SettingsActivity");
+                ShowSimpleSettingPasswordDialog(act,"SettingActivity");
 
             }
         });
@@ -9101,6 +9102,107 @@ public class HomeActivity extends BaseActivity implements Observer {
             }
         }
 
+    }
+
+    public void ShowSimpleSettingPasswordDialog(final Activity act, final  String actString)
+    {
+        AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStopService);
+        prefManager = new PrefManager(act);
+        Dialog alertview_setting_password = new Dialog(act);
+        alertview_setting_password.setCancelable(false);
+
+
+        alertview_setting_password.setContentView(R.layout.alertview_simplepassword_layout); // EditText Screen
+//        alertview_setting_password.setContentView(R.layout.alertview_edittext_layout); // EditText Screen
+//        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
+//        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.90);
+//        //Width : 614 Height : 276
+//        alertview_setting_password.getWindow().setLayout(width, height);
+//        alertview_setting_password.getWindow().getAttributes().x = 30;
+//        alertview_setting_password.getWindow().getAttributes().y = 10;
+        alertview_setting_password.getWindow().setGravity(Gravity.TOP);
+
+        alertview_setting_password.show();
+        txt_Title_alartview_box = alertview_setting_password.findViewById(R.id.txt_Title_alartview_box);
+        edit_EnterTxt_alartview_box = alertview_setting_password.findViewById(R.id.edit_EnterTxt_alartview_box);
+        btn_Cancel_alartview_box = alertview_setting_password.findViewById(R.id.btn_Cancel_alartview_box);
+        btn_Save_alartview_box = alertview_setting_password.findViewById(R.id.btn_Save_alartview_box);
+        txt_Title_alartview_box.setText("Enter Password");
+        btn_Cancel_alartview_box.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Log.e(TAG, "Clicked Cancel." + edit_EnterTxt_alartview_box.getText().toString());
+                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStartService);
+                alertview_setting_password.dismiss();
+
+                if (actString.equals("Plus_Command")) {
+
+                } else if (actString.equals("Minus_Command")) {
+
+                } else if (actString.equals("Up_Down")) {
+
+                } else {
+                    AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRedirectHome);
+                }
+            }
+        });
+        btn_Save_alartview_box.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertview_setting_password.dismiss();
+                //Log.e(TAG, "Clicked Save." + edit_EnterTxt_alartview_box.getText().toString());
+                String enteredval = edit_EnterTxt_alartview_box.getText().toString();
+                if (enteredval.toString().equals(""))
+                {
+                    Utility.ShowMessage(act, "Alert", "Passwrod can't be empty.", "OK");
+                    AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStartService);
+                }
+                else
+                {
+                    if (prefManager.getSettingPassword().equals(String.valueOf(enteredval.toString()))) {
+                        if (actString.equals("Plus_Command")) {
+                            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nPlus);
+                        } else if (actString.equals("Minus_Command")) {
+                            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nMinus);
+                        } else if (actString.equals("Up_Down")) {
+                            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nUp_Down);
+                        } else {
+                            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRedirectSettings);
+                        }
+                    } else if (prefManager.getDiagnosticsPassword().equals(String.valueOf(enteredval.toString()))) {
+                        if (!CodeReUse.isBolwerAdmin) {
+                            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nDiagnosticsSettings);
+                        } else {
+                            Utility.ShowMessage(act, "Alert", "Feature is not available.", "OK");
+                        }
+                    } else if (prefManager.getDiagnosticsDetailPassword().equals(String.valueOf(enteredval.toString()))) {
+                        if (!CodeReUse.isBolwerAdmin) {
+                            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nDiagnosticsDetailsSettings);
+                        } else {
+                            Utility.ShowMessage(act, "Alert", "Feature is not available.", "OK");
+                        }
+                    } else if (prefManager.getBluetoothDisconnectPassword().equals(String.valueOf(enteredval.toString()))) {
+                        if (CodeReUse.isBolwerAdmin)
+                            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nBluetoothDisconnect);
+                        else {
+                            Utility.ShowMessage(act, "Alert", "Invalid Password.", "OK");
+                            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStartService);
+                        }
+                    } else if (prefManager.getReportPassword().equals(String.valueOf(enteredval.toString()))) {
+                        if (!CodeReUse.isBolwerAdmin) {
+                            AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRedirectReport);
+                        } else {
+                            Utility.ShowMessage(act, "Alert", "Feature is not available.", "OK");
+                        }
+                    } else {
+                        Utility.ShowMessage(act, "Alert", "Invalid Password.", "OK");
+                        AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStartService);
+                    }
+                }
+            }
+        });
+        edit_EnterTxt_alartview_box.requestFocus();
     }
 
     // For USB FlashDrive
