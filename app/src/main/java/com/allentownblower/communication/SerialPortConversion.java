@@ -390,6 +390,7 @@ public class SerialPortConversion {
 //        }
 
         //Utility.Log(TAG, "ResultData =  " + ResultData.toString());
+        //ResultData =  ��  we get like this two questionmarks when the serial cable is disconnected.
         Utility.Log(TAG, "Comport Received Data Length = " + ResultData.length());
         Utility.Log(TAG, "Command Finished");
 
@@ -562,6 +563,7 @@ public class SerialPortConversion {
                         writeNode(command, -1);
                     }
                 }
+
                 return;
         }
         /* } else {*/
@@ -582,6 +584,7 @@ public class SerialPortConversion {
         } else {
             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nSetPointData);
         }
+        Toast.makeText(act, "Please wait while communication is starting..", Toast.LENGTH_SHORT).show();
     }
 
     private void failedCommandS(int isStart) {
@@ -594,6 +597,8 @@ public class SerialPortConversion {
             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStartService);
         else if (isStart == 0)
             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nFeedbackDataSingleForSetting);
+
+        Toast.makeText(act, "Please wait while communication is starting..", Toast.LENGTH_SHORT).show();
     }
 
     private void failedCommandD(int isStart) {

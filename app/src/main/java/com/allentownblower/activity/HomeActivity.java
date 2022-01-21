@@ -295,6 +295,8 @@ public class HomeActivity extends BaseActivity implements Observer {
     private TextView txt_Supply_Temp, txt_Supply_Humidity, txt_Exhaust_Temp, txt_Exhaust_Humidity;
     private RackModel rackModel;
 
+    private Dialog alertview_simple_setting_password;
+
     @SuppressLint({"HandlerLeak", "ServiceCast", "MissingPermission"})
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -308,9 +310,13 @@ public class HomeActivity extends BaseActivity implements Observer {
         alertview_diagnostics = new Dialog(act, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         alertview_diagnostics_details = new Dialog(act, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
 
-        if (!hasWriteSettingsPermission(act)) {
-            changeWriteSettingsPermission(act);
-        }
+        //Below code is commented as it was there because we were trying to play with the touch screen brightness
+        //to change the ts brightness we need to have this permission.
+        //because of this it was opening up the setting page of OS on ts to allow ECoBlower app
+        //we disable it now so it is not asking for that now. we have code in utility.java to change th system brightness which is also commented.
+//        if (!hasWriteSettingsPermission(act)) {
+//            changeWriteSettingsPermission(act);
+//        }
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
@@ -1412,7 +1418,7 @@ public class HomeActivity extends BaseActivity implements Observer {
         });
     }
 
-    // FilterActivity ClickEvent
+    // FilterActivity ClickEvent on filter view click event for resetting prefilter
     public void FilterClickEvent() {
         img_Pre_Filter_Reset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1422,7 +1428,7 @@ public class HomeActivity extends BaseActivity implements Observer {
         });
     }
 
-    // HomeActivity ClickEvent
+    // HomeActivity ClickEvent plus minus up down arrow click events
     @SuppressLint("ClickableViewAccessibility")
     public void HomeClickEvent() {
         txt_S01_Z3_Plus.setOnClickListener(new View.OnClickListener() {
@@ -1431,7 +1437,8 @@ public class HomeActivity extends BaseActivity implements Observer {
                 if (isExhaustAvailable()) {
                     if (!txt_S01_Z3.getText().equals("+")) {
                         ResetCounter(1);
-                        Utility.ShowSettingPasswordDialog(act, "Minus_Command");
+                        //Utility.ShowSettingPasswordDialog(act, "Minus_Command");
+                        ShowSimpleSettingPasswordDialog(act,"Minus_Command");
                     }
                 } else {
                     Toast.makeText(act, "Not Available.", Toast.LENGTH_SHORT).show();
@@ -1445,7 +1452,8 @@ public class HomeActivity extends BaseActivity implements Observer {
                 if (isExhaustAvailable()) {
                     if (!txt_S01_Z3.getText().equals("-")) {
                         ResetCounter(1);
-                        Utility.ShowSettingPasswordDialog(act, "Plus_Command");
+                        //Utility.ShowSettingPasswordDialog(act, "Plus_Command");
+                        ShowSimpleSettingPasswordDialog(act,"Plus_Command");
                     }
                 } else {
                     Toast.makeText(act, "Not Available.", Toast.LENGTH_SHORT).show();
@@ -1457,7 +1465,8 @@ public class HomeActivity extends BaseActivity implements Observer {
             @Override
             public void onClick(View view) {
                 ResetCounter(1);
-                Utility.ShowSettingPasswordDialog(act, "Up_Down");
+                //Utility.ShowSettingPasswordDialog(act, "Up_Down");
+                ShowSimpleSettingPasswordDialog(act,"Up_Down");
             }
         });
 
@@ -1465,7 +1474,8 @@ public class HomeActivity extends BaseActivity implements Observer {
             @Override
             public void onClick(View view) {
                 ResetCounter(1);
-                Utility.ShowSettingPasswordDialog(act, "Up_Down");
+                //Utility.ShowSettingPasswordDialog(act, "Up_Down");
+                ShowSimpleSettingPasswordDialog(act,"Up_Down");
             }
         });
 
@@ -3465,35 +3475,40 @@ public class HomeActivity extends BaseActivity implements Observer {
         txt_ChangePassword_Setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utility.ShowSettingPasswordDialog(act, "ChangePasswordSetting");
+                //Utility.ShowSettingPasswordDialog(act, "ChangePasswordSetting");
+                ShowSimpleSettingPasswordDialog(act,"ChangePasswordSetting");
             }
         });
 
         txt_ChangePassword_Report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utility.ShowSettingPasswordDialog(act, "ChangePasswordReport");
+                //Utility.ShowSettingPasswordDialog(act, "ChangePasswordReport");
+                ShowSimpleSettingPasswordDialog(act,"ChangePasswordReport");
             }
         });
 
         txt_DiagnosticsPassword_Setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utility.ShowSettingPasswordDialog(act, "DiagnosticsPasswordSetting");
+                //Utility.ShowSettingPasswordDialog(act, "DiagnosticsPasswordSetting");
+                ShowSimpleSettingPasswordDialog(act,"DiagnosticsPasswordSetting");
             }
         });
 
         txt_DiagnosticsDetailsPassword_Setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utility.ShowSettingPasswordDialog(act, "DiagnosticsDetailsPasswordSetting");
+                //Utility.ShowSettingPasswordDialog(act, "DiagnosticsPasswordSetting");
+                ShowSimpleSettingPasswordDialog(act,"DiagnosticsPasswordSetting");
             }
         });
 
         txt_BluetoothDisconnectPassword_Setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utility.ShowSettingPasswordDialog(act, "BluetoothDisconnectPasswordSetting");
+                //Utility.ShowSettingPasswordDialog(act, "BluetoothDisconnectPasswordSetting");
+                ShowSimpleSettingPasswordDialog(act,"BluetoothDisconnectPasswordSetting");
             }
         });
 
@@ -4743,6 +4758,8 @@ public class HomeActivity extends BaseActivity implements Observer {
             if (responseHandler.hexToBinary(feedbackArrayList.get(0).getF12()).charAt(8) == '1') {
                 // for y3 = 1 only change color for filter icon
                 // isRedYellowColorHomeScreen = true;
+                Log.e(TAG,"Filter is true");
+                Log.e(TAG,"Value of PrefilterresetYesclicked is : " + isPreFilterResetYesButtonClicked);
                 isPreFilterResetClicked = true;//this requires to be true so that we get the yellow and black icon for filter button
                 //on all blower, alarm, filter screen.. see teh code for all three click event..
 
@@ -4761,8 +4778,23 @@ public class HomeActivity extends BaseActivity implements Observer {
                 //isPreFilterResetYesButtonClicked = false;
                 //Log.e(TAG,"Here i made isPreFilterResetYesButtonClicked as false.");
 
-                layout_filter_menu.setBackgroundColor(ContextCompat.getColor(act, R.color.home_yellow));
-                img_home_menu_one.setColorFilter(ContextCompat.getColor(act, R.color.black), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+
+                //layout_filter_menu.setBackgroundColor(ContextCompat.getColor(act, R.color.home_yellow));
+                //img_home_menu_one.setColorFilter(ContextCompat.getColor(act, R.color.black), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+                if (isPreFilterResetYesButtonClicked)
+                {
+                    isPreFilterResetClicked = false;
+                    isPreFilterResetYesButtonClicked = false;
+                    layout_filter_menu.setBackgroundColor(0x00000000);
+                    img_home_menu_one.setColorFilter(ContextCompat.getColor(act, R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                }
+                else
+                {
+                    layout_filter_menu.setBackgroundColor(ContextCompat.getColor(act, R.color.home_yellow));
+                    img_home_menu_one.setColorFilter(ContextCompat.getColor(act, R.color.black), android.graphics.PorterDuff.Mode.MULTIPLY);
+                }
             } else {
                 isPreFilterResetClicked = false;
                 isPreFilterResetYesButtonClicked = false;
@@ -5074,7 +5106,7 @@ public class HomeActivity extends BaseActivity implements Observer {
 
                         }
                     };
-                    mHandler.postDelayed(r, 2000);
+                    mHandler.postDelayed(r, 4000);
                 }
             }
         });
@@ -5082,14 +5114,18 @@ public class HomeActivity extends BaseActivity implements Observer {
         txt_No_Pre_Filter_Reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //progress_Pre_Filter_Reset.setVisibility(View.VISIBLE);
                 isPreFilterResetYesButtonClicked = false;
-
-                AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStartService);
-
                 ResetCounter(1);
-
                 alertview_pre_filter_reset.dismiss();
+
+                final Runnable r = new Runnable() {
+                    public void run() {
+                        Log.e(TAG,"Starting service after 4 seconds when no clicked on prefilter reset.");
+                        AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStartService);
+                    }
+                };
+                mHandler.postDelayed(r, 4000);
             }
         });
 
@@ -8087,7 +8123,8 @@ public class HomeActivity extends BaseActivity implements Observer {
 //            }else{
 //                CallReadWriteFuncation("S", 0); // S
 //            }
-        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nDiagnosticsDataWithFeedbackData) {
+        }
+        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nDiagnosticsDataWithFeedbackData) {
             if (service_diagnostic != null) {
                 CallReadWriteFuncation("D", 0); // D
             } else if (alertview_diagnostics_details.isShowing()) {
@@ -8098,22 +8135,26 @@ public class HomeActivity extends BaseActivity implements Observer {
 
             }
 
-        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nDiagnosticsDataOnly) {
+        }
+        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nDiagnosticsDataOnly) {
             if (service_diagnostic != null) {
                 CallReadWriteFuncation("D", -3); // D
             } else if (alertview_diagnostics.isShowing()) {
                 CallReadWriteFuncation("D31", 0); // D31
             }
-        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nDiagnosticsDataStart) {
+        }
+        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nDiagnosticsDataStart) {
             CallReadWriteFuncation("D12", 0); // D12
-        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.mD31CommandResponse) {
+        }
+        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.mD31CommandResponse) {
             Log.e(TAG, "D31 Response Got");
             mRelativeProgressBarLayoutDialog.setVisibility(View.GONE);
             alertview_diagnostics.dismiss();
             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStartService);
             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nRedirectHome);
             ResetCounter(1);
-        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nFeedbackData) {
+        }
+        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nFeedbackData) {
             if (service_myservice != null) {
                 CallReadWriteFuncation("F", 0); // F
             }
@@ -8122,11 +8163,14 @@ public class HomeActivity extends BaseActivity implements Observer {
                 sendMessage(new Gson().toJson(setpointArrayList), "setpointArrayList", 0);
                 sendMessage(new Gson().toJson(feedbackArrayList), "feedbackArrayList", 0);
             }
-        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nFeedbackDataOnly) {
+        }
+        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nFeedbackDataOnly) {
             CallReadWriteFuncation("F", 2); // 2 means no need to call S command after F command in SerialPortConversion.java
-        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nFeedbackDataSingleForSetting) {
+        }
+        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nFeedbackDataSingleForSetting) {
             CallReadWriteFuncation("F", 3); //  F command
-        } else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nSingle_S_F_got_response) {
+        }
+        else if (allentownBlowerApplication.getObserver().getValue() == ObserverActionID.nSingle_S_F_got_response) {
             hasS_F_got_response = true;
             Log.e("F Command Response", "F Command Response Got");
 //            if(isCommunicationButtonClicked){
@@ -8445,6 +8489,7 @@ public class HomeActivity extends BaseActivity implements Observer {
 
     public void reDirectHomeScreenFunction(boolean isSubSettingHomeButtonClicked) {
         if (isSubSettingHomeButtonClicked) {
+            Log.e("TAG","Subsettinghomebutton clicked true");
             mRelativeProgressBarLayoutSetting.setVisibility(View.GONE);
             mRelativeProgressBarLayoutSubSetting.setVisibility(View.GONE);
             bluetooth_layout.setVisibility(View.GONE);
@@ -8456,6 +8501,7 @@ public class HomeActivity extends BaseActivity implements Observer {
             AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStartService);
             ResetCounter(0);
         } else {
+            Log.e("TAG","Subsettinghomebutton clicked False FAlse FAlse");
             mRelativeProgressBarLayoutSetting.setVisibility(View.GONE);
             bluetooth_layout.setVisibility(View.GONE);
             main_layout.setVisibility(View.VISIBLE);
@@ -8595,6 +8641,14 @@ public class HomeActivity extends BaseActivity implements Observer {
                 try {
                     if (Utility.alertview_setting_password.isShowing()) {
                         Utility.alertview_setting_password.dismiss();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    if (alertview_simple_setting_password.isShowing()) {
+                        alertview_simple_setting_password.dismiss();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -9108,11 +9162,11 @@ public class HomeActivity extends BaseActivity implements Observer {
     {
         AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStopService);
         prefManager = new PrefManager(act);
-        Dialog alertview_setting_password = new Dialog(act);
-        alertview_setting_password.setCancelable(false);
+        alertview_simple_setting_password = new Dialog(act);
+        alertview_simple_setting_password.setCancelable(false);
 
 
-        alertview_setting_password.setContentView(R.layout.alertview_simplepassword_layout); // EditText Screen
+        alertview_simple_setting_password.setContentView(R.layout.alertview_simplepassword_layout); // EditText Screen
 //        alertview_setting_password.setContentView(R.layout.alertview_edittext_layout); // EditText Screen
 //        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
 //        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.90);
@@ -9120,13 +9174,13 @@ public class HomeActivity extends BaseActivity implements Observer {
 //        alertview_setting_password.getWindow().setLayout(width, height);
 //        alertview_setting_password.getWindow().getAttributes().x = 30;
 //        alertview_setting_password.getWindow().getAttributes().y = 10;
-        alertview_setting_password.getWindow().setGravity(Gravity.TOP);
+        alertview_simple_setting_password.getWindow().setGravity(Gravity.TOP);
 
-        alertview_setting_password.show();
-        txt_Title_alartview_box = alertview_setting_password.findViewById(R.id.txt_Title_alartview_box);
-        edit_EnterTxt_alartview_box = alertview_setting_password.findViewById(R.id.edit_EnterTxt_alartview_box);
-        btn_Cancel_alartview_box = alertview_setting_password.findViewById(R.id.btn_Cancel_alartview_box);
-        btn_Save_alartview_box = alertview_setting_password.findViewById(R.id.btn_Save_alartview_box);
+        alertview_simple_setting_password.show();
+        txt_Title_alartview_box = alertview_simple_setting_password.findViewById(R.id.txt_Title_alartview_box);
+        edit_EnterTxt_alartview_box = alertview_simple_setting_password.findViewById(R.id.edit_EnterTxt_alartview_box);
+        btn_Cancel_alartview_box = alertview_simple_setting_password.findViewById(R.id.btn_Cancel_alartview_box);
+        btn_Save_alartview_box = alertview_simple_setting_password.findViewById(R.id.btn_Save_alartview_box);
         txt_Title_alartview_box.setText("Enter Password");
         btn_Cancel_alartview_box.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -9134,7 +9188,7 @@ public class HomeActivity extends BaseActivity implements Observer {
 
                 //Log.e(TAG, "Clicked Cancel." + edit_EnterTxt_alartview_box.getText().toString());
                 AllentownBlowerApplication.getInstance().getObserver().setValue(ObserverActionID.nStartService);
-                alertview_setting_password.dismiss();
+                alertview_simple_setting_password.dismiss();
 
                 if (actString.equals("Plus_Command")) {
 
@@ -9150,7 +9204,7 @@ public class HomeActivity extends BaseActivity implements Observer {
         btn_Save_alartview_box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alertview_setting_password.dismiss();
+                alertview_simple_setting_password.dismiss();
                 //Log.e(TAG, "Clicked Save." + edit_EnterTxt_alartview_box.getText().toString());
                 String enteredval = edit_EnterTxt_alartview_box.getText().toString();
                 if (enteredval.toString().equals(""))

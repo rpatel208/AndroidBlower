@@ -242,7 +242,7 @@ public class PrefManager {
     }
 
     public String getMinuteForCommandF() {
-        return pref.getString(saveMinutesForCommandF, "5");
+        return pref.getString(saveMinutesForCommandF, "30");
     }
 
     public void setMinute(int minutes) {
@@ -251,7 +251,7 @@ public class PrefManager {
     }
 
     public int getMinute() {
-        return pref.getInt(saveMinutesForCommandFName, 5);
+        return pref.getInt(saveMinutesForCommandFName, 30);
     }
 
     public void setCurrentDate(String date) {
